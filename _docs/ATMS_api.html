@@ -196,6 +196,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#atms_api" id="toc-atms_api" class="nav-link active" data-scroll-target="#atms_api">ATMS_api</a></li>
+  <li><a href="#atms_api.write_obj_to_file" id="toc-atms_api.write_obj_to_file" class="nav-link" data-scroll-target="#atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</a></li>
+  <li><a href="#atms_api.clean_data_file" id="toc-atms_api.clean_data_file" class="nav-link" data-scroll-target="#atms_api.clean_data_file">ATMS_api.clean_data_file</a></li>
   <li><a href="#atms_api.load_data_file_to_dict" id="toc-atms_api.load_data_file_to_dict" class="nav-link" data-scroll-target="#atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/josephsmann/doubledot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -234,12 +236,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> ATMS_api ()</code></pre>
 </blockquote>
 <p>Initialize self. See help(type(self)) for accurate signature.</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L410" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.write_obj_to_file" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.write_obj_to_file (obj:str='contacts', initial_offset:int=0,
+                             max_offset:int=2000, rows_per_batch:int=1000,
+                             max_rows:int=2000)</code></pre>
+</blockquote>
+<p>Retrieve data from ATMS API and write to file public method</p>
+<p>Args: obj (string): a valid ATMS REST API object max_offset (int, optional): starting row to begin retrieval. Defaults to 2000. rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>obj</td>
+<td>str</td>
+<td>contacts</td>
+<td>ATMS object to retrieve</td>
+</tr>
+<tr class="even">
+<td>initial_offset</td>
+<td>int</td>
+<td>0</td>
+<td>start retrieval at row initial_offset</td>
+</tr>
+<tr class="odd">
+<td>max_offset</td>
+<td>int</td>
+<td>2000</td>
+<td>maximum offset allowed (CHANGE THIS)</td>
+</tr>
+<tr class="even">
+<td>rows_per_batch</td>
+<td>int</td>
+<td>1000</td>
+<td>number records retrieved at once</td>
+</tr>
+<tr class="odd">
+<td>max_rows</td>
+<td>int</td>
+<td>2000</td>
+<td>maximum number of rows to retrieve</td>
+</tr>
+</tbody>
+</table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_mutate_email() <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" Test to cure backtick string in O'Brien """</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span><span class="st">"225805  119016  2   06416302    Active  498585  O’Brien, Adam"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ATMS_api.__mutate_email_list(s) <span class="op">==</span> <span class="st">"225805</span><span class="ch">\t</span><span class="st">119016</span><span class="ch">\t</span><span class="st">2</span><span class="ch">\t</span><span class="st">06416302</span><span class="ch">\t</span><span class="st">Active</span><span class="ch">\t</span><span class="st">498585</span><span class="ch">\t</span><span class="st">O'Brien, Adam"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># def test_mutate_email() -&gt; bool:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     """ Test to cure backtick string in O'Brien """</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     s ="225805    119016  2   06416302    Active  498585  O’Brien, Adam"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     assert ATMS_api.__mutate_email_list(s) == "225805\t119016\t2\t06416302\tActive\t498585\tO'Brien, Adam"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L444" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.clean_data_file" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.clean_data_file">ATMS_api.clean_data_file</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.clean_data_file (obj_s:str)</code></pre>
+</blockquote>
+<p>clean up the atms_contacts.json file, this is necessary before loading into Saleforce</p>
 <hr>
 <p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L466" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>

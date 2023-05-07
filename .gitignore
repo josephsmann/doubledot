@@ -1,5 +1,8 @@
-# _docs/
+_docs/
 _proc/
+sf_download/
+sf_upload/
+atms_download/
 
 # I added .json and .csv
 *.json
