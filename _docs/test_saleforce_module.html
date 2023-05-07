@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="use this to test salesforce.py">
+
+<title>doubledot - sf testing book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="doubledot - sf testing book">
+<meta property="og:site-name" content="doubledot">
+<meta name="twitter:title" content="doubledot - sf testing book">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">doubledot</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/josephsmann/doubledot" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./test_saleforce_module.html">sf testing book</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">doubledot</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00_core.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">core</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./crema_sf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">crema_sf</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./test_saleforce_module.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">sf testing book</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#get-atms-objects" id="toc-get-atms-objects" class="nav-link active" data-scroll-target="#get-atms-objects">Get ATMS Objects</a></li>
+  <li><a href="#clean-atms-data-and-load-into-atms.obj_d" id="toc-clean-atms-data-and-load-into-atms.obj_d" class="nav-link" data-scroll-target="#clean-atms-data-and-load-into-atms.obj_d">clean ATMS data and load into atms.obj_d</a></li>
+  <li><a href="#create-memberships-csv-file" id="toc-create-memberships-csv-file" class="nav-link" data-scroll-target="#create-memberships-csv-file">create <code>Memberships[]</code> csv file</a></li>
+  <li><a href="#create-memberships.membershipterms-csv-file" id="toc-create-memberships.membershipterms-csv-file" class="nav-link" data-scroll-target="#create-memberships.membershipterms-csv-file">create <code>Memberships[].membershipTerms</code> csv file</a></li>
+  <li><a href="#create-memberships.membershipterms.membershipmembers-csv-file" id="toc-create-memberships.membershipterms.membershipmembers-csv-file" class="nav-link" data-scroll-target="#create-memberships.membershipterms.membershipmembers-csv-file">create <code>Memberships[].membershipTerms[].membershipMembers[]</code> csv file</a></li>
+  <li><a href="#make-dataframes-for-membership-membership-terms-and-membership-members-and-contacts" id="toc-make-dataframes-for-membership-membership-terms-and-membership-members-and-contacts" class="nav-link" data-scroll-target="#make-dataframes-for-membership-membership-terms-and-membership-members-and-contacts">make dataframes for membership, membership terms, and membership members, and contacts</a>
+  <ul>
+  <li><a href="#merge-membership-and-membershipterms" id="toc-merge-membership-and-membershipterms" class="nav-link" data-scroll-target="#merge-membership-and-membershipterms">merge membership and membershipTerms</a></li>
+  <li><a href="#trying-to-solve-problem-of-unmatched-contacts-and-members-usin-dataframes" id="toc-trying-to-solve-problem-of-unmatched-contacts-and-members-usin-dataframes" class="nav-link" data-scroll-target="#trying-to-solve-problem-of-unmatched-contacts-and-members-usin-dataframes">trying to solve problem of unmatched contacts and members usin dataframes</a></li>
+  <li><a href="#intersection-of-contactids-and-members.contactkey__c" id="toc-intersection-of-contactids-and-members.contactkey__c" class="nav-link" data-scroll-target="#intersection-of-contactids-and-members.contactkey__c">intersection of contactIds and members.contactKey__c</a></li>
+  </ul></li>
+  <li><a href="#upload-memberships-to-sf" id="toc-upload-memberships-to-sf" class="nav-link" data-scroll-target="#upload-memberships-to-sf">upload Memberships to SF</a></li>
+  <li><a href="#upload-membershipterm-to-sf" id="toc-upload-membershipterm-to-sf" class="nav-link" data-scroll-target="#upload-membershipterm-to-sf">upload MembershipTerm to SF</a></li>
+  <li><a href="#upload-membershipmembers-to-sf" id="toc-upload-membershipmembers-to-sf" class="nav-link" data-scroll-target="#upload-membershipmembers-to-sf">upload MembershipMembers to SF</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/josephsmann/doubledot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">sf testing book</h1>
+</div>
+
+<div>
+  <div class="description">
+    use this to test salesforce.py
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import salesforce as SF</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import salesforce_old as SF</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> doubledot.crema_sf <span class="im">as</span> SF</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jmespath <span class="im">as</span> jp</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nbdev.showdoc <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.basics <span class="im">import</span> patch</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.test <span class="im">import</span> test_eq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_eq("dog","cat")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>AssertionError: ==:
+dog
+cat</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> SF.Salesforce()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sf.sf_access_token</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'00D8Y000001RMKv!AQwAQOHa92zdhbVEwNgt6unFKNj_RJxGl2OALpgriUkXaDsRI2c435aYt19zIycv0K8x9CUogx9Z9qJIzZnDVAu6PmFQh97p'</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sf.test_token()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>True</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sf.get_sf_object_ids()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>total number of objects =  15</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>['0038Y00003bx8WPQAY',
+ '0038Y00003bx8WQQAY',
+ '0038Y00003bx8WRQAY',
+ '0038Y00003bx8WUQAY',
+ '0038Y00003bx8WVQAY',
+ '0038Y00003bx8WWQAY',
+ '0038Y00003bx8WXQAY',
+ '0038Y00003bx8WYQAY',
+ '0038Y00003bx8WZQAY',
+ '0038Y00003bx8WaQAI',
+ '0038Y00003bx8WcQAI',
+ '0038Y00003bx8WdQAI',
+ '0038Y00003bx8WeQAI',
+ '0038Y00003bx8WfQAI',
+ '0038Y00003bx8WgQAI']</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> SF.ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'SF' is not defined</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>atms.telus_access_token</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMjUiLCJqdGkiOiJmNTU4MmRmOS00MDg2LTQ1ODgtODVkNC01ZGM4ZTI0ZTVhNmQiLCJpYXQiOjE2ODM0Mzc2MTEsInJFeHAiOjE2ODM2NTM2MTEsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ3ZWJ1c2VyIiwibmJmIjoxNjgzNDM3NjExLCJleHAiOjE2ODM0NzM2MTEsImlzcyI6ImxvY2FsaG9zdCIsImF1ZCI6IkFUTVMrIn0.AG2bGGxqOUJLjJWfEQ2SYmF_bTQAB2n_188R4ODDtZs'</code></pre>
+</div>
+</div>
+<section id="get-atms-objects" class="level2">
+<h2 class="anchored" data-anchor-id="get-atms-objects">Get ATMS Objects</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get memberships data</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>atms.write_obj_to_file(<span class="st">'memberships'</span>,initial_offset<span class="op">=</span><span class="dv">59_000</span>, max_offset<span class="op">=</span><span class="dv">60_000</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>atms.write_obj_to_file(<span class="st">'contacts'</span>, initial_offset<span class="op">=</span><span class="dv">450_000</span>, max_offset<span class="op">=</span><span class="dv">451_000</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>atms.write_obj_to_file(<span class="st">'items'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.write_obj_to_file('sales', initial_offset=450_000, max_offset=451_000)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Writing to file:  atms_memberships.json
+max_offset:  60000
+offset:  59000
+offset:  59000
+http://crm-api-telus.atmsplus.com/api/memberships?offset=59000&amp;count=1000</code></pre>
+</div>
+</div>
+</section>
+<section id="clean-atms-data-and-load-into-atms.obj_d" class="level2">
+<h2 class="anchored" data-anchor-id="clean-atms-data-and-load-into-atms.obj_d">clean ATMS data and load into atms.obj_d</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>atms.clean_data_file(<span class="st">'contacts'</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(<span class="st">'contacts'</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atms.obj_d.keys())</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.obj_d['contacts'][:3]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cleaning file:  atms_contacts.json
+Writing file:  atms_transformed_contacts.json
+Loading file:  atms_transformed_contacts.json
+dict_keys(['contacts'])</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>atms.clean_data_file(<span class="st">'memberships'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(<span class="st">'memberships'</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atms.obj_d.keys())</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.obj_d['memberships'][:3]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cleaning file:  atms_memberships.json
+Writing file:  atms_transformed_memberships.json
+Loading file:  atms_transformed_memberships.json
+dict_keys(['contacts', 'memberships'])</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""[</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">  {</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">    "membershipId": 0,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">    "memberSince": "2023-05-02T21:47:29.055Z",</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">    "updateDate": "2023-05-02T21:47:29.055Z",</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">    "membershipTerms": [</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">      {</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">        "membershipTermId": 0,</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">        "membershipKey": 0,</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">        "effectiveDate": "2023-05-02T21:47:29.055Z",</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">        "expiryDate": "2023-05-02T21:47:29.055Z",</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">        "membershipType": "string",</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">        "upgradeFromTermKey": 0,</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">        "giftMembership": true,</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">        "refunded": true,</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">        "saleDetailKey": 0,</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co">        "itemKey": 0,</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">        "membershipMembers": [</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co">          {</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co">            "membershipMemberId": 0,</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co">            "membershipTermKey": 0,</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co">            "cardNumber": 0,</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co">            "membershipNumber": "string",</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co">            "cardStatus": "string",</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="co">            "contactKey": 0,</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="co">            "displayName": "string"</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="co">          }</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="co">        ]</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="co">      }</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="co">    ]</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="co">  }</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="co">]</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'[\n  {\n    "membershipId": 0,\n    "memberSince": "2023-05-02T21:47:29.055Z",\n    "updateDate": "2023-05-02T21:47:29.055Z",\n    "membershipTerms": [\n      {\n        "membershipTermId": 0,\n        "membershipKey": 0,\n        "effectiveDate": "2023-05-02T21:47:29.055Z",\n        "expiryDate": "2023-05-02T21:47:29.055Z",\n        "membershipType": "string",\n        "upgradeFromTermKey": 0,\n        "giftMembership": true,\n        "refunded": true,\n        "saleDetailKey": 0,\n        "itemKey": 0,\n        "membershipMembers": [\n          {\n            "membershipMemberId": 0,\n            "membershipTermKey": 0,\n            "cardNumber": 0,\n            "membershipNumber": "string",\n            "cardStatus": "string",\n            "contactKey": 0,\n            "displayName": "string"\n          }\n        ]\n      }\n    ]\n  }\n]\n'</code></pre>
+</div>
+</div>
+</section>
+<section id="create-memberships-csv-file" class="level2">
+<h2 class="anchored" data-anchor-id="create-memberships-csv-file">create <code>Memberships[]</code> csv file</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">## requires that atms.obj_d['memberships'] is loaded</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">## we make this for bulk insert into salesforce</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> atms.obj_d[<span class="st">'memberships'</span>]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>mem_s <span class="op">=</span> <span class="st">"[].{membershipId__c: membershipId, </span><span class="ch">\</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="st">    memberSince__c: memberSince, </span><span class="ch">\</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="st">    updateDate__c: updateDate}"</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># make membership members table</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>dict_l <span class="op">=</span> jp.search(mem_s, atms.obj_d[<span class="st">'memberships'</span>])</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'memberships.csv'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span>.join(dict_l[<span class="dv">0</span>].keys()) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>) <span class="co"># header</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> dict_l:</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span>.join([<span class="bu">str</span>(v) <span class="cf">for</span> v <span class="kw">in</span> d.values()]) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-memberships.membershipterms-csv-file" class="level2">
+<h2 class="anchored" data-anchor-id="create-memberships.membershipterms-csv-file">create <code>Memberships[].membershipTerms</code> csv file</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">## requires that atms.obj_d['memberships'] is loaded</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">## we make this for bulk insert into salesforce</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make membership term table</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we use a hack of inserting _1_ into the membershipKey__r field name to get around the fact that jmespath won't allow a dot in a field name</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> atms.obj_d[<span class="st">'memberships'</span>]</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>memTerm_s <span class="op">=</span> <span class="st">"[:50].membershipTerms[].{membershipTermId__c: membershipTermId,</span><span class="ch">\</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="st">membershipKey__r_1_membershipId__c:membershipKey,</span><span class="ch">\</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="st">effectiveDate__c:effectiveDate,</span><span class="ch">\</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="st">expiryDate__c:expiryDate,</span><span class="ch">\</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="st">membershipType__c:membershipType,</span><span class="ch">\</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="st">upgradeFromTermKey__c:upgradeFromTermKey,</span><span class="ch">\</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="st">giftMembership__c:giftMembership,</span><span class="ch">\</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="st">refunded__c:refunded,</span><span class="ch">\</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="st">saleDetailKey__c:saleDetailKey,</span><span class="ch">\</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="st">itemKey__c:itemKey}"</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>dict_l <span class="op">=</span> jp.search(memTerm_s, atms.obj_d[<span class="st">'memberships'</span>])</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'membership_terms.csv'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hack to create header with a dot in it, jmespath won't do it</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span>.join([s.replace(<span class="st">'_1_'</span>,<span class="st">'.'</span>) <span class="cf">for</span> s <span class="kw">in</span> dict_l[<span class="dv">0</span>].keys()]) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>) <span class="co"># header</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> dict_l:</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">#changed this to not write None for empty values, eg "" for null and false (a default value)</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span>.join([<span class="bu">str</span>(v) <span class="cf">if</span> v <span class="cf">else</span> <span class="st">""</span> <span class="cf">for</span> v <span class="kw">in</span> d.values()]) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'test.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    f.write(json.dumps(dict_l[:<span class="dv">5</span>], indent<span class="op">=</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'test.json'</span>, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> json.load(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-memberships.membershipterms.membershipmembers-csv-file" class="level2">
+<h2 class="anchored" data-anchor-id="create-memberships.membershipterms.membershipmembers-csv-file">create <code>Memberships[].membershipTerms[].membershipMembers[]</code> csv file</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">## requires that atms.obj_d['memberships'] is loaded</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">## we make this for bulk insert into salesforce</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make membership term table</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we use a hack of inserting _1_ into the membershipKey__r field name to get around the fact that jmespath won't allow a dot in a field name</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> atms.obj_d[<span class="st">'memberships'</span>]</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>memMembers_s <span class="op">=</span> <span class="st">"[].membershipTerms[].membershipMembers[].{membershipMemberId__c:membershipMemberId,</span><span class="ch">\</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="st">membershipTermKey__r_1_membershipTermId__c:membershipTermKey,</span><span class="ch">\</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="st">cardNumber__c:cardNumber,</span><span class="ch">\</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="st">membershipNumber__c:membershipNumber,</span><span class="ch">\</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="st">cardStatus__c:cardStatus,</span><span class="ch">\</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="st">contactKey__c:contactKey,</span><span class="ch">\</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="st">displayName__c:displayName}"</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="co"># make membership members table</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>dict_l <span class="op">=</span> jp.search(memMembers_s, atms.obj_d[<span class="st">'memberships'</span>])</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'membership_members.csv'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span>.join([s.replace(<span class="st">'_1_'</span>,<span class="st">'.'</span>) <span class="cf">for</span> s <span class="kw">in</span> dict_l[<span class="dv">0</span>].keys()]) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>) <span class="co"># header</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># f.write('\t'.join(dict_l[0].keys()) + '\n') # header</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> dict_l:</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span>.join([<span class="bu">str</span>(v) <span class="cf">for</span> v <span class="kw">in</span> d.values()]) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="make-dataframes-for-membership-membership-terms-and-membership-members-and-contacts" class="level2">
+<h2 class="anchored" data-anchor-id="make-dataframes-for-membership-membership-terms-and-membership-members-and-contacts">make dataframes for membership, membership terms, and membership members, and contacts</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>members_df <span class="op">=</span> pd.read_csv(<span class="st">'membership_members.csv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>) </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>membershipTerms_df <span class="op">=</span> pd.read_csv(<span class="st">'membership_terms.csv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>membership_df <span class="op">=</span> pd.read_csv(<span class="st">'memberships.csv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(obj_s<span class="op">=</span><span class="st">'contacts'</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>contacts_df <span class="op">=</span> pd.DataFrame(atms.obj_d[<span class="st">'contacts'</span>])</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>contacts_df.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loading file:  atms_transformed_contacts.json</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>contactId                  int64
+contactType               object
+username                  object
+createdDate               object
+updateDate                object
+emailOptIn                object
+mailOptIn                 object
+phoneOptIn                object
+contactIndividualKey       int64
+firstName                 object
+lastName                  object
+middleName                object
+birthDate                 object
+contactOrganizationKey     int64
+organizationName          object
+addresses                 object
+alerts                    object
+contactTypes              object
+emails                    object
+faxes                     object
+phones                    object
+dtype: object</code></pre>
+</div>
+</div>
+<section id="merge-membership-and-membershipterms" class="level3">
+<h3 class="anchored" data-anchor-id="merge-membership-and-membershipterms">merge membership and membershipTerms</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>membership_df.merge(membershipTerms_df, how<span class="op">=</span><span class="st">'right'</span>, left_on<span class="op">=</span><span class="st">'membershipId__c'</span>, right_on<span class="op">=</span><span class="st">'membershipKey__r.membershipId__c'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">membershipId__c</th>
+<th data-quarto-table-cell-role="th">memberSince__c</th>
+<th data-quarto-table-cell-role="th">updateDate__c</th>
+<th data-quarto-table-cell-role="th">membershipTermId__c</th>
+<th data-quarto-table-cell-role="th">membershipKey__r.membershipId__c</th>
+<th data-quarto-table-cell-role="th">effectiveDate__c</th>
+<th data-quarto-table-cell-role="th">expiryDate__c</th>
+<th data-quarto-table-cell-role="th">membershipType__c</th>
+<th data-quarto-table-cell-role="th">upgradeFromTermKey__c</th>
+<th data-quarto-table-cell-role="th">giftMembership__c</th>
+<th data-quarto-table-cell-role="th">refunded__c</th>
+<th data-quarto-table-cell-role="th">saleDetailKey__c</th>
+<th data-quarto-table-cell-role="th">itemKey__c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>63858</td>
+<td>2022-04-08T00:00:00</td>
+<td>2022-04-08T09:36:20.833</td>
+<td>118562</td>
+<td>63858</td>
+<td>2022-04-08T09:36:20.833</td>
+<td>2023-04-08T23:59:59</td>
+<td>Family Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6786878</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>63859</td>
+<td>2022-04-08T00:00:00</td>
+<td>2022-04-08T11:01:54.557</td>
+<td>118563</td>
+<td>63859</td>
+<td>2022-04-08T00:00:00</td>
+<td>2023-04-08T23:59:59</td>
+<td>Family Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6787098</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>63860</td>
+<td>2022-04-08T00:00:00</td>
+<td>2022-04-08T11:26:38.99</td>
+<td>118564</td>
+<td>63860</td>
+<td>2022-04-08T00:00:00</td>
+<td>2023-04-08T23:59:59</td>
+<td>Family Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6787144</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>63861</td>
+<td>2022-04-08T00:00:00</td>
+<td>2022-04-08T13:08:30.02</td>
+<td>118565</td>
+<td>63861</td>
+<td>2022-04-08T00:00:00</td>
+<td>2023-04-08T23:59:59</td>
+<td>Adult Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6787346</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>63862</td>
+<td>2022-04-08T00:00:00</td>
+<td>2022-04-08T13:14:33.093</td>
+<td>118566</td>
+<td>63862</td>
+<td>2022-04-08T00:00:00</td>
+<td>2023-04-08T23:59:59</td>
+<td>Family Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6787366</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">57</td>
+<td>63905</td>
+<td>2022-04-10T00:00:00</td>
+<td>2022-04-10T08:48:52.163</td>
+<td>118623</td>
+<td>63905</td>
+<td>2022-04-10T08:48:52.163</td>
+<td>2023-04-10T23:59:59</td>
+<td>Child Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6789534</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">58</td>
+<td>63906</td>
+<td>2022-04-10T00:00:00</td>
+<td>2022-04-10T09:18:25.853</td>
+<td>118624</td>
+<td>63906</td>
+<td>2022-04-10T09:18:25.853</td>
+<td>2023-04-10T23:59:59</td>
+<td>Family Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6789550</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">59</td>
+<td>63906</td>
+<td>2022-04-10T00:00:00</td>
+<td>2022-04-10T09:18:25.853</td>
+<td>129579</td>
+<td>63906</td>
+<td>2023-04-11T00:00:00</td>
+<td>2024-04-10T23:59:59</td>
+<td>Family Membership</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>7201817</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">60</td>
+<td>63907</td>
+<td>2011-12-02T00:00:00</td>
+<td>2022-04-10T09:47:18.223</td>
+<td>118625</td>
+<td>63907</td>
+<td>2022-04-10T00:00:00</td>
+<td>2023-04-10T23:59:59</td>
+<td>Staff Over 600 Hours</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6789587</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">61</td>
+<td>63907</td>
+<td>2011-12-02T00:00:00</td>
+<td>2022-04-10T09:47:18.223</td>
+<td>128612</td>
+<td>63907</td>
+<td>2023-04-11T00:00:00</td>
+<td>2024-04-10T23:59:59</td>
+<td>Staff Over 600 Hours</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>7169579</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+<p>62 rows × 13 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="trying-to-solve-problem-of-unmatched-contacts-and-members-usin-dataframes" class="level3">
+<h3 class="anchored" data-anchor-id="trying-to-solve-problem-of-unmatched-contacts-and-members-usin-dataframes">trying to solve problem of unmatched contacts and members usin dataframes</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>contacts_df.contactId.<span class="bu">max</span>(),contacts_df.contactId.<span class="bu">min</span>(),members_df.loc[:,<span class="st">"contactKey__c"</span>].<span class="bu">min</span>(),members_df.loc[:,<span class="st">"contactKey__c"</span>].<span class="bu">max</span>(),</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(499157, 498155, 8206, 535273)</code></pre>
+</div>
+</div>
+</section>
+<section id="intersection-of-contactids-and-members.contactkey__c" class="level3">
+<h3 class="anchored" data-anchor-id="intersection-of-contactids-and-members.contactkey__c">intersection of contactIds and members.contactKey__c</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> <span class="bu">set</span>(contacts_df.contactId) </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="bu">set</span>(members_df.loc[:,<span class="st">"contactKey__c"</span>])</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># common elements of s1 and s2</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>s1.intersection(s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{498155,
+ 498160,
+ 498161,
+ 498162,
+ 498163,
+ 498164,
+ 498165,
+ 498166,
+ 498167,
+ 498168,
+ 498169,
+ 498170,
+ 498171,
+ 498172,
+ 498173,
+ 498174,
+ 498175,
+ 498205,
+ 498206,
+ 498207,
+ 498208,
+ 498209,
+ 498210,
+ 498220,
+ 498221,
+ 498222,
+ 498223,
+ 498224,
+ 498225,
+ 498227,
+ 498229,
+ 498230,
+ 498231,
+ 498232,
+ 498233,
+ 498234,
+ 498235,
+ 498236,
+ 498237,
+ 498248,
+ 498249,
+ 498250,
+ 498251,
+ 498252,
+ 498253,
+ 498254,
+ 498255,
+ 498256,
+ 498257,
+ 498259,
+ 498261,
+ 498262,
+ 498263,
+ 498264,
+ 498265,
+ 498266,
+ 498267,
+ 498268,
+ 498273,
+ 498274,
+ 498275,
+ 498276,
+ 498277,
+ 498278,
+ 498279,
+ 498281,
+ 498282,
+ 498283,
+ 498284,
+ 498287,
+ 498288,
+ 498289,
+ 498290,
+ 498294,
+ 498295,
+ 498296,
+ 498302,
+ 498303,
+ 498304,
+ 498305,
+ 498307,
+ 498309,
+ 498310,
+ 498311,
+ 498312,
+ 498313,
+ 498317,
+ 498318,
+ 498319,
+ 498320,
+ 498321,
+ 498322,
+ 498323,
+ 498324,
+ 498338,
+ 498339,
+ 498359,
+ 498385,
+ 498386,
+ 498388,
+ 498390,
+ 498391,
+ 498392,
+ 498393,
+ 498397,
+ 498403,
+ 498404,
+ 498405,
+ 498410,
+ 498412,
+ 498413,
+ 498434,
+ 498435,
+ 498436,
+ 498437,
+ 498438,
+ 498440,
+ 498459,
+ 498460,
+ 498461,
+ 498472,
+ 498473,
+ 498500,
+ 498501,
+ 498502,
+ 498503,
+ 498504,
+ 498528,
+ 498529,
+ 498536,
+ 498537,
+ 498538,
+ 498539,
+ 498540,
+ 498541,
+ 498542,
+ 498543,
+ 498545,
+ 498546,
+ 498552,
+ 498558,
+ 498559,
+ 498560,
+ 498561,
+ 498585,
+ 498586,
+ 498593,
+ 498594,
+ 498595,
+ 498596,
+ 498597,
+ 498598,
+ 498599,
+ 498600,
+ 498601,
+ 498602,
+ 498617,
+ 498618,
+ 498619,
+ 498620,
+ 498623,
+ 498624,
+ 498625,
+ 498626,
+ 498628,
+ 498629,
+ 498637,
+ 498638,
+ 498641,
+ 498642,
+ 498643,
+ 498644,
+ 498645,
+ 498646,
+ 498647,
+ 498649,
+ 498650,
+ 498653,
+ 498654,
+ 498656,
+ 498657,
+ 498658,
+ 498659,
+ 498660,
+ 498661,
+ 498662,
+ 498663,
+ 498664,
+ 498665,
+ 498666,
+ 498668,
+ 498669,
+ 498670,
+ 498671,
+ 498672,
+ 498674,
+ 498679,
+ 498680,
+ 498681,
+ 498685,
+ 498686,
+ 498687,
+ 498688,
+ 498689,
+ 498691,
+ 498692,
+ 498693,
+ 498698,
+ 498712,
+ 498713,
+ 498714,
+ 498715,
+ 498716,
+ 498717,
+ 498718,
+ 498719,
+ 498720,
+ 498721,
+ 498728,
+ 498729,
+ 498732,
+ 498733,
+ 498734,
+ 498750,
+ 498751,
+ 498753,
+ 498757,
+ 498758,
+ 498759,
+ 498760,
+ 498763,
+ 498764,
+ 498765,
+ 498766,
+ 498768,
+ 498769,
+ 498770,
+ 498771,
+ 498773,
+ 498774,
+ 498776,
+ 498777,
+ 498778,
+ 498782,
+ 498802,
+ 498803,
+ 498805,
+ 498806,
+ 498807,
+ 498809,
+ 498810,
+ 498811,
+ 498812,
+ 498815,
+ 498816,
+ 498817,
+ 498823,
+ 498825,
+ 498826,
+ 498836,
+ 498838,
+ 498839,
+ 498840,
+ 498841,
+ 498843,
+ 498844,
+ 498845,
+ 498846,
+ 498849,
+ 498850,
+ 498851,
+ 498852,
+ 498853,
+ 498865,
+ 498873,
+ 498874,
+ 498875,
+ 498876,
+ 498885,
+ 498889,
+ 498910,
+ 498911,
+ 498912,
+ 498913,
+ 498916,
+ 498920,
+ 498921,
+ 498933,
+ 498934,
+ 498935,
+ 498936,
+ 498937,
+ 498938,
+ 498942,
+ 498951,
+ 498952,
+ 498955,
+ 498956,
+ 498958,
+ 498959,
+ 498960,
+ 498967,
+ 498968,
+ 498969,
+ 498974,
+ 498975,
+ 498977,
+ 498978,
+ 498979,
+ 498980,
+ 498981,
+ 498982,
+ 498999,
+ 499000,
+ 499001,
+ 499002,
+ 499003,
+ 499004,
+ 499005,
+ 499021,
+ 499022,
+ 499026,
+ 499027,
+ 499028,
+ 499029,
+ 499030,
+ 499032,
+ 499039,
+ 499040,
+ 499041,
+ 499042,
+ 499044,
+ 499045,
+ 499046,
+ 499048,
+ 499049,
+ 499050,
+ 499051,
+ 499059,
+ 499060,
+ 499061,
+ 499069,
+ 499070,
+ 499071,
+ 499077,
+ 499082,
+ 499083,
+ 499084,
+ 499085,
+ 499086,
+ 499087,
+ 499088,
+ 499090,
+ 499108,
+ 499109,
+ 499110,
+ 499116,
+ 499117,
+ 499118,
+ 499127,
+ 499128,
+ 499129,
+ 499130,
+ 499131,
+ 499132,
+ 499133,
+ 499141,
+ 499142,
+ 499143,
+ 499144,
+ 499148,
+ 499149,
+ 499150,
+ 499151,
+ 499152,
+ 499155,
+ 499156,
+ 499157}</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>_df <span class="op">=</span> members_df</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>_df.merge(contacts_df, left_on<span class="op">=</span><span class="st">'contactKey__c'</span>, right_on <span class="op">=</span><span class="st">'contactId'</span>, how<span class="op">=</span><span class="st">'inner'</span>)<span class="co">#.loc[:, contacts_df.columns]</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># _df.dtypes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">membershipMemberId__c</th>
+<th data-quarto-table-cell-role="th">membershipTermKey__r.membershipTermId__c</th>
+<th data-quarto-table-cell-role="th">cardNumber__c</th>
+<th data-quarto-table-cell-role="th">membershipNumber__c</th>
+<th data-quarto-table-cell-role="th">cardStatus__c</th>
+<th data-quarto-table-cell-role="th">contactKey__c</th>
+<th data-quarto-table-cell-role="th">displayName__c</th>
+<th data-quarto-table-cell-role="th">contactId</th>
+<th data-quarto-table-cell-role="th">contactType</th>
+<th data-quarto-table-cell-role="th">username</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">middleName</th>
+<th data-quarto-table-cell-role="th">birthDate</th>
+<th data-quarto-table-cell-role="th">contactOrganizationKey</th>
+<th data-quarto-table-cell-role="th">organizationName</th>
+<th data-quarto-table-cell-role="th">addresses</th>
+<th data-quarto-table-cell-role="th">alerts</th>
+<th data-quarto-table-cell-role="th">contactTypes</th>
+<th data-quarto-table-cell-role="th">emails</th>
+<th data-quarto-table-cell-role="th">faxes</th>
+<th data-quarto-table-cell-role="th">phones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>225951</td>
+<td>118722</td>
+<td>5</td>
+<td>6398005</td>
+<td>Active</td>
+<td>498815</td>
+<td>Burril, Riley</td>
+<td>498815</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>2017-06-23T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 437875, 'contactKey': 498815, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 303049, 'contactKey': 498815, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622594, 'contactKey': 498815, 'ph...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>225130</td>
+<td>118725</td>
+<td>2</td>
+<td>6398302</td>
+<td>Active</td>
+<td>498552</td>
+<td>Chang, Sindy</td>
+<td>498552</td>
+<td>Individual</td>
+<td>Trudes</td>
+<td>...</td>
+<td>None</td>
+<td>0001-01-01T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 437617, 'contactKey': 498552, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 302790, 'contactKey': 498552, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622323, 'contactKey': 498552, 'ph...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>225130</td>
+<td>128029</td>
+<td>2</td>
+<td>6398302</td>
+<td>Active</td>
+<td>498552</td>
+<td>Chang, Sindy</td>
+<td>498552</td>
+<td>Individual</td>
+<td>Trudes</td>
+<td>...</td>
+<td>None</td>
+<td>0001-01-01T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 437617, 'contactKey': 498552, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 302790, 'contactKey': 498552, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622323, 'contactKey': 498552, 'ph...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>225586</td>
+<td>118898</td>
+<td>5</td>
+<td>6410705</td>
+<td>Active</td>
+<td>498155</td>
+<td>Baksh, Arthur</td>
+<td>498155</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>2018-02-17T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 437237, 'contactKey': 498155, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 302399, 'contactKey': 498155, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 621937, 'contactKey': 498155, 'ph...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>225587</td>
+<td>118899</td>
+<td>1</td>
+<td>6410801</td>
+<td>Active</td>
+<td>498160</td>
+<td>Halliday, Summer</td>
+<td>498160</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>1970-05-02T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 437239, 'contactKey': 498160, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 302401, 'contactKey': 498160, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 621969, 'contactKey': 498160, 'ph...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">444</td>
+<td>226119</td>
+<td>129672</td>
+<td>6</td>
+<td>6425106</td>
+<td>Active</td>
+<td>499152</td>
+<td>Wenmann, Brielle</td>
+<td>499152</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>2019-05-02T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 438182, 'contactKey': 499152, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 303375, 'contactKey': 499152, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622923, 'contactKey': 499152, 'ph...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">445</td>
+<td>226122</td>
+<td>119173</td>
+<td>1</td>
+<td>6425301</td>
+<td>Active</td>
+<td>499155</td>
+<td>Wong, Brian</td>
+<td>499155</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>1989-01-29T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 438183, 'contactKey': 499155, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 303376, 'contactKey': 499155, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622924, 'contactKey': 499155, 'ph...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">446</td>
+<td>226123</td>
+<td>119173</td>
+<td>2</td>
+<td>6425302</td>
+<td>Active</td>
+<td>499156</td>
+<td>Wong, Rachel</td>
+<td>499156</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>1990-08-24T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 438184, 'contactKey': 499156, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 303377, 'contactKey': 499156, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622925, 'contactKey': 499156, 'ph...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">447</td>
+<td>226124</td>
+<td>119174</td>
+<td>1</td>
+<td>6425401</td>
+<td>Active</td>
+<td>499157</td>
+<td>Bhattarai, Rangon</td>
+<td>499157</td>
+<td>Individual</td>
+<td>None</td>
+<td>...</td>
+<td>None</td>
+<td>0001-01-01T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 438185, 'contactKey': 499157, '...</td>
+<td>[{'alertId': 2176, 'priority': '2 - Medium', '...</td>
+<td>[]</td>
+<td>[{'emailId': 303378, 'contactKey': 499157, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622926, 'contactKey': 499157, 'ph...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">448</td>
+<td>226831</td>
+<td>119470</td>
+<td>1</td>
+<td>6444801</td>
+<td>Active</td>
+<td>498942</td>
+<td>Webb, Shannon</td>
+<td>498942</td>
+<td>Individual</td>
+<td>Shannon Webb</td>
+<td>...</td>
+<td>None</td>
+<td>0001-01-01T00:00:00</td>
+<td>0</td>
+<td>None</td>
+<td>[{'addressId': 437989, 'contactKey': 498942, '...</td>
+<td>[]</td>
+<td>[]</td>
+<td>[{'emailId': 303170, 'contactKey': 498942, 'em...</td>
+<td>[]</td>
+<td>[{'phoneId': 622719, 'contactKey': 498942, 'ph...</td>
+</tr>
+</tbody>
+</table>
+
+<p>449 rows × 28 columns</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">set</span>(jp.search(<span class="st">"[].membershipTerms[].membershipMembers[].cardStatus"</span>, atms.obj_d[<span class="st">'memberships'</span>]))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Active
+Cancelled
+Refunded</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># finde unique membershipTerm membershipTypes </span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">set</span>(jp.search(<span class="st">"[].membershipTerms[].membershipType"</span>, atms.obj_d[<span class="st">'memberships'</span>]))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Child Membership
+Senior Membership
+Grandparent Membership
+Adult Membership
+Staff Under 600 Hours
+Staff Over 600 Hours
+Multiple IMAX Fanatic Annual Movie Passes
+Youth Membership
+Student Membership
+Individual IMAX Fanatic Annual Movie Pass
+Dual Adult Membership
+Family Membership</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list of unique upgrade from Term Key  </span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join({<span class="bu">str</span>(i) <span class="cf">for</span> i <span class="kw">in</span> jp.search(<span class="st">"[].membershipTerms[].upgradeFromTermKey"</span>, atms.obj_d[<span class="st">'memberships'</span>])}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>119278
+119620
+119728
+119780
+118840
+119899
+119915
+119334
+118947
+119032
+118591
+119671
+118972
+120229</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="upload-memberships-to-sf" class="level2">
+<h2 class="anchored" data-anchor-id="upload-memberships-to-sf">upload Memberships to SF</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>sf.create_job(<span class="st">'Membership__c'</span>) <span class="co"># job_id now in sf.job_id</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>sf.bulk_job_id</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>sf.upload_csv(<span class="st">'memberships.csv'</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>sf.close_job()</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>sf.job_status()</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>sf.failed_results()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>insert {'object': 'Membership__c', 'contentType': 'CSV', 'columnDelimiter': 'TAB', 'operation': 'insert'}
+{"id":"7508Y00000mUYVjQAO","operation":"insert","object":"Membership__c","createdById":"0058Y00000CIEn9QAH","createdDate":"2023-05-07T05:33:37.000+0000","systemModstamp":"2023-05-07T05:33:37.000+0000","state":"Open","concurrencyMode":"Parallel","contentType":"CSV","apiVersion":57.0,"contentUrl":"services/data/v57.0/jobs/ingest/7508Y00000mUYVjQAO/batches","lineEnding":"LF","columnDelimiter":"TAB"}</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>'7508Y00000mUYVjQAO'</code></pre>
+</div>
+</div>
+</section>
+<section id="upload-membershipterm-to-sf" class="level2">
+<h2 class="anchored" data-anchor-id="upload-membershipterm-to-sf">upload MembershipTerm to SF</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> SF.Salesforce()</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>sf.create_job(<span class="st">'MembershipTerm__c'</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>sf.bulk_job_id</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>sf.upload_csv(<span class="st">'membership_terms.csv'</span>)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>sf.close_job()</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>sf.failed_results()</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>sf.successful_results()</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>sf.job_status()</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.delete_sf_objects('membershipTerm__c')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>AttributeError: 'Salesforce' object has no attribute 'get_salesforce_token'</code></pre>
+</div>
+</div>
+</section>
+<section id="upload-membershipmembers-to-sf" class="level2">
+<h2 class="anchored" data-anchor-id="upload-membershipmembers-to-sf">upload MembershipMembers to SF</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> SF.ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">## generate tests for all the methods</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co">## upload a file of contacts to salesforce</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co">## verify that all the contacts are in salesforce</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co">## remove all contacts from salesforce</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>_d <span class="op">=</span> {</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"saleKey"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"saleAmount"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"paymentAmount"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"saleDate"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"active"</span>: <span class="va">True</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"terminalKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ticketCount"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"eventDate"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"booking"</span>: {</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bookingId"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bookingContactKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bookingContactType"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contactKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contactIndividualKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contactOrganizationKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"displayName"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"firstName"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lastName"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"email"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"phone"</span>: <span class="st">"string"</span></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"saleComment"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"saleDetails"</span>: [</span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">"saleDetailId"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"saleId"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">"scheduleKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rateKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"categoryKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemQuantity"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pricingPriceKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemPrice"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemTotal"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"couponTotal"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-37"><a href="#cb51-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">"discountTotal"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-38"><a href="#cb51-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">"total"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"revenueDate"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"refundReasonKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">"systemPriceOverride"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-42"><a href="#cb51-42" aria-hidden="true" tabindex="-1"></a>      <span class="st">"membershipTermKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-43"><a href="#cb51-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">"taxTotal"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>      <span class="st">"surchargeTotal"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-45"><a href="#cb51-45" aria-hidden="true" tabindex="-1"></a>      <span class="st">"surchargeTaxTotal"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-46"><a href="#cb51-46" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pendingShiftKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-47"><a href="#cb51-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pendingTerminalKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-48"><a href="#cb51-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pendingDateTimeStamp"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-49"><a href="#cb51-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pendingUser"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-50"><a href="#cb51-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"finalStatus"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-51"><a href="#cb51-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"finalShiftKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-52"><a href="#cb51-52" aria-hidden="true" tabindex="-1"></a>      <span class="st">"finalTerminalKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-53"><a href="#cb51-53" aria-hidden="true" tabindex="-1"></a>      <span class="st">"finalDateTimeStamp"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-54"><a href="#cb51-54" aria-hidden="true" tabindex="-1"></a>      <span class="st">"finalUser"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-55"><a href="#cb51-55" aria-hidden="true" tabindex="-1"></a>      <span class="st">"refundQuantity"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-56"><a href="#cb51-56" aria-hidden="true" tabindex="-1"></a>      <span class="st">"firstScheduleDetailKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-57"><a href="#cb51-57" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemDescription"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-58"><a href="#cb51-58" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rateDescription"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-59"><a href="#cb51-59" aria-hidden="true" tabindex="-1"></a>      <span class="st">"categoryDescription"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-60"><a href="#cb51-60" aria-hidden="true" tabindex="-1"></a>      <span class="st">"scheduleDate"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span></span>
+<span id="cb51-61"><a href="#cb51-61" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb51-62"><a href="#cb51-62" aria-hidden="true" tabindex="-1"></a>  ],</span>
+<span id="cb51-63"><a href="#cb51-63" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tickets"</span>: [</span>
+<span id="cb51-64"><a href="#cb51-64" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb51-65"><a href="#cb51-65" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-66"><a href="#cb51-66" aria-hidden="true" tabindex="-1"></a>      <span class="st">"saleKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-67"><a href="#cb51-67" aria-hidden="true" tabindex="-1"></a>      <span class="st">"saleDetailKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-68"><a href="#cb51-68" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-69"><a href="#cb51-69" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemDescription"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-70"><a href="#cb51-70" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemShort"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-71"><a href="#cb51-71" aria-hidden="true" tabindex="-1"></a>      <span class="st">"itemType"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-72"><a href="#cb51-72" aria-hidden="true" tabindex="-1"></a>      <span class="st">"scheduleKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-73"><a href="#cb51-73" aria-hidden="true" tabindex="-1"></a>      <span class="st">"scheduleDate"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-74"><a href="#cb51-74" aria-hidden="true" tabindex="-1"></a>      <span class="st">"facilityKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-75"><a href="#cb51-75" aria-hidden="true" tabindex="-1"></a>      <span class="st">"facilityDescription"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-76"><a href="#cb51-76" aria-hidden="true" tabindex="-1"></a>      <span class="st">"facilityShort"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-77"><a href="#cb51-77" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketText"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-78"><a href="#cb51-78" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rate"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-79"><a href="#cb51-79" aria-hidden="true" tabindex="-1"></a>      <span class="st">"category"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-80"><a href="#cb51-80" aria-hidden="true" tabindex="-1"></a>      <span class="st">"cancelled"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-81"><a href="#cb51-81" aria-hidden="true" tabindex="-1"></a>      <span class="st">"redeemed"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-82"><a href="#cb51-82" aria-hidden="true" tabindex="-1"></a>      <span class="st">"refunded"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-83"><a href="#cb51-83" aria-hidden="true" tabindex="-1"></a>      <span class="st">"isValid"</span>: <span class="va">True</span>,</span>
+<span id="cb51-84"><a href="#cb51-84" aria-hidden="true" tabindex="-1"></a>      <span class="st">"validationText"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-85"><a href="#cb51-85" aria-hidden="true" tabindex="-1"></a>      <span class="st">"redeemedCount"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-86"><a href="#cb51-86" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketDetailKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-87"><a href="#cb51-87" aria-hidden="true" tabindex="-1"></a>      <span class="st">"scheduleDetailKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-88"><a href="#cb51-88" aria-hidden="true" tabindex="-1"></a>      <span class="st">"seats"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-89"><a href="#cb51-89" aria-hidden="true" tabindex="-1"></a>      <span class="st">"seatsSold"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-90"><a href="#cb51-90" aria-hidden="true" tabindex="-1"></a>      <span class="st">"totalTicketsScanned"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-91"><a href="#cb51-91" aria-hidden="true" tabindex="-1"></a>      <span class="st">"scheduleEndDate"</span>: <span class="st">"2023-05-05T00:06:52.646Z"</span>,</span>
+<span id="cb51-92"><a href="#cb51-92" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketStatus"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-93"><a href="#cb51-93" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketDisplay"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-94"><a href="#cb51-94" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketSection"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-95"><a href="#cb51-95" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketRow"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-96"><a href="#cb51-96" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketSeat"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-97"><a href="#cb51-97" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ticketPrefix"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-98"><a href="#cb51-98" aria-hidden="true" tabindex="-1"></a>      <span class="st">"active"</span>: <span class="va">True</span>,</span>
+<span id="cb51-99"><a href="#cb51-99" aria-hidden="true" tabindex="-1"></a>      <span class="st">"cancelable"</span>: <span class="va">True</span>,</span>
+<span id="cb51-100"><a href="#cb51-100" aria-hidden="true" tabindex="-1"></a>      <span class="st">"contactIndividualKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-101"><a href="#cb51-101" aria-hidden="true" tabindex="-1"></a>      <span class="st">"individualKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-102"><a href="#cb51-102" aria-hidden="true" tabindex="-1"></a>      <span class="st">"individualName"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-103"><a href="#cb51-103" aria-hidden="true" tabindex="-1"></a>      <span class="st">"contactOrganizationKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-104"><a href="#cb51-104" aria-hidden="true" tabindex="-1"></a>      <span class="st">"organizationKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-105"><a href="#cb51-105" aria-hidden="true" tabindex="-1"></a>      <span class="st">"organizationName"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-106"><a href="#cb51-106" aria-hidden="true" tabindex="-1"></a>      <span class="st">"reschedulable"</span>: <span class="va">True</span>,</span>
+<span id="cb51-107"><a href="#cb51-107" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rescheduleLead"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-108"><a href="#cb51-108" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rescheduleGrace"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-109"><a href="#cb51-109" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rescheduleCount"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-110"><a href="#cb51-110" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rescheduleLimitHours"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-111"><a href="#cb51-111" aria-hidden="true" tabindex="-1"></a>      <span class="st">"comment"</span>: <span class="st">"string"</span>,</span>
+<span id="cb51-112"><a href="#cb51-112" aria-hidden="true" tabindex="-1"></a>      <span class="st">"transferRequestKey"</span>: <span class="dv">0</span>,</span>
+<span id="cb51-113"><a href="#cb51-113" aria-hidden="true" tabindex="-1"></a>      <span class="st">"recipientEmail"</span>: <span class="st">"string"</span></span>
+<span id="cb51-114"><a href="#cb51-114" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb51-115"><a href="#cb51-115" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb51-116"><a href="#cb51-116" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-117"><a href="#cb51-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-118"><a href="#cb51-118" aria-hidden="true" tabindex="-1"></a>jp.search(<span class="st">"keys(@)"</span>,_d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>['saleKey',
+ 'saleAmount',
+ 'paymentAmount',
+ 'saleDate',
+ 'active',
+ 'terminalKey',
+ 'ticketCount',
+ 'eventDate',
+ 'booking',
+ 'saleComment',
+ 'saleDetails',
+ 'tickets']</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

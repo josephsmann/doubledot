@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="classes for transfering data from Vantix to Salesforce">
+
+<title>doubledot - crema_sf</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="doubledot - crema_sf">
+<meta property="og:description" content="">
+<meta property="og:site-name" content="doubledot">
+<meta name="twitter:title" content="doubledot - crema_sf">
+<meta name="twitter:description" content="">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">doubledot</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/josephsmann/doubledot" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./crema_sf.html">crema_sf</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">doubledot</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00_core.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">core</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ATMS_api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ATMS_api</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./crema_sf.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">crema_sf</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./small_tests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Smaller Cleaner Testing Book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./test_saleforce_module.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">sf testing book</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#salesforce" id="toc-salesforce" class="nav-link active" data-scroll-target="#salesforce">Salesforce</a></li>
+  <li><a href="#salesforce.get_token_with_rest" id="toc-salesforce.get_token_with_rest" class="nav-link" data-scroll-target="#salesforce.get_token_with_rest">Salesforce.get_token_with_REST</a></li>
+  <li><a href="#salesforce.test_token" id="toc-salesforce.test_token" class="nav-link" data-scroll-target="#salesforce.test_token">Salesforce.test_token</a></li>
+  <li><a href="#salesforce.create_job" id="toc-salesforce.create_job" class="nav-link" data-scroll-target="#salesforce.create_job">Salesforce.create_job</a></li>
+  <li><a href="#salesforce.upload_csv" id="toc-salesforce.upload_csv" class="nav-link" data-scroll-target="#salesforce.upload_csv">Salesforce.upload_csv</a></li>
+  <li><a href="#salesforce.close_job" id="toc-salesforce.close_job" class="nav-link" data-scroll-target="#salesforce.close_job">Salesforce.close_job</a></li>
+  <li><a href="#salesforce.job_status" id="toc-salesforce.job_status" class="nav-link" data-scroll-target="#salesforce.job_status">Salesforce.job_status</a></li>
+  <li><a href="#salesforce.successful_results" id="toc-salesforce.successful_results" class="nav-link" data-scroll-target="#salesforce.successful_results">Salesforce.successful_results</a></li>
+  <li><a href="#salesforce.failed_results" id="toc-salesforce.failed_results" class="nav-link" data-scroll-target="#salesforce.failed_results">Salesforce.failed_results</a></li>
+  <li><a href="#salesforce.get_sf_object_ids" id="toc-salesforce.get_sf_object_ids" class="nav-link" data-scroll-target="#salesforce.get_sf_object_ids">Salesforce.get_sf_object_ids</a></li>
+  <li><a href="#salesforce.delete_sf_objects" id="toc-salesforce.delete_sf_objects" class="nav-link" data-scroll-target="#salesforce.delete_sf_objects">Salesforce.delete_sf_objects</a></li>
+  <li><a href="#salesforce.test_sf_object_load_and_delete" id="toc-salesforce.test_sf_object_load_and_delete" class="nav-link" data-scroll-target="#salesforce.test_sf_object_load_and_delete">Salesforce.test_sf_object_load_and_delete</a></li>
+  <li><a href="#atms_api" id="toc-atms_api" class="nav-link" data-scroll-target="#atms_api">ATMS_api</a></li>
+  <li><a href="#atms_api.clean_data_file" id="toc-atms_api.clean_data_file" class="nav-link" data-scroll-target="#atms_api.clean_data_file">ATMS_api.clean_data_file</a></li>
+  <li><a href="#atms_api.load_data_file_to_dict" id="toc-atms_api.load_data_file_to_dict" class="nav-link" data-scroll-target="#atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/josephsmann/doubledot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">crema_sf</h1>
+</div>
+
+<div>
+  <div class="description">
+    classes for transfering data from Vantix to Salesforce
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L20" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="salesforce" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce">Salesforce</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce ()</code></pre>
+</blockquote>
+<p>Initialize self. See help(type(self)) for accurate signature.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make we get init object.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> Salesforce()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># #| export</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># @property</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># @patch</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># def sf_access_token(</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     self: Salesforce,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) -&gt; str : #the access toke</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     """retrieve token for Salesforce - verifies that token is still valid and attempts to get a new one from Salesforce site if not</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     """</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     if not(self.test_token()):</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#         self._sf_access_token = self.get_salesforce_token()</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#         # check to see if getting token worked</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         assert (self.sf_access_token), "Fetching new token didn't fix problem"</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     return self._sf_access_token</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L68" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.get_token_with_rest" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.get_token_with_rest">Salesforce.get_token_with_REST</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.get_token_with_REST ()</code></pre>
+</blockquote>
+<p>retieve the access token from Salesforce</p>
+<p>Returns: string: the access token</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L94" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.test_token" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.test_token">Salesforce.test_token</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.test_token ()</code></pre>
+</blockquote>
+<p>Verify that token is still valid. If it isn’t, it attempts to get a new one.</p>
+<p>Returns: boolean: true if token is valid, false otherwise</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L112" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.create_job" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.create_job">Salesforce.create_job</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.create_job (sf_object:str='Contact', operation:str='insert',
+                        external_id:str='External_Id__c')</code></pre>
+</blockquote>
+<p>Get job_id from Salesforce Bulk API</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sf_object</td>
+<td>str</td>
+<td>Contact</td>
+<td>the Salesforce object were going to operate on.</td>
+</tr>
+<tr class="even">
+<td>operation</td>
+<td>str</td>
+<td>insert</td>
+<td>the database operation to use. Can be “insert”,“upsert” or “delete”</td>
+</tr>
+<tr class="odd">
+<td>external_id</td>
+<td>str</td>
+<td>External_Id__c</td>
+<td>when using “upsert”, this field is used to identify the record</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Response</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L167" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.upload_csv" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.upload_csv">Salesforce.upload_csv</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.upload_csv (file_path_s:str, num_rows:int=100)</code></pre>
+</blockquote>
+<p>Using the job_id from the previous step, upload the csv file to the job</p>
+<p>Args: file (filepointer): file pointer to the csv filek</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L203" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.close_job" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.close_job">Salesforce.close_job</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.close_job ()</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L223" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.job_status" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.job_status">Salesforce.job_status</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.job_status ()</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L237" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.successful_results" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.successful_results">Salesforce.successful_results</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.successful_results ()</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L251" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.failed_results" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.failed_results">Salesforce.failed_results</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.failed_results ()</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L266" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.get_sf_object_ids" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.get_sf_object_ids">Salesforce.get_sf_object_ids</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.get_sf_object_ids (object:str='Contact')</code></pre>
+</blockquote>
+<p>Get Safesforce IDs for a the specified object</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object</td>
+<td>str</td>
+<td>Contact</td>
+<td>REST endpoint for data object</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L294" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.delete_sf_objects" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.delete_sf_objects">Salesforce.delete_sf_objects</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.delete_sf_objects (obj_s:str='Contact')</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L314" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.test_sf_object_load_and_delete" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.test_sf_object_load_and_delete">Salesforce.test_sf_object_load_and_delete</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.test_sf_object_load_and_delete (sf_object_s:str=None,
+                                            input_file_s:str=None,
+                                            remove_sf_objs:bool=False)</code></pre>
+</blockquote>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sf_object_s</td>
+<td>str</td>
+<td>None</td>
+<td>Salesforce API endpoint</td>
+</tr>
+<tr class="even">
+<td>input_file_s</td>
+<td>str</td>
+<td>None</td>
+<td>local file name</td>
+</tr>
+<tr class="odd">
+<td>remove_sf_objs</td>
+<td>bool</td>
+<td>False</td>
+<td>remove the data just added to Salesforce</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> Salesforce()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sf._sf_access_token</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'00D8Y000001RMKv!AQwAQOBfujL07u2jjXs6Q9C0fOH7Yf4HHDGg_e5yz9ttlQEmY85XqWEv22CG9kczhhmFRXWzTHcA3QU_wx3edPhuVulc0Hic'</code></pre>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L342" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api">ATMS_api</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api ()</code></pre>
+</blockquote>
+<p>Initialize self. See help(type(self)) for accurate signature.</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L444" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.clean_data_file" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.clean_data_file">ATMS_api.clean_data_file</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.clean_data_file (obj_s:str)</code></pre>
+</blockquote>
+<p>clean up the atms_contacts.json file, this is necessary before loading into Saleforce</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_mutate_email() <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" Test to cure backtick string in O'Brien """</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span><span class="st">"225805  119016  2   06416302    Active  498585  O’Brien, Adam"</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ATMS_api.__mutate_email_list(s) <span class="op">==</span> <span class="st">"225805</span><span class="ch">\t</span><span class="st">119016</span><span class="ch">\t</span><span class="st">2</span><span class="ch">\t</span><span class="st">06416302</span><span class="ch">\t</span><span class="st">Active</span><span class="ch">\t</span><span class="st">498585</span><span class="ch">\t</span><span class="st">O'Brien, Adam"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L466" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.load_data_file_to_dict" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.load_data_file_to_dict (obj_s:str)</code></pre>
+</blockquote>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
