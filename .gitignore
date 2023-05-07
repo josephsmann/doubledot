@@ -1,6 +1,9 @@
 _docs/
 _proc/
 
+# I added .json and .csv
+*.json
+*.csv
 *.bak
 .gitattributes
 .last_checked
