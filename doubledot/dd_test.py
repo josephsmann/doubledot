@@ -4,9 +4,10 @@
 __all__ = []
 
 # %% ../small_tests.ipynb 4
-import doubledot.ATMS_api as atms
+import doubledot.ATMS_api as van
 import doubledot.crema_sf as SF
 import jmespath as jp
 import json
 import pandas as pd
 from nbdev.showdoc import *
+from fastcore.test import test_eq

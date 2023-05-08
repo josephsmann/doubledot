@@ -4,8 +4,4 @@
 __all__ = ['foo']
 
 # %% ../00_core.ipynb 3
-def foo(
-    b: int # a useless var aoeua
-    )-> int: # the square of 3
-    a = 3
-    return a**2
+def foo(): pass
