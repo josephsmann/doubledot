@@ -290,11 +290,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># def test_mutate_email() -&gt; bool:</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     """ Test to cure backtick string in O'Brien """</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     s ="225805    119016  2   06416302    Active  498585  O’Brien, Adam"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     assert ATMS_api.__mutate_email_list(s) == "225805\t119016\t2\t06416302\tActive\t498585\tO'Brien, Adam"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test of _mutate_mail_list func</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>s  <span class="op">=</span> <span class="st">' "emails": [{"emailId": 12956, "contactKey": 83, "emailType": "E-Mail", "address": "pam.jenkins@blackgold.ca;joe.what@this.that"}], "faxes": [{"faxId'</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="st">' "emails": [{"emailId": 12956, "contactKey": 83, "emailType": "E-Mail", "address": ["pam.jenkins@blackgold.ca","joe.what@this.that"]}], "faxes": [{"faxId'</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>test_eq(ATMS_api._mutate_email_list(s), s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L444" target="_blank" style="float:right; font-size:smaller">source</a></p>
