@@ -6,4 +6,3 @@ website:
       - ATMS_api.ipynb
       - crema_sf.ipynb
       - small_tests.ipynb
-      - test_saleforce_module.ipynb
