@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="classes for transfering data from Vantix to Salesforce">
+<meta name="description" content="Salesforce class for transfering data from Vantix to Salesforce">
 
-<title>doubledot - crema_sf</title>
+<title>doubledot - doubledot.Salesforce</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,10 +96,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="doubledot - crema_sf">
+<meta property="og:title" content="doubledot - doubledot.Salesforce">
 <meta property="og:description" content="">
 <meta property="og:site-name" content="doubledot">
-<meta name="twitter:title" content="doubledot - crema_sf">
+<meta name="twitter:title" content="doubledot - doubledot.Salesforce">
 <meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
@@ -137,7 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./crema_sf.html">crema_sf</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./crema_sf.html">doubledot.Salesforce</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -157,20 +157,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_core.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">core</span></a>
+  <a href="./ATMS_api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">doubledot.ATMS</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./ATMS_api.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ATMS_api</span></a>
+  <a href="./SalesforceTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Saleforce Test Code</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./crema_sf.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">crema_sf</span></a>
+ <span class="menu-text">doubledot.Salesforce</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -190,8 +190,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#salesforce" id="toc-salesforce" class="nav-link active" data-scroll-target="#salesforce">Salesforce</a></li>
+  <li><a href="#get_token_with_rest" id="toc-get_token_with_rest" class="nav-link" data-scroll-target="#get_token_with_rest">get_token_with_REST()</a>
+  <ul>
   <li><a href="#salesforce.get_token_with_rest" id="toc-salesforce.get_token_with_rest" class="nav-link" data-scroll-target="#salesforce.get_token_with_rest">Salesforce.get_token_with_REST</a></li>
+  </ul></li>
+  <li><a href="#test_tokenself-salesforce" id="toc-test_tokenself-salesforce" class="nav-link" data-scroll-target="#test_tokenself-salesforce">test_token(self: Salesforce):</a>
+  <ul>
   <li><a href="#salesforce.test_token" id="toc-salesforce.test_token" class="nav-link" data-scroll-target="#salesforce.test_token">Salesforce.test_token</a></li>
+  </ul></li>
+  <li><a href="#create_jobself-salesforce" id="toc-create_jobself-salesforce" class="nav-link" data-scroll-target="#create_jobself-salesforce">create_job(self: Salesforce)</a>
+  <ul>
   <li><a href="#salesforce.create_job" id="toc-salesforce.create_job" class="nav-link" data-scroll-target="#salesforce.create_job">Salesforce.create_job</a></li>
   <li><a href="#salesforce.upload_csv" id="toc-salesforce.upload_csv" class="nav-link" data-scroll-target="#salesforce.upload_csv">Salesforce.upload_csv</a></li>
   <li><a href="#salesforce.close_job" id="toc-salesforce.close_job" class="nav-link" data-scroll-target="#salesforce.close_job">Salesforce.close_job</a></li>
@@ -201,6 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#salesforce.get_sf_object_ids" id="toc-salesforce.get_sf_object_ids" class="nav-link" data-scroll-target="#salesforce.get_sf_object_ids">Salesforce.get_sf_object_ids</a></li>
   <li><a href="#salesforce.delete_sf_objects" id="toc-salesforce.delete_sf_objects" class="nav-link" data-scroll-target="#salesforce.delete_sf_objects">Salesforce.delete_sf_objects</a></li>
   <li><a href="#salesforce.test_sf_object_load_and_delete" id="toc-salesforce.test_sf_object_load_and_delete" class="nav-link" data-scroll-target="#salesforce.test_sf_object_load_and_delete">Salesforce.test_sf_object_load_and_delete</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/josephsmann/doubledot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -209,12 +218,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">crema_sf</h1>
+<h1 class="title">doubledot.Salesforce</h1>
 </div>
 
 <div>
   <div class="description">
-    classes for transfering data from Vantix to Salesforce
+    Salesforce class for transfering data from Vantix to Salesforce
   </div>
 </div>
 
@@ -238,11 +247,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce ()</code></pre>
 </blockquote>
 <p>Initialize self. See help(type(self)) for accurate signature.</p>
-<div class="cell">
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make we get init object.</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> Salesforce()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># #| export</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># @property</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># @patch</span></span>
@@ -257,9 +266,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         assert (self.sf_access_token), "Fetching new token didn't fix problem"</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     return self._sf_access_token</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="get_token_with_rest" class="level2">
+<h2 class="anchored" data-anchor-id="get_token_with_rest">get_token_with_REST()</h2>
 <hr>
 <p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L68" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
 <section id="salesforce.get_token_with_rest" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.get_token_with_rest">Salesforce.get_token_with_REST</h3>
 <blockquote class="blockquote">
@@ -267,9 +278,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>retieve the access token from Salesforce</p>
 <p>Returns: string: the access token</p>
+</section>
+</section>
+<section id="test_tokenself-salesforce" class="level2">
+<h2 class="anchored" data-anchor-id="test_tokenself-salesforce">test_token(self: Salesforce):</h2>
 <hr>
 <p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L94" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
 <section id="salesforce.test_token" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.test_token">Salesforce.test_token</h3>
 <blockquote class="blockquote">
@@ -277,9 +291,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Verify that token is still valid. If it isn’t, it attempts to get a new one.</p>
 <p>Returns: boolean: true if token is valid, false otherwise</p>
+</section>
+</section>
+<section id="create_jobself-salesforce" class="level2">
+<h2 class="anchored" data-anchor-id="create_jobself-salesforce">create_job(self: Salesforce)</h2>
 <hr>
 <p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L112" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
 <section id="salesforce.create_job" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.create_job">Salesforce.create_job</h3>
 <blockquote class="blockquote">
@@ -335,10 +352,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="salesforce.upload_csv" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.upload_csv">Salesforce.upload_csv</h3>
 <blockquote class="blockquote">
-<pre><code> Salesforce.upload_csv (file_path_s:str, num_rows:int=100)</code></pre>
+<pre><code> Salesforce.upload_csv (file_path_s:str='', num_rows:int=100)</code></pre>
 </blockquote>
 <p>Using the job_id from the previous step, upload the csv file to the job</p>
 <p>Args: file (filepointer): file pointer to the csv filek</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>file_path_s</td>
+<td>str</td>
+<td></td>
+<td>the path to the csv file</td>
+</tr>
+<tr class="even">
+<td>num_rows</td>
+<td>int</td>
+<td>100</td>
+<td>the number of rows to upload</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L203" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
@@ -452,15 +493,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div class="cell">
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> Salesforce()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sf._sf_access_token</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>'00D8Y000001RMKv!AQwAQDu3MimrO8bsSAxu0hemT5tMdhVlqd.UUEUtMacvvhp1jZHa_dfhaQWV6TGDqfsQxymgBCs3zQDbChf9apHDg1eM17AI'</code></pre>
+<pre><code>'00D8Y000001RMKv!AQwAQL0IbKf.zyFX.rpTa9VYNWx38N_Z9.mXsVyOZoU6ycdKW4_2o4HctbhjBNYwZ9LQV93zz1cC1kE.hFdhxOQWQODVQ8vI'</code></pre>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

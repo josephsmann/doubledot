@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['Salesforce']
 
-# %% ../crema_sf.ipynb 3
+# %% ../crema_sf.ipynb 2
 from nbdev.showdoc import *
 import requests
 import json
@@ -14,7 +14,7 @@ from fastcore.basics import patch
 import fileinput
 import pandas as pd
 
-# %% ../crema_sf.ipynb 4
+# %% ../crema_sf.ipynb 3
 ## Module for Salesforce API
 
 class Salesforce:
@@ -63,7 +63,7 @@ class Salesforce:
 show_doc(Salesforce.sf_access_token)
    
 
-# %% ../crema_sf.ipynb 7
+# %% ../crema_sf.ipynb 6
 @patch
 def get_token_with_REST(self: Salesforce):
     """retieve the access token from Salesforce
@@ -89,7 +89,7 @@ def get_token_with_REST(self: Salesforce):
 
 
 
-# %% ../crema_sf.ipynb 8
+# %% ../crema_sf.ipynb 7
 @patch
 def test_token(self: Salesforce):
     """Verify that token is still valid. If it isn't, it attempts to get a new one.
@@ -107,7 +107,7 @@ def test_token(self: Salesforce):
     
 
 
-# %% ../crema_sf.ipynb 9
+# %% ../crema_sf.ipynb 8
 @patch
 def create_job(self: Salesforce, 
                 sf_object: str ='Contact', # the Salesforce object were going to operate on. 
@@ -162,7 +162,7 @@ def create_job(self: Salesforce,
     return response 
 
 
-# %% ../crema_sf.ipynb 10
+# %% ../crema_sf.ipynb 9
 @patch
 def upload_csv(self : Salesforce, 
                 file_path_s: str,
@@ -198,7 +198,7 @@ def upload_csv(self : Salesforce,
     print("response: ", response.text)
    
 
-# %% ../crema_sf.ipynb 11
+# %% ../crema_sf.ipynb 10
 @patch
 def close_job(self: Salesforce):
     # close the job (from Postman)
@@ -217,7 +217,7 @@ def close_job(self: Salesforce):
     print(response.text)
      
 
-# %% ../crema_sf.ipynb 12
+# %% ../crema_sf.ipynb 11
 # get job status (from Postman)
 @patch
 def job_status(self: Salesforce):
@@ -232,7 +232,7 @@ def job_status(self: Salesforce):
 
 
 
-# %% ../crema_sf.ipynb 13
+# %% ../crema_sf.ipynb 12
 @patch
 def successful_results(self : Salesforce):
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/successfulResults"
@@ -246,7 +246,7 @@ def successful_results(self : Salesforce):
     print( response.text)
 
 
-# %% ../crema_sf.ipynb 14
+# %% ../crema_sf.ipynb 13
 @patch
 def failed_results(self: Salesforce):
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/failedResults"
@@ -261,7 +261,7 @@ def failed_results(self: Salesforce):
     print( response.text)
 
 
-# %% ../crema_sf.ipynb 15
+# %% ../crema_sf.ipynb 14
 @patch
 def get_sf_object_ids(self: Salesforce, 
                       object: str = 'Contact' # REST endpoint for data object
@@ -289,7 +289,7 @@ def get_sf_object_ids(self: Salesforce,
     return object_ids
 
 
-# %% ../crema_sf.ipynb 16
+# %% ../crema_sf.ipynb 15
 @patch
 def delete_sf_objects(self: Salesforce, 
                       obj_s: str = 'Contact'
@@ -309,7 +309,7 @@ def delete_sf_objects(self: Salesforce,
         
 
 
-# %% ../crema_sf.ipynb 17
+# %% ../crema_sf.ipynb 16
 @patch
 def test_sf_object_load_and_delete(self: Salesforce, 
         sf_object_s : str = None, # Salesforce API endpoint

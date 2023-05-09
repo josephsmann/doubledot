@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="functions to access ATMS_api">
+<meta name="description" content="Definition of the ATMS_api class.">
 
-<title>doubledot - ATMS_api</title>
+<title>doubledot - doubledot.ATMS</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,10 +96,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="doubledot - ATMS_api">
+<meta property="og:title" content="doubledot - doubledot.ATMS">
 <meta property="og:description" content="">
 <meta property="og:site-name" content="doubledot">
-<meta name="twitter:title" content="doubledot - ATMS_api">
+<meta name="twitter:title" content="doubledot - doubledot.ATMS">
 <meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
@@ -137,7 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ATMS_api.html">ATMS_api</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ATMS_api.html">doubledot.ATMS</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -157,20 +157,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_core.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">core</span></a>
+  <a href="./ATMS_api.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">doubledot.ATMS</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./ATMS_api.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">ATMS_api</span></a>
+  <a href="./SalesforceTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Saleforce Test Code</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./crema_sf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">crema_sf</span></a>
+ <span class="menu-text">doubledot.Salesforce</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -205,12 +205,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">ATMS_api</h1>
+<h1 class="title">doubledot.ATMS</h1>
 </div>
 
 <div>
   <div class="description">
-    functions to access ATMS_api
+    Definition of the ATMS_api class.
   </div>
 </div>
 
@@ -243,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> ATMS_api.delete_all_data ()</code></pre>
 </blockquote>
 <p>delete all the subdirectories and files in the download directory</p>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="6">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ATMS_api.delete_all_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>File '/Users/josephmann/Documents/Github/doubledot/atms_download/8o39a4c6/atms_sales.json' deleted successfully.
@@ -251,7 +251,7 @@ Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/8o39a4c6' 
 Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted successfully.</code></pre>
 </div>
 </div>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="7">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Directory 'atms_download' already exists.
@@ -366,7 +366,7 @@ my id is fd8bdlg7</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="10">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> <span class="st">'sales'</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>offset <span class="op">=</span> <span class="dv">10</span></span>
@@ -391,23 +391,24 @@ resp_d = self.get_telus_data(sales,offset=19, count= 1, since_date=2022-04-18)</
 <pre><code> ATMS_api.list_files ()</code></pre>
 </blockquote>
 <p>returns list of files in download folder</p>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="12">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>atms.list_files()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>id is: fd8bdlg7</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display">
 <pre><code>['atms_sales.json']</code></pre>
 </div>
 </div>
 <hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L245" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.load_data_file_to_dict" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</h3>
 <blockquote class="blockquote">
 <pre><code> ATMS_api.load_data_file_to_dict (obj_s:str)</code></pre>
 </blockquote>
-<p><a href="https://josephsmann.github.io/doubledot/atms_api.html#load_data_file_to_dict"><code>load_data_file_to_dict</code></a> will attempt to load a cleaned json file into a dict for future parsing. If the cleaned file doesn’t exist, it will look for a dirty one to clean. If the dirty once doesn’t exist, it will raise an exception. It won’t be downloaded because we don’t know how much to get.</p>
+<p><code>load_data_file_to_dict</code> will attempt to load a cleaned json file into a dict for future parsing. If the cleaned file doesn’t exist, it will look for a dirty one to clean. If the dirty once doesn’t exist, it will raise an exception. It won’t be downloaded because we don’t know how much to get.</p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
@@ -429,7 +430,7 @@ resp_d = self.get_telus_data(sales,offset=19, count= 1, since_date=2022-04-18)</
 </tr>
 </tbody>
 </table>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="14">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atms.<span class="bu">id</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(obj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -442,9 +443,9 @@ creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/fd8bd
 Finished cleaning atms_sales.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/fd8bdlg7/atms_transformed_sales.json</code></pre>
 </div>
 </div>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="15">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>atms.obj_d.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display">
 <pre><code>dict_keys(['sales'])</code></pre>
 </div>
 </div>

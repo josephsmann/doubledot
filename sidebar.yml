@@ -2,7 +2,7 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_core.ipynb
       - ATMS_api.ipynb
+      - SalesforceTest.ipynb
       - crema_sf.ipynb
       - small_tests.ipynb
