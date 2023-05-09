@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="install">Install</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install doubledot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="mermaid"><code>graph TD
-    A{ATMS Database} --&gt;|ATMS_api.write_obj_to_file|B[ATMS_api]
+    A{ATMS Database} --&gt;|ATMS_api.retrieve_and_clean|B[ATMS_api] 
     B --&gt;|load_data_file_to_dict|B
     B --&gt; C[Salesforce] --&gt;|create_job, upload_csv, close_job | D{Salesforce Database}</code></pre>
 </section>
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>let sf make upload file from dictionary</li>
 <li>let sf upload file to database</li>
 </ul>
-<div class="cell" data-execution_count="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> doubledot <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> Salesforce()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -247,14 +247,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 my id is ha8bcu7t</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="2">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>atms.write_obj_to_file(<span class="st">'contacts'</span>, max_rows<span class="op">=</span><span class="dv">10</span>, since_date<span class="op">=</span><span class="st">'2022-01-01'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t
 resp_d = self.get_telus_data(contacts,offset=0, count= 10, since_date=2022-01-01)</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="3">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(<span class="st">'contacts'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_transformed_contacts.json

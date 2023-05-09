@@ -13,16 +13,27 @@ from time import sleep
 from fastcore.basics import patch
 import fileinput
 import pandas as pd
+import os
 
 # %% ../crema_sf.ipynb 3
 ## Module for Salesforce API
 
 class Salesforce:
+    """Class for Salesforce API"""
+    class_download_dir = 'sf_download'
+
     def __init__(self):
         # set up access token 
         self._sf_access_token = self.get_token_with_REST()
         self.bulk_job_id = None
-    #| default_exp crema_sf
+        self.atms = None
+
+        # create unique download directory per instance
+        if not os.path.exists(Salesforce.class_download_dir):
+            os.makedirs(Salesforce.class_download_dir)
+            print(f"Directory 'atms_download' created successfully.")
+        else:
+            print(f"Directory 'atms_download' already exists.")
 
     def get_token_with_REST(self ):
         """retieve the access token from Salesforce
@@ -63,7 +74,7 @@ class Salesforce:
 show_doc(Salesforce.sf_access_token)
    
 
-# %% ../crema_sf.ipynb 6
+# %% ../crema_sf.ipynb 4
 @patch
 def get_token_with_REST(self: Salesforce):
     """retieve the access token from Salesforce
@@ -89,7 +100,7 @@ def get_token_with_REST(self: Salesforce):
 
 
 
-# %% ../crema_sf.ipynb 7
+# %% ../crema_sf.ipynb 5
 @patch
 def test_token(self: Salesforce):
     """Verify that token is still valid. If it isn't, it attempts to get a new one.
@@ -107,7 +118,7 @@ def test_token(self: Salesforce):
     
 
 
-# %% ../crema_sf.ipynb 8
+# %% ../crema_sf.ipynb 6
 @patch
 def create_job(self: Salesforce, 
                 sf_object: str ='Contact', # the Salesforce object were going to operate on. 
@@ -162,11 +173,11 @@ def create_job(self: Salesforce,
     return response 
 
 
-# %% ../crema_sf.ipynb 9
+# %% ../crema_sf.ipynb 7
 @patch
 def upload_csv(self : Salesforce, 
-                file_path_s: str,
-                num_rows: int = 100,
+                file_path_s: str = "", # the path to the csv file
+                num_rows: int = 100, # the number of rows to upload 
                 ):
     """Using the job_id from the previous step, upload the csv file to the job
 
@@ -177,9 +188,17 @@ def upload_csv(self : Salesforce,
     #     # throw error
     #     assert False, "File not found"
 
+    if len("")==0:
+        if not(self.atms):
+            # throw error
+            assert False, "File not found"
+        else:
+            file_path_s = self.atms.download_dir 
+
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/batches"
 
     # replace all occurrences of '\2019' with \'
+    # we may have done this in ATMS already, but just in case
     for line in fileinput.input(files=file_path_s, inplace=True):
         line = line.replace('\u2019', "'")
         print(line, end='')
@@ -198,7 +217,7 @@ def upload_csv(self : Salesforce,
     print("response: ", response.text)
    
 
-# %% ../crema_sf.ipynb 10
+# %% ../crema_sf.ipynb 8
 @patch
 def close_job(self: Salesforce):
     # close the job (from Postman)
@@ -217,7 +236,7 @@ def close_job(self: Salesforce):
     print(response.text)
      
 
-# %% ../crema_sf.ipynb 11
+# %% ../crema_sf.ipynb 9
 # get job status (from Postman)
 @patch
 def job_status(self: Salesforce):
@@ -232,7 +251,7 @@ def job_status(self: Salesforce):
 
 
 
-# %% ../crema_sf.ipynb 12
+# %% ../crema_sf.ipynb 10
 @patch
 def successful_results(self : Salesforce):
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/successfulResults"
@@ -246,7 +265,7 @@ def successful_results(self : Salesforce):
     print( response.text)
 
 
-# %% ../crema_sf.ipynb 13
+# %% ../crema_sf.ipynb 11
 @patch
 def failed_results(self: Salesforce):
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/failedResults"
@@ -261,7 +280,7 @@ def failed_results(self: Salesforce):
     print( response.text)
 
 
-# %% ../crema_sf.ipynb 14
+# %% ../crema_sf.ipynb 12
 @patch
 def get_sf_object_ids(self: Salesforce, 
                       object: str = 'Contact' # REST endpoint for data object
@@ -289,7 +308,7 @@ def get_sf_object_ids(self: Salesforce,
     return object_ids
 
 
-# %% ../crema_sf.ipynb 15
+# %% ../crema_sf.ipynb 13
 @patch
 def delete_sf_objects(self: Salesforce, 
                       obj_s: str = 'Contact'
@@ -309,14 +328,14 @@ def delete_sf_objects(self: Salesforce,
         
 
 
-# %% ../crema_sf.ipynb 16
+# %% ../crema_sf.ipynb 14
 @patch
 def test_sf_object_load_and_delete(self: Salesforce, 
         sf_object_s : str = None, # Salesforce API endpoint
         input_file_s: str = None, # local file name
         remove_sf_objs: bool = False # remove the data just added to Salesforce
         ):
-
+    """Test loading a Salesforce object with data from a local file"""
     assert sf_object_s
     assert input_file_s
 

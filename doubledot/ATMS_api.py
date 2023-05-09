@@ -154,6 +154,16 @@ class ATMS_api:
         # inform caller we're done if we get fewer records than requested
         return {"response": response, "done":  len(response) < count}
 
+    def retrieve_and_clean(self, 
+                          obj : str = 'contacts', # ATMS object to retrieve
+                          initial_offset : int =0, # start retrieval at row initial_offset
+                          rows_per_batch :int =1000, # number records retrieved at once
+                          since_date : str = "", # if given, it will be used instead of `initial_offset` 
+                          max_rows :int = 2000 # maximum number of rows to retrieve
+                          ):
+        """Retrieve data from ATMS API, clean data and write to file"""
+        self.write_obj_to_file(obj, initial_offset, rows_per_batch, since_date, max_rows)
+        self.clean_data_file(obj)
 
     def write_obj_to_file(self, 
                           obj : str = 'contacts', # ATMS object to retrieve
@@ -163,7 +173,7 @@ class ATMS_api:
                           max_rows :int = 2000 # maximum number of rows to retrieve
                           ):
         """Retrieve data from ATMS API and write to file
-           public method
+           private method
 
         Args:
             obj (string): a valid ATMS REST API object

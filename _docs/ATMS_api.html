@@ -246,8 +246,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ATMS_api.delete_all_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>File '/Users/josephmann/Documents/Github/doubledot/atms_download/8o39a4c6/atms_sales.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/8o39a4c6' deleted successfully.
+<pre><code>File '/Users/josephmann/Documents/Github/doubledot/atms_download/910l1dey/atms_contacts.json' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/910l1dey/atms_transformed_contacts.json' deleted successfully.
+Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/910l1dey' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/9k33wosx/atms_transformed_sales.json' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/9k33wosx/atms_sales.json' deleted successfully.
+Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/9k33wosx' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/6pvz3y4l/atms_items.json' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/6pvz3y4l/atms_contacts.json' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/6pvz3y4l/atms_transformed_contacts.json' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/6pvz3y4l/atms_memberships.json' deleted successfully.
+Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/6pvz3y4l' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_contacts.json' deleted successfully.
+File '/Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_transformed_contacts.json' deleted successfully.
+Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t' deleted successfully.
+Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/7mxag07l' deleted successfully.
 Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted successfully.</code></pre>
 </div>
 </div>
@@ -255,7 +268,39 @@ Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted s
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Directory 'atms_download' already exists.
-my id is fd8bdlg7</code></pre>
+my id is 5wsx6irr</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>atms.list_files()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr
+resp_d = self.get_telus_data(contacts,offset=0, count= 1000, since_date=)
+resp_d = self.get_telus_data(contacts,offset=1000, count= 1000, since_date=)
+cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr
+creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr/atms_transformed_contacts.json
+Finished cleaning atms_contacts.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr/atms_transformed_contacts.json
+id is: 5wsx6irr</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>['atms_contacts.json', 'atms_transformed_contacts.json']</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>atms.list_files()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr
+resp_d = self.get_telus_data(contacts,offset=0, count= 1000, since_date=)
+resp_d = self.get_telus_data(contacts,offset=1000, count= 1000, since_date=)
+cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr
+creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr/atms_transformed_contacts.json
+Finished cleaning atms_contacts.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/5wsx6irr/atms_transformed_contacts.json
+id is: 5wsx6irr</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>['atms_contacts.json', 'atms_transformed_contacts.json']</code></pre>
 </div>
 </div>
 <hr>
@@ -307,7 +352,7 @@ my id is fd8bdlg7</code></pre>
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L158" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L168" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.write_obj_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</h3>
@@ -316,7 +361,7 @@ my id is fd8bdlg7</code></pre>
                              rows_per_batch:int=1000, since_date:str='',
                              max_rows:int=2000)</code></pre>
 </blockquote>
-<p>Retrieve data from ATMS API and write to file public method</p>
+<p>Retrieve data from ATMS API and write to file private method</p>
 <p>Args: obj (string): a valid ATMS REST API object rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.</p>
 <table class="table">
 <colgroup>
@@ -367,13 +412,13 @@ my id is fd8bdlg7</code></pre>
 </tbody>
 </table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> <span class="st">'sales'</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>offset <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>since_date <span class="op">=</span> <span class="st">'2022-04-18'</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>atms.clean_data_dir(obj)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>atms.write_obj_to_file(obj, initial_offset<span class="op">=</span>offset, rows_per_batch<span class="op">=</span><span class="dv">3</span>, max_rows<span class="op">=</span><span class="dv">10</span>, since_date<span class="op">=</span>since_date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> <span class="st">'sales'</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>offset <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>since_date <span class="op">=</span> <span class="st">'2022-04-18'</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>atms.clean_data_dir(obj)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>atms.write_obj_to_file(obj, initial_offset<span class="op">=</span>offset, rows_per_batch<span class="op">=</span><span class="dv">3</span>, max_rows<span class="op">=</span><span class="dv">10</span>, since_date<span class="op">=</span>since_date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/fd8bdlg7
 resp_d = self.get_telus_data(sales,offset=10, count= 3, since_date=2022-04-18)
@@ -392,7 +437,7 @@ resp_d = self.get_telus_data(sales,offset=19, count= 1, since_date=2022-04-18)</
 </blockquote>
 <p>returns list of files in download folder</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>atms.list_files()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>atms.list_files()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>id is: fd8bdlg7</code></pre>
 </div>
@@ -401,7 +446,7 @@ resp_d = self.get_telus_data(sales,offset=19, count= 1, since_date=2022-04-18)</
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L245" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L255" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.load_data_file_to_dict" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</h3>
@@ -431,8 +476,8 @@ resp_d = self.get_telus_data(sales,offset=19, count= 1, since_date=2022-04-18)</
 </tbody>
 </table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atms.<span class="bu">id</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(obj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(atms.<span class="bu">id</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>atms.load_data_file_to_dict(obj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>fd8bdlg7
 Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/fd8bdlg7/atms_transformed_sales.json
@@ -444,13 +489,13 @@ Finished cleaning atms_sales.json -&gt; /Users/josephmann/Documents/Github/doubl
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>atms.obj_d.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>atms.obj_d.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>dict_keys(['sales'])</code></pre>
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L214" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L224" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.clean_data_file" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.clean_data_file">ATMS_api.clean_data_file</h3>
