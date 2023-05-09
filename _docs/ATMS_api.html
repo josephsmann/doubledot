@@ -231,8 +231,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> ATMS_api ()</code></pre>
 </blockquote>
 <p>Initialize self. See help(type(self)) for accurate signature.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Directory 'atms_download' already exists.
+my id is tfkqrzu1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># i'm hoping this won't get exported</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> <span class="st">'sales'</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># obj = 'contacts'</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>offset <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>since_date <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># since_date = '2022-04-18T14:51:31.133' # this works, lets try a simpler one</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>since_date <span class="op">=</span> <span class="st">'2022-04-18'</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>vantix_data_url <span class="op">=</span> <span class="ss">f"http://crm-api-telus.atmsplus.com/api/</span><span class="sc">{</span>obj<span class="sc">}</span><span class="ss">?offset=</span><span class="sc">{</span>offset<span class="sc">}</span><span class="ss">&amp;count=</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(since_date)<span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    vantix_data_url <span class="op">=</span> <span class="ss">f"http://crm-api-telus.atmsplus.com/api/</span><span class="sc">{</span>obj<span class="sc">}</span><span class="ss">/lastupdate?count=</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">&amp;offset=</span><span class="sc">{</span>offset<span class="sc">}</span><span class="ss">&amp;updateDate=</span><span class="sc">{</span>since_date<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>v_headers <span class="op">=</span> {<span class="st">'Authorization'</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>atms<span class="sc">.</span>telus_access_token<span class="sc">}</span><span class="ss">"</span>}</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># print(vantix_data_url)    </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.request(<span class="st">"GET"</span>, vantix_data_url, headers<span class="op">=</span>v_headers, data<span class="op">=</span>{}).json()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>response[<span class="dv">0</span>][<span class="st">'saleKey'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'2020707'</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>response[<span class="dv">0</span>][<span class="st">'saleKey'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'2020697'</code></pre>
+</div>
+</div>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L224" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L230" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.load_data_file_to_dict" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</h3>
@@ -262,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L137" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L141" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.write_obj_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</h3>
@@ -273,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Retrieve data from ATMS API and write to file public method</p>
 <p>Args: obj (string): a valid ATMS REST API object rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.</p>
-<p>—- working</p>
+<p>—- working on since_date.. idea: just generalize the offset variable first: get __get_telus_data working with since_date</p>
 <table class="table">
 <colgroup>
 <col style="width: 6%">
@@ -323,13 +362,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test of _mutate_mail_list func</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s  <span class="op">=</span> <span class="st">' "emails": [{"emailId": 12956, "contactKey": 83, "emailType": "E-Mail", "address": "pam.jenkins@blackgold.ca;joe.what@this.that"}], "faxes": [{"faxId'</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="st">' "emails": [{"emailId": 12956, "contactKey": 83, "emailType": "E-Mail", "address": ["pam.jenkins@blackgold.ca","joe.what@this.that"]}], "faxes": [{"faxId'</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>test_eq(ATMS_api._mutate_email_list(s), s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test of _mutate_mail_list func</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>s  <span class="op">=</span> <span class="st">' "emails": [{"emailId": 12956, "contactKey": 83, "emailType": "E-Mail", "address": "pam.jenkins@blackgold.ca;joe.what@this.that"}], "faxes": [{"faxId'</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="st">' "emails": [{"emailId": 12956, "contactKey": 83, "emailType": "E-Mail", "address": ["pam.jenkins@blackgold.ca","joe.what@this.that"]}], "faxes": [{"faxId'</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>test_eq(ATMS_api._mutate_email_list(s), s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L191" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L197" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.clean_data_file" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.clean_data_file">ATMS_api.clean_data_file</h3>

@@ -108,10 +108,11 @@ class ATMS_api:
             return re.sub(matches.group(1), emails_list_s,s)
         else:
             return s
-
-    def __get_telus_data(self, 
+    
+    def _get_telus_data(self, 
                         obj: str, # telus endpoint 
                         offset :int = 0, # the row to begin retrieval
+                        since_date: str = "", # optionally, the date from which to retrieve
                         count :int =1000 # the number of rows to retrieve
                         ):
         """retrieve data from ATMS API, should be private method
@@ -125,6 +126,9 @@ class ATMS_api:
             response object: response object from the API call
         """
         vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}?offset={offset}&count={count}"
+        if len(since_date)> 0:
+            vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/lastupdate?count={count}&offset={offset}&updateDate={since_date}"
+
         v_headers = {'Authorization': f"Bearer {self.telus_access_token}"}
 
         # print(vantix_data_url)    
@@ -148,7 +152,9 @@ class ATMS_api:
             obj (string): a valid ATMS REST API object
             rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.
 
-        ---- working
+        ---- working on since_date..
+        idea: just generalize the offset variable
+        first: get __get_telus_data working with since_date
         """
         done = False
         # offset is the starting row for the next batch
@@ -172,7 +178,7 @@ class ATMS_api:
                 # print('max remaining rows: ', max_remaining_rows)
 
                 # read another batch
-                resp_d = self.__get_telus_data(obj,offset=offset, count= num_rows_for_next_batch)
+                resp_d = self._get_telus_data(obj,offset=offset, count= num_rows_for_next_batch)
                 obj_l = resp_d['response']
                 done = resp_d['done'] 
                 s = ",\n".join([json.dumps(o) for o in obj_l])
@@ -217,7 +223,7 @@ class ATMS_api:
             print('our in_file_path: ', in_file_path_s)
                
 
-# %% ../ATMS_api.ipynb 4
+# %% ../ATMS_api.ipynb 8
 # make dict from json file
  
 @patch
@@ -260,7 +266,7 @@ def load_data_file_to_dict(
 
             
 
-# %% ../ATMS_api.ipynb 7
+# %% ../ATMS_api.ipynb 11
 ## need to make test for this because it feels like its failing
 # print("called from ATMS_api.ipynb")
 # ATMS_api.clean_data_dir()
