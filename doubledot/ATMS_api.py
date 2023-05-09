@@ -19,7 +19,7 @@ import glob
 import time
 import random
 
-# %% ../ATMS_api.ipynb 3
+# %% ../ATMS_api.ipynb 4
 class ATMS_api:
     class_download_dir = os.path.join(os.getcwd(),'atms_download')
 
@@ -178,7 +178,11 @@ class ATMS_api:
                 # print('max remaining rows: ', max_remaining_rows)
 
                 # read another batch
-                resp_d = self._get_telus_data(obj,offset=offset, count= num_rows_for_next_batch)
+                # the since_date parameter just acts like an initial offset, in theory we should be able 
+                # to test it by making a small rows_per_batch 
+                
+                print(f"resp_d = self._get_telus_data({obj},offset={offset}, count= {num_rows_for_next_batch}, since_date={since_date})")
+                resp_d = self._get_telus_data(obj,offset=offset, count= num_rows_for_next_batch, since_date=since_date)
                 obj_l = resp_d['response']
                 done = resp_d['done'] 
                 s = ",\n".join([json.dumps(o) for o in obj_l])
@@ -223,7 +227,7 @@ class ATMS_api:
             print('our in_file_path: ', in_file_path_s)
                
 
-# %% ../ATMS_api.ipynb 8
+# %% ../ATMS_api.ipynb 5
 # make dict from json file
  
 @patch
@@ -231,7 +235,7 @@ def load_data_file_to_dict(
         self: ATMS_api, 
         obj_s : str # ATMS object. eg. contacts|items|memberships|membership
         ):
-        """ load_data_file_to_dict will attempt to load a cleaned json file into a dict for future parsing. 
+        """ `load_data_file_to_dict` will attempt to load a cleaned json file into a dict for future parsing. 
          If the cleaned file doesn't exist, it will look for a dirty one to clean.
          If the dirty once doesn't exist, it will raise an exception. It won't be downloaded because we don't know how much to get.
           
@@ -266,7 +270,7 @@ def load_data_file_to_dict(
 
             
 
-# %% ../ATMS_api.ipynb 11
+# %% ../ATMS_api.ipynb 15
 ## need to make test for this because it feels like its failing
 # print("called from ATMS_api.ipynb")
 # ATMS_api.clean_data_dir()
