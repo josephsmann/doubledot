@@ -164,6 +164,7 @@ class ATMS_api:
         """Retrieve data from ATMS API, clean data and write to file"""
         self.write_obj_to_file(obj, initial_offset, rows_per_batch, since_date, max_rows)
         self.clean_data_file(obj)
+        self.load_data_file_to_dict(obj)
 
     def write_obj_to_file(self, 
                           obj : str = 'contacts', # ATMS object to retrieve
