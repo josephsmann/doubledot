@@ -195,11 +195,11 @@ def upload_csv(self : Salesforce,
 
     print(f"Uploading {num_rows if num_rows else 'all'} rows to job {self.bulk_job_id} of object {obj_s}")
 
-    if len(obj_s)==0: # no file path provided
+    if len(obj_s)==0: # no object provided
         assert False, "obj_s must not be empty"
-    if not(self.atms):
-        # throw error
-        assert False, "Salesforce.atms must be assigned"
+    # if not(self.atms):
+    #     # throw error
+    #     assert False, "Salesforce.atms must be assigned"
     
             
     # file_path_s = os.path.join(self.atms.download_dir , f"atms_transformed_{obj_s}.csv")
@@ -214,18 +214,19 @@ def upload_csv(self : Salesforce,
             line = line.replace('\u2019', "'")
             print(line, end='')
 
-        _df : pd.Dataframe = pd.read_csv(file_path_s, sep='\t')
-        if num_rows == 0:
-            num_rows = len(_df)
-        else:
-            num_rows = min(num_rows, len(_df))
-        payload : dict = _df[- num_rows:].to_dict()
-        # with open(file_path_s,'r') as payload:
-        headers = {
-        'Content-Type': 'text/csv',
-        'Authorization': f'Bearer {self.sf_access_token}'
-        }
-        response = requests.request("PUT", url, headers=headers, data=payload)
+        # _df : pd.Dataframe = pd.read_csv(file_path_s, sep='\t')
+        
+        # if num_rows == 0:
+        #     num_rows = len(_df)
+        # else:
+        #     num_rows = min(num_rows, len(_df))
+        # payload : dict = _df[- num_rows:].to_dict()
+        with open(file_path_s,'r') as payload:
+            headers = {
+            'Content-Type': 'text/csv',
+            'Authorization': f'Bearer {self.sf_access_token}'
+            }
+            response = requests.request("PUT", url, headers=headers, data=payload)
     except FileNotFoundError:
         print("File not found error in Saleforce.upload_csv: ", file_path_s)
         return None
@@ -279,8 +280,8 @@ def successful_results(self : Salesforce):
     }
 
     response = requests.request("GET", url, headers=headers, data=payload)
-    print( response.text)
-    return response.json()
+    
+    return response
 
 
 # %% ../crema_sf.ipynb 12
@@ -295,8 +296,8 @@ def failed_results(self: Salesforce):
 
     response = requests.request("GET", url, headers=headers, data=payload)
 
-    print( response.text)
-    return response.json()
+    # 
+    return response
 
 
 # %% ../crema_sf.ipynb 13
@@ -458,7 +459,7 @@ def process_contacts(self: Salesforce ):
         self.atms.load_data_file_to_dict('contacts')
         assert 'contacts' in self.atms.obj_d, f"contacts not in atms.obj_d {self.atms.obj_d.keys()}"
     
-    file_path_s = os.path.join(Salesforce.class_download_dir, 'contacts.csv')
+    file_path_s = os.path.join(Salesforce.class_download_dir, 'Contact.csv')
     dict_l = jp.search(search_s, self.atms.obj_d['contacts'])
 
     columnDelimiter = '\t'
@@ -470,15 +471,4 @@ def process_contacts(self: Salesforce ):
             f.write(columnDelimiter.join(l)+'\n')
 
 # %% ../crema_sf.ipynb 20
-sf = Salesforce()
-atms = ATMS_api()
-sf.atms = atms
-
-# %%
-sf.delete_sf_objects('Membership__c')
-# sf.succesful_results()
-# %%
-sf.get_sf_objects('Membership__c')
-# %%
-3+4
-# %%
+a = 3
