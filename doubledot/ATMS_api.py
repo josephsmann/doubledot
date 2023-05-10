@@ -285,6 +285,7 @@ class ATMS_api:
                 if len(data) > 0:
                     try: # data might be buggy
                         self.obj_d[obj_s] = json.loads(data)
+                        print(f"ATMS_api: loaded {len(self.obj_d[obj_s])} {obj_s} into dict")
                     except json.JSONDecodeError:
                         print("We've got buggy data, or something")
                         raise Exception('Data is not JSON formatted')

@@ -4,6 +4,7 @@
 __all__ = ['mem_s', 'memTerm_s', 'memMembers_s', 'search_s', 'a', 'Salesforce', 'escape_quotes']
 
 # %% ../crema_sf.ipynb 3
+import io
 from nbdev.showdoc import *
 import requests
 import json
@@ -15,6 +16,7 @@ import fileinput
 import pandas as pd
 import os
 from doubledot import ATMS_api
+import time
 
 # %% ../crema_sf.ipynb 4
 ## Module for Salesforce API
@@ -407,9 +409,10 @@ displayName__c:displayName}"
 def process_memberships(self: Salesforce ):
     """Unpack memberships data from atms object and write to membership, membership_terms, and membership_members csv files."""
 
+    # custom objects need '__c' suffix
     mem_d = { 'memberships': {'fname':'Membership__c.csv', 'jmespath': mem_s},
-               'membership_terms': {'fname':'MembershipTerm.csv','jmespath': memTerm_s},
-               'membership_members': {'fname': 'MembershipMember.csv', 'jmespath': memMembers_s}
+               'membership_terms': {'fname':'MembershipTerm__c.csv','jmespath': memTerm_s},
+               'membership_members': {'fname': 'MembershipMember__c.csv', 'jmespath': memMembers_s}
                 }
             
 
@@ -422,7 +425,11 @@ def process_memberships(self: Salesforce ):
     for key, v_pair in mem_d.items():
         file_path_s = os.path.join(Salesforce.class_download_dir, v_pair['fname'])
         dict_l = jp.search(v_pair['jmespath'], atms_d)
+        print(f"Salesforce: Writing {len(dict_l)} {key} objects to {file_path_s}")
         with open(file_path_s, 'w') as f:
+            if len(dict_l) == 0:
+                print(f"Warning: no {key} objects found")
+                continue
             # hack to create header with a dot in it, jmespath won't do it
             f.write('\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()]) + '\n') # header
             for d in dict_l:
@@ -462,6 +469,12 @@ def process_contacts(self: Salesforce ):
     file_path_s = os.path.join(Salesforce.class_download_dir, 'Contact.csv')
     dict_l = jp.search(search_s, self.atms.obj_d['contacts'])
 
+    # if contact record has no LastName then
+    for r in dict_l:
+        if r['LastName'] == None:
+            r['LastName'] = 'Not Provided'
+
+    print(f"Salesforce: Writing {len(dict_l)} 'Contact' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
         header = columnDelimiter.join(dict_l[0].keys())
@@ -470,5 +483,36 @@ def process_contacts(self: Salesforce ):
             l = [escape_quotes(str(v)) if v else " " for v in item.values()]
             f.write(columnDelimiter.join(l)+'\n')
 
-# %% ../crema_sf.ipynb 20
+# %% ../crema_sf.ipynb 18
+@patch
+def execute_job(self: Salesforce, 
+        sf_object_s : str = None, # Salesforce API object name
+        operation : str = None # REST operation, e.g. insert, upsert, delete
+        # **kwargs : dict # additional parameters to pass to the REST API
+        ):
+    """Test loading a Salesforce object with data from a local file"""
+
+    if sf_object_s not in ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c']:
+        print("sf_object_s must be one of Contact, Membership__c, MembershipTerm__c, MembershipMember__c")
+        return
+    
+    if operation not in ['insert', 'upsert', 'delete']:
+        print("operation must be one of insert, update, delete")
+        return
+
+    self.create_job(sf_object=sf_object_s, operation=operation)
+    self.upload_csv(sf_object_s)
+    self.close_job()
+
+    counter = 0
+    total_trys = 10
+    sleep_time = 3
+    while self.job_status()['state']!='JobComplete' and counter < total_trys:
+        print(f"waiting for job to complete, try {counter}")
+        counter += 1
+        time.sleep(sleep_time)
+
+    print(self.failed_results().text)
+
+# %% ../crema_sf.ipynb 26
 a = 3
