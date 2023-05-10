@@ -264,7 +264,7 @@ class ATMS_api:
             """
             file_name_s = f'atms_transformed_{obj_s}.json'
             file_path_s = os.path.join(self.download_dir, file_name_s)
-            print('Attempting to load: ', file_path_s)
+            print('ATMS_api - Attempting to load: ', file_path_s, ' into dict')
             data=""
             try:
                 with open(file_path_s, 'r') as f:
