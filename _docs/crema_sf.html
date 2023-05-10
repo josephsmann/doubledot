@@ -201,6 +201,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#salesforce.get_sf_object_ids" id="toc-salesforce.get_sf_object_ids" class="nav-link" data-scroll-target="#salesforce.get_sf_object_ids">Salesforce.get_sf_object_ids</a></li>
   <li><a href="#salesforce.delete_sf_objects" id="toc-salesforce.delete_sf_objects" class="nav-link" data-scroll-target="#salesforce.delete_sf_objects">Salesforce.delete_sf_objects</a></li>
   <li><a href="#salesforce.test_sf_object_load_and_delete" id="toc-salesforce.test_sf_object_load_and_delete" class="nav-link" data-scroll-target="#salesforce.test_sf_object_load_and_delete">Salesforce.test_sf_object_load_and_delete</a></li>
+  <li><a href="#salesforce.process_memberships" id="toc-salesforce.process_memberships" class="nav-link" data-scroll-target="#salesforce.process_memberships">Salesforce.process_memberships</a></li>
+  <li><a href="#salesforce.process_contacts" id="toc-salesforce.process_contacts" class="nav-link" data-scroll-target="#salesforce.process_contacts">Salesforce.process_contacts</a></li>
+  <li><a href="#escape_quotes" id="toc-escape_quotes" class="nav-link" data-scroll-target="#escape_quotes">escape_quotes</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/josephsmann/doubledot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -239,7 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Class for Salesforce API</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L80" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L84" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.get_token_with_rest" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.get_token_with_rest">Salesforce.get_token_with_REST</h3>
@@ -249,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>retieve the access token from Salesforce</p>
 <p>Returns: string: the access token</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L106" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L110" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.test_token" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.test_token">Salesforce.test_token</h3>
@@ -259,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Verify that token is still valid. If it isn’t, it attempts to get a new one.</p>
 <p>Returns: boolean: true if token is valid, false otherwise</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L124" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L128" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.create_job" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.create_job">Salesforce.create_job</h3>
@@ -311,12 +314,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L179" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L183" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.upload_csv" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.upload_csv">Salesforce.upload_csv</h3>
 <blockquote class="blockquote">
-<pre><code> Salesforce.upload_csv (file_path_s:str='', num_rows:int=100)</code></pre>
+<pre><code> Salesforce.upload_csv (obj_s:str='', num_rows:int=100)</code></pre>
 </blockquote>
 <p>Using the job_id from the previous step, upload the csv file to the job</p>
 <p>Args: file (filepointer): file pointer to the csv filek</p>
@@ -331,10 +334,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>file_path_s</td>
+<td>obj_s</td>
 <td>str</td>
 <td></td>
-<td>the path to the csv file</td>
+<td>ATMS object to upload</td>
 </tr>
 <tr class="even">
 <td>num_rows</td>
@@ -342,10 +345,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>100</td>
 <td>the number of rows to upload</td>
 </tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Response</strong></td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L223" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L231" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.close_job" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.close_job">Salesforce.close_job</h3>
@@ -353,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.close_job ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L243" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L251" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.job_status" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.job_status">Salesforce.job_status</h3>
@@ -361,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.job_status ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L257" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L265" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.successful_results" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.successful_results">Salesforce.successful_results</h3>
@@ -369,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.successful_results ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L271" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L279" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.failed_results" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.failed_results">Salesforce.failed_results</h3>
@@ -377,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.failed_results ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L286" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L294" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.get_sf_object_ids" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.get_sf_object_ids">Salesforce.get_sf_object_ids</h3>
@@ -404,7 +413,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L314" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L322" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.delete_sf_objects" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.delete_sf_objects">Salesforce.delete_sf_objects</h3>
@@ -412,7 +421,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.delete_sf_objects (obj_s:str='Contact')</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L334" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L342" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.test_sf_object_load_and_delete" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.test_sf_object_load_and_delete">Salesforce.test_sf_object_load_and_delete</h3>
@@ -458,19 +467,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> Salesforce()</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sf._sf_access_token</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L394" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.process_memberships" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.process_memberships">Salesforce.process_memberships</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.process_memberships ()</code></pre>
+</blockquote>
+<p>Unpack memberships data from atms object and write to membership, membership_terms, and membership_members csv files.</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L443" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="salesforce.process_contacts" class="level3">
+<h3 class="anchored" data-anchor-id="salesforce.process_contacts">Salesforce.process_contacts</h3>
+<blockquote class="blockquote">
+<pre><code> Salesforce.process_contacts ()</code></pre>
+</blockquote>
+<p>unpack contacts data from atms object and write to contacts csv file.</p>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L432" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="escape_quotes" class="level3">
+<h3 class="anchored" data-anchor-id="escape_quotes">escape_quotes</h3>
+<blockquote class="blockquote">
+<pre><code> escape_quotes (text)</code></pre>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> Salesforce()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sf._sf_access_token</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Directory 'atms_download' already exists.</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display">
 <pre><code>'00D8Y000001RMKv!AQwAQL0IbKf.zyFX.rpTa9VYNWx38N_Z9.mXsVyOZoU6ycdKW4_2o4HctbhjBNYwZ9LQV93zz1cC1kE.hFdhxOQWQODVQ8vI'</code></pre>
 </div>
 </div>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean(<span class="st">'memberships'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean(<span class="st">'memberships'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Directory 'atms_download' already exists.
 my id is b5pwwcmw
@@ -483,9 +518,9 @@ Finished cleaning atms_memberships.json -&gt; /Users/josephmann/Documents/Github
 Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/b5pwwcmw/atms_transformed_memberships.json</code></pre>
 </div>
 </div>
-<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sf.atms <span class="op">=</span> atms</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sf.process_memberships()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sf.atms <span class="op">=</span> atms</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>sf.process_memberships()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
