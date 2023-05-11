@@ -1,39 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://josephsmann.github.io/doubledot/00_core.html</loc>
-    <lastmod>2023-05-08T21:31:45.751Z</lastmod>
-  </url>
-  <url>
-    <loc>https://josephsmann.github.io/doubledot/index.html</loc>
-    <lastmod>2023-05-10T06:49:53.873Z</lastmod>
+    <loc>https://josephsmann.github.io/doubledot/SalesforceTest.html</loc>
+    <lastmod>2023-05-11T05:48:09.041Z</lastmod>
   </url>
   <url>
     <loc>https://josephsmann.github.io/doubledot/crema_sf.html</loc>
-    <lastmod>2023-05-10T21:39:03.106Z</lastmod>
-  </url>
-  <url>
-    <loc>https://josephsmann.github.io/doubledot/test_saleforce_module.html</loc>
-    <lastmod>2023-05-08T17:13:58.120Z</lastmod>
+    <lastmod>2023-05-11T05:48:11.434Z</lastmod>
   </url>
   <url>
     <loc>https://josephsmann.github.io/doubledot/ATMS_api.html</loc>
-    <lastmod>2023-05-10T21:39:03.571Z</lastmod>
+    <lastmod>2023-05-11T05:48:12.914Z</lastmod>
   </url>
   <url>
-    <loc>https://josephsmann.github.io/doubledot/small_tests.html</loc>
-    <lastmod>2023-05-09T14:08:03.057Z</lastmod>
-  </url>
-  <url>
-    <loc>https://josephsmann.github.io/doubledot/doubledot/SalesforceTest.html</loc>
-    <lastmod>2023-05-09T13:37:48.874Z</lastmod>
-  </url>
-  <url>
-    <loc>https://josephsmann.github.io/doubledot/old_notebooks/test_saleforce_module.html</loc>
-    <lastmod>2023-05-10T06:49:51.965Z</lastmod>
-  </url>
-  <url>
-    <loc>https://josephsmann.github.io/doubledot/SalesforceTest.html</loc>
-    <lastmod>2023-05-10T21:39:02.624Z</lastmod>
+    <loc>https://josephsmann.github.io/doubledot/index.html</loc>
+    <lastmod>2023-05-11T05:48:12.485Z</lastmod>
   </url>
 </urlset>

@@ -5,4 +5,3 @@ website:
       - ATMS_api.ipynb
       - SalesforceTest.ipynb
       - crema_sf.ipynb
-      - small_tests.ipynb

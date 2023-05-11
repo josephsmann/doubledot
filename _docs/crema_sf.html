@@ -173,12 +173,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">doubledot.Salesforce</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./small_tests.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ATMS tests</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -315,16 +309,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L185" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L188" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.upload_csv" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.upload_csv">Salesforce.upload_csv</h3>
 <blockquote class="blockquote">
-<pre><code> Salesforce.upload_csv (obj_s:str='', num_rows:int=100)</code></pre>
+<pre><code> Salesforce.upload_csv (obj_s:str='')</code></pre>
 </blockquote>
 <p>Using the job_id from the previous step, upload the csv file to the job</p>
 <p>Args: file (filepointer): file pointer to the csv filek</p>
 <table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -341,21 +341,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Salesforce object to upload</td>
 </tr>
 <tr class="even">
-<td>num_rows</td>
-<td>int</td>
-<td>100</td>
-<td>the number of rows to upload</td>
-</tr>
-<tr class="odd">
 <td><strong>Returns</strong></td>
 <td><strong>Response</strong></td>
 <td></td>
-<td></td>
+<td><strong>num_rows: int = 100, # the number of rows to upload </strong></td>
 </tr>
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L241" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L232" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.close_job" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.close_job">Salesforce.close_job</h3>
@@ -363,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.close_job ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L262" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L253" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.job_status" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.job_status">Salesforce.job_status</h3>
@@ -371,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.job_status ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L276" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L267" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.successful_results" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.successful_results">Salesforce.successful_results</h3>
@@ -379,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.successful_results ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L291" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L282" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.failed_results" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.failed_results">Salesforce.failed_results</h3>
@@ -387,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.failed_results ()</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L307" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L298" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.get_sf_object_ids" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.get_sf_object_ids">Salesforce.get_sf_object_ids</h3>
@@ -414,7 +408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L335" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L326" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.delete_sf_objects" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.delete_sf_objects">Salesforce.delete_sf_objects</h3>
@@ -423,7 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Delete Salesforce objects</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L357" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L346" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.test_sf_object_load_and_delete" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.test_sf_object_load_and_delete">Salesforce.test_sf_object_load_and_delete</h3>
@@ -470,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L409" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L398" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.process_memberships" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.process_memberships">Salesforce.process_memberships</h3>
@@ -478,8 +472,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Salesforce.process_memberships ()</code></pre>
 </blockquote>
 <p>Unpack memberships data from atms object and write to membership, membership_terms, and membership_members csv files.</p>
+<p>We could modify this function to only process one of Memmbership, MembershipTerm, or MembershipMember.</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L463" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L455" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.process_contacts" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.process_contacts">Salesforce.process_contacts</h3>
@@ -488,7 +483,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>unpack contacts data from atms object and write to contacts csv file.</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L452" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L444" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="escape_quotes" class="level3">
 <h3 class="anchored" data-anchor-id="escape_quotes">escape_quotes</h3>
@@ -496,15 +491,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> escape_quotes (text)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L488" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/crema_sf.py#L481" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="salesforce.execute_job" class="level3">
 <h3 class="anchored" data-anchor-id="salesforce.execute_job">Salesforce.execute_job</h3>
 <blockquote class="blockquote">
-<pre><code> Salesforce.execute_job (sf_object_s:str=None, operation:str=None)</code></pre>
+<pre><code> Salesforce.execute_job (sf_object_s:str=None, operation:str=None,
+                         max_trys:int=20,
+                         external_id:str='External_Id__c',
+                         use_ATMS_data:bool=True)</code></pre>
 </blockquote>
 <p>Test loading a Salesforce object with data from a local file</p>
 <table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -526,6 +530,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>None</td>
 <td>REST operation, e.g.&nbsp;insert, upsert, delete</td>
 </tr>
+<tr class="odd">
+<td>max_trys</td>
+<td>int</td>
+<td>20</td>
+<td>max number of times to try to get job status</td>
+</tr>
+<tr class="even">
+<td>external_id</td>
+<td>str</td>
+<td>External_Id__c</td>
+<td>name of the field that is the unique identifier to ATMS</td>
+</tr>
+<tr class="odd">
+<td>use_ATMS_data</td>
+<td>bool</td>
+<td>True</td>
+<td>if True, use data from ATMS object, otherwise use data from local file</td>
+</tr>
 </tbody>
 </table>
 <div class="cell">
@@ -535,82 +557,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Directory 'atms_download' already exists.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre><code>'00D8Y000001RMKv!AQwAQO.6rBVsgkh_237ivibOv4NZp390KWpvwOpHEwW9vIrEA.1hYfDGqwBljuvCNHgV2pQI04tSj2hLvdod2DwowPqdxRax'</code></pre>
+<pre><code>'00D8Y000001RMKv!AQwAQCSJnFU8nTvr71TNBx5yRl0HQeOnQLMiz2aXllJr39Do3FZb7aLECeQp6piixytROoY1V8DFlSo3OSHtiQBpal.uZ1Kx'</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>sf.atms <span class="op">=</span> atms</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean(<span class="st">'memberships'</span>, since_date<span class="op">=</span><span class="st">'2020-01-01'</span>, max_rows<span class="op">=</span><span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Directory 'atms_download' already exists.
-my id is b8sixzsj
-download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj
-resp_d = self.get_telus_data(memberships,offset=0, count= 200, since_date=2020-01-01)
-cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj
-creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_memberships.json
-Finished cleaning atms_memberships.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_memberships.json
-ATMS_api - Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_memberships.json  into dict
-ATMS_api: loaded 200 memberships into dict</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># atms = ATMS_api()</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.delete_all_data() </span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.delete_sf_objects('Contact')</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.delete_sf_objects('Membership__c')</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.delete_sf_objects('MembershipTerm__c')</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.delete_sf_objects('MembershipMember__c')</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># atms = ATMS_api()</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.atms = atms</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean(<span class="st">'contacts'</span>, since_date<span class="op">=</span><span class="st">'2020-01-01'</span>, max_rows<span class="op">=</span><span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj
-resp_d = self.get_telus_data(contacts,offset=0, count= 200, since_date=2020-01-01)
-cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj
-creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_contacts.json
-Finished cleaning atms_contacts.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_contacts.json
-ATMS_api - Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_contacts.json  into dict
-ATMS_api: loaded 200 contacts into dict</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.delete_sf_objects('Contact')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean(<span class="st">'items'</span>, since_date<span class="op">=</span><span class="st">'2020-01-01'</span>, max_rows<span class="op">=</span><span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj
-resp_d = self.get_telus_data(items,offset=0, count= 200, since_date=2020-01-01)
-cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj
-creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_items.json
-Finished cleaning atms_items.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_items.json
-ATMS_api - Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/b8sixzsj/atms_transformed_items.json  into dict
-ATMS_api: loaded 200 items into dict</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.retrieve_and_clean('memberships', since_date='2020-01-01', max_rows=200)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.retrieve_and_clean('contacts', since_date='2020-01-01', max_rows=200)</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># atms.retrieve_and_clean('items', since_date='2020-01-01', max_rows=200)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sf.process_contacts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Salesforce: Writing 200 'Contact' objects to /Users/josephmann/Documents/Github/doubledot/sf_download/Contact.csv</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sf.execute_job(sf_object_s='MembershipMember__c', operation='upsert', external_id='membershipMemberId__c')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sf.process_memberships()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Salesforce: Writing 200 memberships objects to /Users/josephmann/Documents/Github/doubledot/sf_download/Membership__c.csv
-Salesforce: Writing 56 membership_terms objects to /Users/josephmann/Documents/Github/doubledot/sf_download/MembershipTerm__c.csv
-Salesforce: Writing 767 membership_members objects to /Users/josephmann/Documents/Github/doubledot/sf_download/MembershipMember__c.csv</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sf.execute_job(sf_object_s<span class="op">=</span><span class="st">'Contact'</span>, operation<span class="op">=</span><span class="st">'upsert'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Creating job for Contact with operation upsert
-upsert {'object': 'Contact', 'contentType': 'CSV', 'columnDelimiter': 'TAB', 'operation': 'upsert', 'externalIdFieldName': 'External_Id__c'}
-{"id":"7508Y00000mVQCbQAO","operation":"upsert","object":"Contact","createdById":"0058Y00000CIEn9QAH","createdDate":"2023-05-10T21:24:36.000+0000","systemModstamp":"2023-05-10T21:24:36.000+0000","state":"Open","externalIdFieldName":"External_Id__c","concurrencyMode":"Parallel","contentType":"CSV","apiVersion":57.0,"contentUrl":"services/data/v57.0/jobs/ingest/7508Y00000mVQCbQAO/batches","lineEnding":"LF","columnDelimiter":"TAB"}
-Uploading 100 rows to job 7508Y00000mVQCbQAO of object Contact
-{"id":"7508Y00000mVQCbQAO","operation":"upsert","object":"Contact","createdById":"0058Y00000CIEn9QAH","createdDate":"2023-05-10T21:24:36.000+0000","systemModstamp":"2023-05-10T21:24:36.000+0000","state":"UploadComplete","externalIdFieldName":"External_Id__c","concurrencyMode":"Parallel","contentType":"CSV","apiVersion":57.0}
-waiting for job to complete, try 0
-waiting for job to complete, try 1
-waiting for job to complete, try 2
-"sf__Id"    "sf__Error" LastName    MailingPostalCode   MailingCity MailingStreet   MailingCountry  Phone   Email   External_Id__c
-""  "INVALID_EMAIL_ADDRESS:Email: invalid email address: sajideikramweb.com:Email --"   "Not Provided"  "T8V 2B8"   "Grande Prairie"    "10709 97 St"   "Canada"    " " "sajideikramweb.com"    "456417"
-</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print(failed_response.text)</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pd.read_csv(io.StringIO(failed_response.text), sep='\t')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print(failed_response.text)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pd.read_csv(io.StringIO(failed_response.text), sep='\t')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
