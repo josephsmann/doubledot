@@ -18,6 +18,7 @@ from fastcore.test import test_eq
 import glob
 import time
 import random
+from pyisemail import is_email
 
 # %% ../ATMS_api.ipynb 3
 class ATMS_api:
@@ -119,7 +120,8 @@ class ATMS_api:
         matches = re.search(pattern,s) 
         if matches and matches.group(0) and matches.group(1) and matches.group(2):
             og_emails_list_s = matches.group(2)
-            emails_l = [f"\"{email}\"" for email in og_emails_list_s.split(';')]
+            # emails_l = [f"\"{email}\"" for email in og_emails_list_s.split(';')]
+            emails_l = [f"\"{email}\"" for email in og_emails_list_s.split(';') if is_email(email)]
             # emails_l = [f"{email}" for email in og_emails_list_s.split(';')]
             emails_list_s = '[' +','.join(emails_l)+']'
             return re.sub(matches.group(1), emails_list_s,s)
@@ -140,26 +142,30 @@ class ATMS_api:
             count (int, optional): number of rows to retrieve. Defaults to 1000.
 
         Returns:
-            response object: response object from the API call
+            a dict with two keys: "response" and "done". 
+            "response" is the response object from the API call. "done" is a boolean indicating whether there are more records to retrieve.
         """
         vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}?offset={offset}&count={count}"
         if len(since_date)> 0:
+            print("ATMS_api.get_telus_data: since_date is", since_date)
             vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/lastupdate?count={count}&offset={offset}&updateDate={since_date}"
 
         v_headers = {'Authorization': f"Bearer {self.telus_access_token}"}
 
-        # print(vantix_data_url)    
-        response = requests.request("GET", vantix_data_url, headers=v_headers, data={}).json()
+        print(vantix_data_url)    
+        # response = requests.request("GET", vantix_data_url, headers=v_headers, data={}).json()
+        response = requests.request("GET", vantix_data_url, headers=v_headers, data={})
         
         # inform caller we're done if we get fewer records than requested
-        return {"response": response, "done":  len(response) < count}
+        # BUT there could still be an error in the response
+        return {"response": response, "done":  response.status_code!=200 or len(response.json()) < count}
 
     def retrieve_and_clean(self, 
                           obj : str = 'contacts', # ATMS object to retrieve
                           initial_offset : int =0, # start retrieval at row initial_offset
                           rows_per_batch :int =1000, # number records retrieved at once
                           since_date : str = "", # if given, it will be used instead of `initial_offset` 
-                          max_rows :int = 2000 # maximum number of rows to retrieve
+                          max_rows :int = 0 # maximum number of rows to retrieve
                           ):
         """Retrieve data from ATMS API, clean data and write to file"""
         self.write_obj_to_file(obj, initial_offset, rows_per_batch, since_date, max_rows)
@@ -171,7 +177,7 @@ class ATMS_api:
                           initial_offset : int =0, # start retrieval at row initial_offset
                           rows_per_batch :int =1000, # number records retrieved at once
                           since_date : str = "", # if given, it will be used instead of `initial_offset` 
-                          max_rows :int = 2000 # maximum number of rows to retrieve
+                          max_rows :int = 0 # maximum number of rows to retrieve
                           ):
         """Retrieve data from ATMS API and write to file
            private method
@@ -189,34 +195,54 @@ class ATMS_api:
         file_path_s = os.path.join(self.download_dir, filename_s)
         # print("Writing to file: ", file_path_s)
         
+        # if max_rows is 0, we'll retrieve all rows
         with open(file_path_s, 'w') as f:
             f.write("[ \n")
-            num_rows_for_next_batch = min(rows_per_batch, max_rows)
-            max_remaining_rows = max_rows
+            num_rows_for_next_batch = min(rows_per_batch, max_rows ) if max_rows > 0 else rows_per_batch
+
+            #max_remaining_rows will be decremented as we retrieve batches
+            max_remaining_rows = max_rows if max_rows > 0 else rows_per_batch
+
+            #num_rows_for_next_batch will be 
             num_rows_for_next_batch = min(rows_per_batch, max_remaining_rows) 
             first_line = True
             while (not done and (num_rows_for_next_batch > 0)):
-                # print('offset: ', offset)
-                # print('num rows already loaded: ', offset - initial_offset)
-                # print('num_rows_for_next_batch: ', num_rows_for_next_batch)
-                # print('max remaining rows: ', max_remaining_rows)
 
                 # read another batch
-                # the since_date parameter just acts like an initial offset, in theory we should be able 
-                # to test it by making a small rows_per_batch 
                 
                 print(f"resp_d = self.get_telus_data({obj},offset={offset}, count= {num_rows_for_next_batch}, since_date={since_date})")
                 resp_d = self.get_telus_data(obj,offset=offset, count= num_rows_for_next_batch, since_date=since_date)
-                obj_l = resp_d['response']
-                done = resp_d['done'] 
-                s = ",\n".join([json.dumps(o) for o in obj_l])
+                print("resp_d.keys(): ", resp_d.keys())
+                if resp_d['response'].status_code != 200:
+                    print(f"Error retrieving data: {resp_d['response'].status_code}")
+                    print(f"Error retrieving data: {resp_d['response'].json()}")
+                    raise ValueError(f"Error retrieving data: {resp_d['response'].status_code}")
+                obj_l = resp_d['response'].json()
+                done = resp_d['done'] ###### if done is set to True, we'll exit the loop
+                print(f"done: {done}, resp_d.json() : {resp_d['response']}")
+                
+                # assert len(obj_l)>0, f"response: {resp_d}"
+                try:
+                    s = json.dumps(obj_l[0])
+                except:
+                    print("Error converting to json: resp_d ", resp_d.json())
+                    print("Error converting to json: obj_l ", obj_l)
+                    raise ValueError(f"Error converting to json {obj_l}")
+                for o in obj_l[1:]:
+                    try:
+                        s += ',\n' +json.dumps(o) 
+                    except:
+                        print("Error converting to json: ", obj_l)
+                        raise ValueError(f"Error converting to json {o}")
+                # s = ",\n".join([json.dumps(o) for o in obj_l])
+                
                 if first_line:
                     f.write(s)
                     first_line = False
                 else:
                     f.write(",\n"+s)
                 offset += rows_per_batch
-                max_remaining_rows = max_rows - (offset - initial_offset)
+                max_remaining_rows = max_rows - (offset - initial_offset) if max_rows > 0 else rows_per_batch
                 num_rows_for_next_batch = min(rows_per_batch, max_remaining_rows)
             f.write("\n]")
     
@@ -292,3 +318,6 @@ class ATMS_api:
                 # assert obj_s in self.obj_d, f" '{obj_s}' not in {self.obj_d.keys()}"
 
             
+
+# %% ../ATMS_api.ipynb 5
+"playtime"
