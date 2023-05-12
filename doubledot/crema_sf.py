@@ -371,6 +371,11 @@ def test_sf_object_load_and_delete(self: Salesforce,
         self.delete_sf_objects('membershipTerm__c')
 
 # %% ../crema_sf.ipynb 16
+ #### modify so parent fields use correct shit 
+#### maybe use a spreadsheet to make life easier 
+# Name,Mother_Of_Child__r.External_ID__c
+# CustomObject1,123456
+
 mem_s = "[].{membershipId__c: membershipId, \
     memberSince__c: memberSince, \
     updateDate__c: updateDate}"
@@ -391,7 +396,7 @@ membershipTermKey__r_1_membershipTermId__c:membershipTermKey,\
 cardNumber__c:cardNumber,\
 membershipNumber__c:membershipNumber,\
 cardStatus__c:cardStatus,\
-contactKey__c:contactKey,\
+contactKey__r_1_External_Id__c:contactKey,\
 displayName__c:displayName}"
 
 @patch

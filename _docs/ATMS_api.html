@@ -184,13 +184,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#atms_api" id="toc-atms_api" class="nav-link active" data-scroll-target="#atms_api">ATMS_api</a></li>
-  <li><a href="#atms_api.delete_all_data" id="toc-atms_api.delete_all_data" class="nav-link" data-scroll-target="#atms_api.delete_all_data">ATMS_api.delete_all_data</a></li>
-  <li><a href="#atms_api.get_telus_data" id="toc-atms_api.get_telus_data" class="nav-link" data-scroll-target="#atms_api.get_telus_data">ATMS_api.get_telus_data</a></li>
-  <li><a href="#atms_api.write_obj_to_file" id="toc-atms_api.write_obj_to_file" class="nav-link" data-scroll-target="#atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</a></li>
   <li><a href="#atms_api.list_files" id="toc-atms_api.list_files" class="nav-link" data-scroll-target="#atms_api.list_files">ATMS_api.list_files</a></li>
-  <li><a href="#atms_api.load_data_file_to_dict" id="toc-atms_api.load_data_file_to_dict" class="nav-link" data-scroll-target="#atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</a></li>
-  <li><a href="#atms_api.clean_data_file" id="toc-atms_api.clean_data_file" class="nav-link" data-scroll-target="#atms_api.clean_data_file">ATMS_api.clean_data_file</a></li>
   <li><a href="#atms_api.clean_data_dir" id="toc-atms_api.clean_data_dir" class="nav-link" data-scroll-target="#atms_api.clean_data_dir">ATMS_api.clean_data_dir</a></li>
+  <li><a href="#atms_api.get_telus_data" id="toc-atms_api.get_telus_data" class="nav-link" data-scroll-target="#atms_api.get_telus_data">ATMS_api.get_telus_data</a></li>
+  <li><a href="#atms_api.retrieve_and_clean" id="toc-atms_api.retrieve_and_clean" class="nav-link" data-scroll-target="#atms_api.retrieve_and_clean">ATMS_api.retrieve_and_clean</a></li>
+  <li><a href="#atms_api.write_obj_to_file" id="toc-atms_api.write_obj_to_file" class="nav-link" data-scroll-target="#atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</a></li>
+  <li><a href="#atms_api.clean_data_file" id="toc-atms_api.clean_data_file" class="nav-link" data-scroll-target="#atms_api.clean_data_file">ATMS_api.clean_data_file</a></li>
+  <li><a href="#load_data_to_dict" id="toc-load_data_to_dict" class="nav-link" data-scroll-target="#load_data_to_dict">load_data_to_dict</a>
+  <ul>
+  <li><a href="#atms_api.load_data_file_to_dict" id="toc-atms_api.load_data_file_to_dict" class="nav-link" data-scroll-target="#atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</a></li>
+  </ul></li>
+  <li><a href="#get-pick-list-for-membershipterm.membertype" id="toc-get-pick-list-for-membershipterm.membertype" class="nav-link" data-scroll-target="#get-pick-list-for-membershipterm.membertype">Get Pick list for MembershipTerm.memberType</a></li>
+  <li><a href="#test-stuff" id="toc-test-stuff" class="nav-link" data-scroll-target="#test-stuff">Test Stuff</a>
+  <ul>
+  <li><a href="#atms_api.delete_all_data" id="toc-atms_api.delete_all_data" class="nav-link" data-scroll-target="#atms_api.delete_all_data">ATMS_api.delete_all_data</a></li>
+  <li><a href="#atms_api.get_telus_data-1" id="toc-atms_api.get_telus_data-1" class="nav-link" data-scroll-target="#atms_api.get_telus_data-1">ATMS_api.get_telus_data</a></li>
+  <li><a href="#atms_api.write_obj_to_file-1" id="toc-atms_api.write_obj_to_file-1" class="nav-link" data-scroll-target="#atms_api.write_obj_to_file-1">ATMS_api.write_obj_to_file</a></li>
+  <li><a href="#atms_api.list_files-1" id="toc-atms_api.list_files-1" class="nav-link" data-scroll-target="#atms_api.list_files-1">ATMS_api.list_files</a></li>
+  <li><a href="#atms_api.load_data_file_to_dict-1" id="toc-atms_api.load_data_file_to_dict-1" class="nav-link" data-scroll-target="#atms_api.load_data_file_to_dict-1">ATMS_api.load_data_file_to_dict</a></li>
+  <li><a href="#atms_api.clean_data_file-1" id="toc-atms_api.clean_data_file-1" class="nav-link" data-scroll-target="#atms_api.clean_data_file-1">ATMS_api.clean_data_file</a></li>
+  <li><a href="#atms_api.clean_data_dir-1" id="toc-atms_api.clean_data_dir-1" class="nav-link" data-scroll-target="#atms_api.clean_data_dir-1">ATMS_api.clean_data_dir</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/josephsmann/doubledot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -228,60 +242,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> ATMS_api ()</code></pre>
 </blockquote>
 <p>Initialize self. See help(type(self)) for accurate signature.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@patch</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_pick_list_for_MembeshipTerms_membershipType( <span class="va">self</span>: ATMS_api):</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" utility func to get picklist values for 'membershipTyp'</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">    this needs a full download to work"""</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.retrieve_and_clean(<span class="st">'memberships'</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">set</span>(jp.search(<span class="st">"[].membershipTerms[].membershipType"</span>, <span class="va">self</span>.obj_d[<span class="st">'memberships'</span>]))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L61" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L123" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="atms_api.delete_all_data" class="level3">
-<h3 class="anchored" data-anchor-id="atms_api.delete_all_data">ATMS_api.delete_all_data</h3>
+<section id="atms_api.list_files" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.list_files">ATMS_api.list_files</h3>
 <blockquote class="blockquote">
-<pre><code> ATMS_api.delete_all_data ()</code></pre>
+<pre><code> ATMS_api.list_files ()</code></pre>
 </blockquote>
-<p>delete all the subdirectories and files in the download directory</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ATMS_api.delete_all_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>File '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o/atms_items.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o/atms_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o/atms_transformed_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o/atms_transformed_memberships.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o/atms_transformed_items.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o/atms_memberships.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/a33r309o' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/k4nhslip/atms_contacts.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/k4nhslip' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7axyewbc/atms_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7axyewbc/atms_transformed_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7axyewbc/atms_transformed_memberships.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7axyewbc/atms_memberships.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/7axyewbc' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/x50makng/atms_items.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/x50makng/atms_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/x50makng/atms_transformed_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/x50makng/atms_memberships.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/x50makng' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/yn5cw8oz/atms_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/yn5cw8oz/atms_transformed_contacts.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/yn5cw8oz' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j/atms_items.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j/atms_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j/atms_transformed_contacts.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j/atms_transformed_memberships.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j/atms_transformed_items.json' deleted successfully.
-File '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j/atms_memberships.json' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download/7b9mcq6j' deleted successfully.
-Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted successfully.</code></pre>
-</div>
-</div>
+<p>returns list of files in download folder</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L131" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L134" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.clean_data_dir" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.clean_data_dir">ATMS_api.clean_data_dir</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.clean_data_dir (obj_s:str=None)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L147" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.get_telus_data" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.get_telus_data">ATMS_api.get_telus_data</h3>
@@ -329,7 +308,66 @@ Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted s
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L175" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L183" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.retrieve_and_clean" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.retrieve_and_clean">ATMS_api.retrieve_and_clean</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.retrieve_and_clean (obj:str='contacts', initial_offset:int=0,
+                              rows_per_batch:int=1000, since_date:str='',
+                              max_rows:int=0)</code></pre>
+</blockquote>
+<p>Retrieve data from ATMS API, clean data and write to file</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>obj</td>
+<td>str</td>
+<td>contacts</td>
+<td>ATMS object to retrieve</td>
+</tr>
+<tr class="even">
+<td>initial_offset</td>
+<td>int</td>
+<td>0</td>
+<td>start retrieval at row initial_offset</td>
+</tr>
+<tr class="odd">
+<td>rows_per_batch</td>
+<td>int</td>
+<td>1000</td>
+<td>number records retrieved at once</td>
+</tr>
+<tr class="even">
+<td>since_date</td>
+<td>str</td>
+<td></td>
+<td>if given, it will be used instead of <code>initial_offset</code></td>
+</tr>
+<tr class="odd">
+<td>max_rows</td>
+<td>int</td>
+<td>0</td>
+<td>maximum number of rows to retrieve</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="atms_api.write_obj_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.write_obj_to_file">ATMS_api.write_obj_to_file</h3>
@@ -389,17 +427,18 @@ Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted s
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L52" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L278" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="atms_api.list_files" class="level3">
-<h3 class="anchored" data-anchor-id="atms_api.list_files">ATMS_api.list_files</h3>
+<section id="atms_api.clean_data_file" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.clean_data_file">ATMS_api.clean_data_file</h3>
 <blockquote class="blockquote">
-<pre><code> ATMS_api.list_files ()</code></pre>
+<pre><code> ATMS_api.clean_data_file (obj_s:str)</code></pre>
 </blockquote>
-<p>returns list of files in download folder</p>
-<hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L282" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p>Massage formatting to work with Salesfore Bulk API</p>
 </section>
+<section id="load_data_to_dict" class="level2">
+<h2 class="anchored" data-anchor-id="load_data_to_dict">load_data_to_dict</h2>
+<hr>
 <section id="atms_api.load_data_file_to_dict" class="level3">
 <h3 class="anchored" data-anchor-id="atms_api.load_data_file_to_dict">ATMS_api.load_data_file_to_dict</h3>
 <blockquote class="blockquote">
@@ -427,25 +466,220 @@ Directory '/Users/josephmann/Documents/Github/doubledot/atms_download' deleted s
 </tr>
 </tbody>
 </table>
-<hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L251" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="atms_api.clean_data_file" class="level3">
-<h3 class="anchored" data-anchor-id="atms_api.clean_data_file">ATMS_api.clean_data_file</h3>
+</section>
+<section id="get-pick-list-for-membershipterm.membertype" class="level2">
+<h2 class="anchored" data-anchor-id="get-pick-list-for-membershipterm.membertype">Get Pick list for MembershipTerm.memberType</h2>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@patch</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_pick_list_for_MembeshipTerms_membershipType( <span class="va">self</span>: ATMS_api):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" utility func to get picklist values for 'membershipTyp'</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">    this needs a full download to work"""</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.retrieve_and_clean(<span class="st">'memberships'</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">set</span>(jp.search(<span class="st">"[].membershipTerms[].membershipType"</span>, <span class="va">self</span>.obj_d[<span class="st">'memberships'</span>]))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-stuff" class="level2">
+<h2 class="anchored" data-anchor-id="test-stuff">Test Stuff</h2>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>atms <span class="op">=</span> ATMS_api()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Directory 'atms_download' already exists.
+my id is af5pocvl</code></pre>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>atms.retrieve_and_clean(<span class="st">'contacts'</span>, max_rows<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/af5pocvl
+resp_d = self.get_telus_data(contacts,offset=0, count= 1000, since_date=)
+http://crm-api-telus.atmsplus.com/api/contacts?offset=0&amp;count=1000
+resp_d.keys():  dict_keys(['response', 'done'])
+done: False, resp_d.json() : &lt;Response [200]&gt;
+cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/af5pocvl
+creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/af5pocvl/atms_transformed_contacts.json
+Finished cleaning atms_contacts.json -&gt; /Users/josephmann/Documents/Github/doubledot/atms_download/af5pocvl/atms_transformed_contacts.json
+ATMS_api - Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/af5pocvl/atms_transformed_contacts.json  into dict
+ATMS_api: loaded 1000 contacts into dict</code></pre>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L30" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="atms_api.delete_all_data" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.delete_all_data">ATMS_api.delete_all_data</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.delete_all_data ()</code></pre>
+</blockquote>
+<p>delete all the subdirectories and files in the download directory</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ATMS_api.delete_all_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L147" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.get_telus_data-1" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.get_telus_data-1">ATMS_api.get_telus_data</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.get_telus_data (obj:str, offset:int=0, since_date:str='',
+                          count:int=1000)</code></pre>
+</blockquote>
+<p>retrieve data from ATMS API, should be private method</p>
+<p>Args: obj (string): api endpoint to retrieve data from offset (int, optional): first row to begin retrieval. Defaults to 0. count (int, optional): number of rows to retrieve. Defaults to 1000.</p>
+<p>Returns: a dict with two keys: “response” and “done”. “response” is the response object from the API call. “done” is a boolean indicating whether there are more records to retrieve.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>obj</td>
+<td>str</td>
+<td></td>
+<td>telus endpoint</td>
+</tr>
+<tr class="even">
+<td>offset</td>
+<td>int</td>
+<td>0</td>
+<td>the row to begin retrieval</td>
+</tr>
+<tr class="odd">
+<td>since_date</td>
+<td>str</td>
+<td></td>
+<td>optionally, the date from which to retrieve</td>
+</tr>
+<tr class="even">
+<td>count</td>
+<td>int</td>
+<td>1000</td>
+<td>the number of rows to retrieve</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.write_obj_to_file-1" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.write_obj_to_file-1">ATMS_api.write_obj_to_file</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.write_obj_to_file (obj:str='contacts', initial_offset:int=0,
+                             rows_per_batch:int=1000, since_date:str='',
+                             max_rows:int=0)</code></pre>
+</blockquote>
+<p>Retrieve data from ATMS API and write to file private method</p>
+<p>Args: obj (string): a valid ATMS REST API object rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>obj</td>
+<td>str</td>
+<td>contacts</td>
+<td>ATMS object to retrieve</td>
+</tr>
+<tr class="even">
+<td>initial_offset</td>
+<td>int</td>
+<td>0</td>
+<td>start retrieval at row initial_offset</td>
+</tr>
+<tr class="odd">
+<td>rows_per_batch</td>
+<td>int</td>
+<td>1000</td>
+<td>number records retrieved at once</td>
+</tr>
+<tr class="even">
+<td>since_date</td>
+<td>str</td>
+<td></td>
+<td>if given, it will be used instead of <code>initial_offset</code></td>
+</tr>
+<tr class="odd">
+<td>max_rows</td>
+<td>int</td>
+<td>0</td>
+<td>maximum number of rows to retrieve</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L123" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.list_files-1" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.list_files-1">ATMS_api.list_files</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.list_files ()</code></pre>
+</blockquote>
+<p>returns list of files in download folder</p>
+<hr>
+</section>
+<section id="atms_api.load_data_file_to_dict-1" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.load_data_file_to_dict-1">ATMS_api.load_data_file_to_dict</h3>
+<blockquote class="blockquote">
+<pre><code> ATMS_api.load_data_file_to_dict (obj_s:str)</code></pre>
+</blockquote>
+<p><code>load_data_file_to_dict</code> will attempt to load a cleaned json file into a dict for future parsing. If the cleaned file doesn’t exist, it will look for a dirty one to clean. If the dirty once doesn’t exist, it will raise an exception. It won’t be downloaded because we don’t know how much to get.</p>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>obj_s</td>
+<td>str</td>
+<td>ATMS object. eg. contacts|items|memberships|membership</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L278" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="atms_api.clean_data_file-1" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.clean_data_file-1">ATMS_api.clean_data_file</h3>
 <blockquote class="blockquote">
 <pre><code> ATMS_api.clean_data_file (obj_s:str)</code></pre>
 </blockquote>
 <p>Massage formatting to work with Salesfore Bulk API</p>
 <hr>
-<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L74" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/josephsmann/doubledot/blob/master/doubledot/ATMS_api.py#L134" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="atms_api.clean_data_dir" class="level3">
-<h3 class="anchored" data-anchor-id="atms_api.clean_data_dir">ATMS_api.clean_data_dir</h3>
+<section id="atms_api.clean_data_dir-1" class="level3">
+<h3 class="anchored" data-anchor-id="atms_api.clean_data_dir-1">ATMS_api.clean_data_dir</h3>
 <blockquote class="blockquote">
 <pre><code> ATMS_api.clean_data_dir (obj_s:str=None)</code></pre>
 </blockquote>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

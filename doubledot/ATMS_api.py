@@ -23,39 +23,8 @@ from pyisemail import is_email
 # %% ../ATMS_api.ipynb 3
 class ATMS_api:
     class_download_dir = os.path.join(os.getcwd(),'atms_download')
+    
 
-    def __init__(self):
-        self.telus_access_token = ATMS_api.get_atms_authentication()
-        self.obj_d = {}
-
-        # create unique download directory per instance
-        if not os.path.exists(ATMS_api.class_download_dir):
-            os.makedirs(ATMS_api.class_download_dir)
-            print(f"Directory 'atms_download' created successfully.")
-        else:
-            print(f"Directory 'atms_download' already exists.")
-
-        # generate a unique directory name with a random string
-        random_string = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=8))
-        self.download_dir  = os.path.join(ATMS_api.class_download_dir, random_string)
-
-        # Check if the new director already exists in the directory
-        while os.path.exists(self.download_dir):
-            # If the directory name already exists, generate a new one
-            random_string  = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=8))
-            self.download_dir  = os.path.join(ATMS_api.class_download_dir, random_string)
-        
-        os.mkdir(self.download_dir)
-        self.id = random_string
-        print("my id is", self.id)
-        
-    def list_files(self):
-        """ returns list of files in download folder """
-        print('id is:', self.id)
-        if os.path.exists(self.download_dir):
-            return os.listdir(self.download_dir)
-        else:
-            return []
 
     @staticmethod
     def delete_all_data():
@@ -70,16 +39,6 @@ class ATMS_api:
                 print(f"Directory '{dir_path}' deleted successfully.")  
         print(f"Directory '{ATMS_api.class_download_dir}' deleted successfully.")   
 
-    
-    def clean_data_dir(self,
-                       obj_s: str = None):
-        glob_s = os.path.join(self.download_dir, f"*{obj_s if obj_s else ''}*.json")
-        file_l = glob.glob(glob_s)
-        # print(file_l)
-        for file_path in file_l:
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-                print(f"File '{file_path}' deleted successfully.")
 
 
     @staticmethod    
@@ -109,6 +68,7 @@ class ATMS_api:
 
                 
     #make a function that takes a string and returns a string with the original semi-colon separated emails replaced with a list of emails with quotes around each
+
     @staticmethod
     def _mutate_email_list(s:str # a string like: ' ... "emails": [ ... "address": "pam.jenkins@blackgold.ca;don.what@this.com"}], ...  '
                             ) -> str : # the same string but with ' ... "address": ["pam.jenkins@blackgold.ca", "don.what@this.com"]} ...
@@ -127,197 +87,268 @@ class ATMS_api:
             return re.sub(matches.group(1), emails_list_s,s)
         else:
             return s
+
+
+
+# %% ../ATMS_api.ipynb 4
+@patch
+def __init__(self:ATMS_api):
+    self.telus_access_token = ATMS_api.get_atms_authentication()
+    self.obj_d = {}
+
+    # create unique download directory per instance
+    if not os.path.exists(ATMS_api.class_download_dir):
+        os.makedirs(ATMS_api.class_download_dir)
+        print(f"Directory 'atms_download' created successfully.")
+    else:
+        print(f"Directory 'atms_download' already exists.")
+
+    # generate a unique directory name with a random string
+    random_string = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=8))
+    self.download_dir  = os.path.join(ATMS_api.class_download_dir, random_string)
+
+    # Check if the new director already exists in the directory
+    while os.path.exists(self.download_dir):
+        # If the directory name already exists, generate a new one
+        random_string  = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=8))
+        self.download_dir  = os.path.join(ATMS_api.class_download_dir, random_string)
     
-    def get_telus_data(self, 
-                        obj: str, # telus endpoint 
-                        offset :int = 0, # the row to begin retrieval
-                        since_date: str = "", # optionally, the date from which to retrieve
-                        count :int =1000 # the number of rows to retrieve
-                        ):
-        """retrieve data from ATMS API, should be private method
+    os.mkdir(self.download_dir)
+    self.id = random_string
+    print("my id is", self.id)
 
-        Args:
-            obj (string): api endpoint to retrieve data from
-            offset (int, optional): first row to begin retrieval. Defaults to 0.
-            count (int, optional): number of rows to retrieve. Defaults to 1000.
-
-        Returns:
-            a dict with two keys: "response" and "done". 
-            "response" is the response object from the API call. "done" is a boolean indicating whether there are more records to retrieve.
-        """
-        vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}?offset={offset}&count={count}"
-        if len(since_date)> 0:
-            print("ATMS_api.get_telus_data: since_date is", since_date)
-            vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/lastupdate?count={count}&offset={offset}&updateDate={since_date}"
-
-        v_headers = {'Authorization': f"Bearer {self.telus_access_token}"}
-
-        print(vantix_data_url)    
-        # response = requests.request("GET", vantix_data_url, headers=v_headers, data={}).json()
-        response = requests.request("GET", vantix_data_url, headers=v_headers, data={})
-        
-        # inform caller we're done if we get fewer records than requested
-        # BUT there could still be an error in the response
-        return {"response": response, "done":  response.status_code!=200 or len(response.json()) < count}
-
-    def retrieve_and_clean(self, 
-                          obj : str = 'contacts', # ATMS object to retrieve
-                          initial_offset : int =0, # start retrieval at row initial_offset
-                          rows_per_batch :int =1000, # number records retrieved at once
-                          since_date : str = "", # if given, it will be used instead of `initial_offset` 
-                          max_rows :int = 0 # maximum number of rows to retrieve
-                          ):
-        """Retrieve data from ATMS API, clean data and write to file"""
-        self.write_obj_to_file(obj, initial_offset, rows_per_batch, since_date, max_rows)
-        self.clean_data_file(obj)
-        self.load_data_file_to_dict(obj)
-
-    def write_obj_to_file(self, 
-                          obj : str = 'contacts', # ATMS object to retrieve
-                          initial_offset : int =0, # start retrieval at row initial_offset
-                          rows_per_batch :int =1000, # number records retrieved at once
-                          since_date : str = "", # if given, it will be used instead of `initial_offset` 
-                          max_rows :int = 0 # maximum number of rows to retrieve
-                          ):
-        """Retrieve data from ATMS API and write to file
-           private method
-
-        Args:
-            obj (string): a valid ATMS REST API object
-            rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.
-        """
-        done = False
-        # offset is the starting row for the next batch
-        offset = initial_offset 
-
-        filename_s = f'atms_{obj}.json'
-        print('download dir is: ', self.download_dir)
-        file_path_s = os.path.join(self.download_dir, filename_s)
-        # print("Writing to file: ", file_path_s)
-        
-        # if max_rows is 0, we'll retrieve all rows
-        with open(file_path_s, 'w') as f:
-            f.write("[ \n")
-            num_rows_for_next_batch = min(rows_per_batch, max_rows ) if max_rows > 0 else rows_per_batch
-
-            #max_remaining_rows will be decremented as we retrieve batches
-            max_remaining_rows = max_rows if max_rows > 0 else rows_per_batch
-
-            #num_rows_for_next_batch will be 
-            num_rows_for_next_batch = min(rows_per_batch, max_remaining_rows) 
-            first_line = True
-            while (not done and (num_rows_for_next_batch > 0)):
-
-                # read another batch
-                
-                print(f"resp_d = self.get_telus_data({obj},offset={offset}, count= {num_rows_for_next_batch}, since_date={since_date})")
-                resp_d = self.get_telus_data(obj,offset=offset, count= num_rows_for_next_batch, since_date=since_date)
-                print("resp_d.keys(): ", resp_d.keys())
-                if resp_d['response'].status_code != 200:
-                    print(f"Error retrieving data: {resp_d['response'].status_code}")
-                    print(f"Error retrieving data: {resp_d['response'].json()}")
-                    raise ValueError(f"Error retrieving data: {resp_d['response'].status_code}")
-                obj_l = resp_d['response'].json()
-                done = resp_d['done'] ###### if done is set to True, we'll exit the loop
-                print(f"done: {done}, resp_d.json() : {resp_d['response']}")
-                
-                # assert len(obj_l)>0, f"response: {resp_d}"
-                try:
-                    s = json.dumps(obj_l[0])
-                except:
-                    print("Error converting to json: resp_d ", resp_d.json())
-                    print("Error converting to json: obj_l ", obj_l)
-                    raise ValueError(f"Error converting to json {obj_l}")
-                for o in obj_l[1:]:
-                    try:
-                        s += ',\n' +json.dumps(o) 
-                    except:
-                        print("Error converting to json: ", obj_l)
-                        raise ValueError(f"Error converting to json {o}")
-                # s = ",\n".join([json.dumps(o) for o in obj_l])
-                
-                if first_line:
-                    f.write(s)
-                    first_line = False
-                else:
-                    f.write(",\n"+s)
-                offset += rows_per_batch
-                max_remaining_rows = max_rows - (offset - initial_offset) if max_rows > 0 else rows_per_batch
-                num_rows_for_next_batch = min(rows_per_batch, max_remaining_rows)
-            f.write("\n]")
-    
-    
-    # def clean_obj_file(self, obj_s : str): 
-    def clean_data_file(self, 
-                        obj_s : str
-                        ): 
-        """ Massage formatting to work with Salesfore Bulk API
-        
-        """
-        # read original contacts file   
-        in_filename_s = f'atms_{obj_s}.json'
-        in_file_path_s = os.path.join(self.download_dir, in_filename_s)
-        print("cleaning_data_file - download dir is: ", self.download_dir)
-        # print("Cleaning file: ", in_file_path_s)
-        try:
-            with open(in_file_path_s,'r') as f:
-                # write modified contacts file 
-                out_filename_s = f'atms_transformed_{obj_s}.json'
-                out_file_path_s = os.path.join(self.download_dir, out_filename_s)
-                print("creating file: ", out_file_path_s)
-                with open(out_file_path_s,'w') as f2:
-                    s = f.read()
-                    for l in s.split('\n'):
-                        # remove "O`Brien" problem
-                        l2 = re.sub('\u2019',"'",l)
-                        # fix emails
-                        new_s = ATMS_api._mutate_email_list(l2)+'\n'
-                        f2.write(new_s)
-                print(f"Finished cleaning {in_filename_s} -> {out_file_path_s}")
-        except FileNotFoundError:
-            print('the files in our download dir:', os.listdir(self.download_dir) )
-            print('our in_file_path: ', in_file_path_s)
-               
-    
-    def load_data_file_to_dict(
-            self,
-            obj_s : str # ATMS object. eg. contacts|items|memberships|membership
-            ):
-            """ `load_data_file_to_dict` will attempt to load a cleaned json file into a dict for future parsing. 
-            If the cleaned file doesn't exist, it will look for a dirty one to clean.
-            If the dirty once doesn't exist, it will raise an exception. It won't be downloaded because we don't know how much to get.
-            
-            """
-            file_name_s = f'atms_transformed_{obj_s}.json'
-            file_path_s = os.path.join(self.download_dir, file_name_s)
-            print('ATMS_api - Attempting to load: ', file_path_s, ' into dict')
-            data=""
-            try:
-                with open(file_path_s, 'r') as f:
-                    data = f.read()
-            except FileNotFoundError:  # clean file not found
-                print("File not found. Check that the dirty file is there")
-                dirty_file_name_s = f'atms_{obj_s}.json'
-                dirty_file_path_s = os.path.join(self.download_dir, dirty_file_name_s)
-
-                if os.path.exists(dirty_file_path_s):
-                    print(f"found dirty file: {dirty_file_path_s}")
-                    self.clean_data_file(obj_s)
-                    with open(file_path_s,'r') as f:
-                        data = f.read()
-                else:
-                    raise FileNotFoundError # we give up
-            finally: # this will be executed regardless of first 'try' failing or not
-                if len(data) > 0:
-                    try: # data might be buggy
-                        self.obj_d[obj_s] = json.loads(data)
-                        print(f"ATMS_api: loaded {len(self.obj_d[obj_s])} {obj_s} into dict")
-                    except json.JSONDecodeError:
-                        print("We've got buggy data, or something")
-                        raise Exception('Data is not JSON formatted')
-                # assert obj_s in self.obj_d, f" '{obj_s}' not in {self.obj_d.keys()}"
-
-            
 
 # %% ../ATMS_api.ipynb 5
+@patch    
+def list_files(self:ATMS_api):
+    """ returns list of files in download folder """
+    print('id is:', self.id)
+    if os.path.exists(self.download_dir):
+        return os.listdir(self.download_dir)
+    else:
+        return []
+
+
+# %% ../ATMS_api.ipynb 6
+@patch
+def clean_data_dir(self:ATMS_api,
+                    obj_s: str = None):
+    glob_s = os.path.join(self.download_dir, f"*{obj_s if obj_s else ''}*.json")
+    file_l = glob.glob(glob_s)
+    # print(file_l)
+    for file_path in file_l:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            print(f"File '{file_path}' deleted successfully.")
+
+
+# %% ../ATMS_api.ipynb 7
+@patch
+def get_telus_data(self:ATMS_api, 
+                    obj: str, # telus endpoint 
+                    offset :int = 0, # the row to begin retrieval
+                    since_date: str = "", # optionally, the date from which to retrieve
+                    count :int =1000 # the number of rows to retrieve
+                    ):
+    """retrieve data from ATMS API, should be private method
+
+    Args:
+        obj (string): api endpoint to retrieve data from
+        offset (int, optional): first row to begin retrieval. Defaults to 0.
+        count (int, optional): number of rows to retrieve. Defaults to 1000.
+
+    Returns:
+        a dict with two keys: "response" and "done". 
+        "response" is the response object from the API call. "done" is a boolean indicating whether there are more records to retrieve.
+    """
+    vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}?offset={offset}&count={count}"
+    if len(since_date)> 0:
+        print("ATMS_api.get_telus_data: since_date is", since_date)
+        vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/lastupdate?count={count}&offset={offset}&updateDate={since_date}"
+
+    v_headers = {'Authorization': f"Bearer {self.telus_access_token}"}
+
+    print(vantix_data_url)    
+    # response = requests.request("GET", vantix_data_url, headers=v_headers, data={}).json()
+    response = requests.request("GET", vantix_data_url, headers=v_headers, data={})
+    
+    # inform caller we're done if we get fewer records than requested
+    # BUT there could still be an error in the response
+    return {"response": response, "done":  response.status_code!=200 or len(response.json()) < count}
+
+
+
+# %% ../ATMS_api.ipynb 8
+@patch
+def retrieve_and_clean(self:ATMS_api, 
+                        obj : str = 'contacts', # ATMS object to retrieve
+                        initial_offset : int =0, # start retrieval at row initial_offset
+                        rows_per_batch :int =1000, # number records retrieved at once
+                        since_date : str = "", # if given, it will be used instead of `initial_offset` 
+                        max_rows :int = 0 # maximum number of rows to retrieve
+                        ):
+    """Retrieve data from ATMS API, clean data and write to file"""
+    self.write_obj_to_file(obj, initial_offset, rows_per_batch, since_date, max_rows)
+    self.clean_data_file(obj)
+    self.load_data_file_to_dict(obj)
+
+
+
+# %% ../ATMS_api.ipynb 9
+@patch
+def write_obj_to_file(self:ATMS_api, 
+                        obj : str = 'contacts', # ATMS object to retrieve
+                        initial_offset : int =0, # start retrieval at row initial_offset
+                        rows_per_batch :int =1000, # number records retrieved at once
+                        since_date : str = "", # if given, it will be used instead of `initial_offset` 
+                        max_rows :int = 0 # maximum number of rows to retrieve
+                        ):
+    """Retrieve data from ATMS API and write to file
+        private method
+
+    Args:
+        obj (string): a valid ATMS REST API object
+        rows_per_batch (int, optional): maximum number of rows to retieve. Defaults to 1000.
+    """
+    done = False
+    # offset is the starting row for the next batch
+    offset = initial_offset 
+
+    filename_s = f'atms_{obj}.json'
+    print('download dir is: ', self.download_dir)
+    file_path_s = os.path.join(self.download_dir, filename_s)
+    # print("Writing to file: ", file_path_s)
+    
+    # if max_rows is 0, we'll retrieve all rows
+    with open(file_path_s, 'w') as f:
+        f.write("[ \n")
+        num_rows_for_next_batch = min(rows_per_batch, max_rows ) if max_rows > 0 else rows_per_batch
+
+        #max_remaining_rows will be decremented as we retrieve batches
+        max_remaining_rows = max_rows if max_rows > 0 else rows_per_batch
+
+        #num_rows_for_next_batch will be 
+        num_rows_for_next_batch = min(rows_per_batch, max_remaining_rows) 
+        first_line = True
+        while (not done and (num_rows_for_next_batch > 0)):
+
+            # read another batch
+            
+            print(f"resp_d = self.get_telus_data({obj},offset={offset}, count= {num_rows_for_next_batch}, since_date={since_date})")
+            resp_d = self.get_telus_data(obj,offset=offset, count= num_rows_for_next_batch, since_date=since_date)
+            print("resp_d.keys(): ", resp_d.keys())
+            if resp_d['response'].status_code != 200:
+                print(f"Error retrieving data: {resp_d['response'].status_code}")
+                print(f"Error retrieving data: {resp_d['response'].json()}")
+                raise ValueError(f"Error retrieving data: {resp_d['response'].status_code}")
+            obj_l = resp_d['response'].json()
+            done = resp_d['done'] ###### if done is set to True, we'll exit the loop
+            print(f"done: {done}, resp_d.json() : {resp_d['response']}")
+            
+            # assert len(obj_l)>0, f"response: {resp_d}"
+            try:
+                s = json.dumps(obj_l[0])
+            except:
+                print("Error converting to json: resp_d ", resp_d.json())
+                print("Error converting to json: obj_l ", obj_l)
+                raise ValueError(f"Error converting to json {obj_l}")
+            for o in obj_l[1:]:
+                try:
+                    s += ',\n' +json.dumps(o) 
+                except:
+                    print("Error converting to json: ", obj_l)
+                    raise ValueError(f"Error converting to json {o}")
+            # s = ",\n".join([json.dumps(o) for o in obj_l])
+            
+            if first_line:
+                f.write(s)
+                first_line = False
+            else:
+                f.write(",\n"+s)
+            offset += rows_per_batch
+            max_remaining_rows = max_rows - (offset - initial_offset) if max_rows > 0 else rows_per_batch
+            num_rows_for_next_batch = min(rows_per_batch, max_remaining_rows)
+        f.write("\n]")
+
+
+
+
+# %% ../ATMS_api.ipynb 11
+@patch
+def clean_data_file(self:ATMS_api, 
+                    obj_s : str
+                    ): 
+    """ Massage formatting to work with Salesfore Bulk API
+    
+    """
+    # read original contacts file   
+    in_filename_s = f'atms_{obj_s}.json'
+    in_file_path_s = os.path.join(self.download_dir, in_filename_s)
+    print("cleaning_data_file - download dir is: ", self.download_dir)
+    # print("Cleaning file: ", in_file_path_s)
+    try:
+        with open(in_file_path_s,'r') as f:
+            # write modified contacts file 
+            out_filename_s = f'atms_transformed_{obj_s}.json'
+            out_file_path_s = os.path.join(self.download_dir, out_filename_s)
+            print("creating file: ", out_file_path_s)
+            with open(out_file_path_s,'w') as f2:
+                s = f.read()
+                for l in s.split('\n'):
+                    # remove "O`Brien" problem
+                    l2 = re.sub('\u2019',"'",l)
+                    # fix emails
+                    new_s = ATMS_api._mutate_email_list(l2)+'\n'
+                    f2.write(new_s)
+            print(f"Finished cleaning {in_filename_s} -> {out_file_path_s}")
+    except FileNotFoundError:
+        print('the files in our download dir:', os.listdir(self.download_dir) )
+        print('our in_file_path: ', in_file_path_s)
+            
+
+
+
+# %% ../ATMS_api.ipynb 13
+@patch
+def load_data_file_to_dict(
+        self:ATMS_api,
+        obj_s : str # ATMS object. eg. contacts|items|memberships|membership
+        ):
+        """ `load_data_file_to_dict` will attempt to load a cleaned json file into a dict for future parsing. 
+        If the cleaned file doesn't exist, it will look for a dirty one to clean.
+        If the dirty once doesn't exist, it will raise an exception. It won't be downloaded because we don't know how much to get.
+        
+        """
+        file_name_s = f'atms_transformed_{obj_s}.json'
+        file_path_s = os.path.join(self.download_dir, file_name_s)
+        print('ATMS_api - Attempting to load: ', file_path_s, ' into dict')
+        data=""
+        try:
+            with open(file_path_s, 'r') as f:
+                data = f.read()
+        except FileNotFoundError:  # clean file not found
+            print("File not found. Check that the dirty file is there")
+            dirty_file_name_s = f'atms_{obj_s}.json'
+            dirty_file_path_s = os.path.join(self.download_dir, dirty_file_name_s)
+
+            if os.path.exists(dirty_file_path_s):
+                print(f"found dirty file: {dirty_file_path_s}")
+                self.clean_data_file(obj_s)
+                with open(file_path_s,'r') as f:
+                    data = f.read()
+            else:
+                raise FileNotFoundError # we give up
+        finally: # this will be executed regardless of first 'try' failing or not
+            if len(data) > 0:
+                try: # data might be buggy
+                    self.obj_d[obj_s] = json.loads(data)
+                    print(f"ATMS_api: loaded {len(self.obj_d[obj_s])} {obj_s} into dict")
+                except json.JSONDecodeError:
+                    print("We've got buggy data, or something")
+                    raise Exception('Data is not JSON formatted')
+            # assert obj_s in self.obj_d, f" '{obj_s}' not in {self.obj_d.keys()}"
+
+        
+
+# %% ../ATMS_api.ipynb 19
 "playtime"

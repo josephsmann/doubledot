@@ -12,7 +12,7 @@ pip install doubledot
 graph TD
     A{ATMS Database} --&gt;|ATMS_api.retrieve_and_clean|B(ATMS_api - instance_download_dir)
     B --&gt;|load_data_file_to_dict|C[ATMS_api - dict]
-    C --&gt;|process_object| D(Salesforce - class_download_dir) --&gt;|create_job, upload_csv, close_job | E{Salesforce Database}
+    C --&gt;|process_object| D(Salesforce - class_download_dir) --&gt;|execute_job| E{Salesforce Database}
     
 
 ```
@@ -33,22 +33,28 @@ atms = ATMS_api()
 ```
 
     Directory 'atms_download' already exists.
-    my id is ha8bcu7t
+    Directory 'atms_download' already exists.
+    my id is n3mpdwch
 
 ``` python
 atms.write_obj_to_file('contacts', max_rows=10, since_date='2022-01-01')
 ```
 
-    download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t
+    download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/n3mpdwch
     resp_d = self.get_telus_data(contacts,offset=0, count= 10, since_date=2022-01-01)
+    ATMS_api.get_telus_data: since_date is 2022-01-01
+    http://crm-api-telus.atmsplus.com/api/contacts/lastupdate?count=10&offset=0&updateDate=2022-01-01
+    resp_d.keys():  dict_keys(['response', 'done'])
+    done: False, resp_d.json() : <Response [200]>
 
 ``` python
 atms.load_data_file_to_dict('contacts')
 ```
 
-    Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_transformed_contacts.json
+    ATMS_api - Attempting to load:  /Users/josephmann/Documents/Github/doubledot/atms_download/n3mpdwch/atms_transformed_contacts.json  into dict
     File not found. Check that the dirty file is there
-    found dirty file: /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_contacts.json
-    cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t
-    creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_transformed_contacts.json
-    Finished cleaning atms_contacts.json -> /Users/josephmann/Documents/Github/doubledot/atms_download/ha8bcu7t/atms_transformed_contacts.json
+    found dirty file: /Users/josephmann/Documents/Github/doubledot/atms_download/n3mpdwch/atms_contacts.json
+    cleaning_data_file - download dir is:  /Users/josephmann/Documents/Github/doubledot/atms_download/n3mpdwch
+    creating file:  /Users/josephmann/Documents/Github/doubledot/atms_download/n3mpdwch/atms_transformed_contacts.json
+    Finished cleaning atms_contacts.json -> /Users/josephmann/Documents/Github/doubledot/atms_download/n3mpdwch/atms_transformed_contacts.json
+    ATMS_api: loaded 10 contacts into dict
