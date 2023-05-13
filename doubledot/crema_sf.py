@@ -18,7 +18,7 @@ import os
 from doubledot import ATMS_api
 import time
 
-# %% ../crema_sf.ipynb 4
+# %% ../crema_sf.ipynb 5
 ## Module for Salesforce API
 
 class Salesforce:
@@ -38,27 +38,27 @@ class Salesforce:
         else:
             print(f"Directory 'atms_download' already exists.")
 
-    def get_token_with_REST(self ):
-        """retieve the access token from Salesforce
+    # def get_token_with_REST(self ):
+    #     """retieve the access token from Salesforce
 
-        Returns:
-            string: the access token 
-        """
-        with open('secrets.json') as f:
-            secrets = json.load(f)
+    #     Returns:
+    #         string: the access token 
+    #     """
+    #     with open('secrets.json') as f:
+    #         secrets = json.load(f)
         
-        DOMAIN = secrets['instance']
-        payload = {
-            'grant_type': 'password',
-            'client_id': secrets['client_id'],
-            'client_secret': secrets['client_secret'],
-            'username': secrets['username'],
-            'password': secrets['password'] + secrets['security_token']
-        }
-        oauth_url = f'{DOMAIN}/services/oauth2/token'
+    #     DOMAIN = secrets['instance']
+    #     payload = {
+    #         'grant_type': 'password',
+    #         'client_id': secrets['client_id'],
+    #         'client_secret': secrets['client_secret'],
+    #         'username': secrets['username'],
+    #         'password': secrets['password'] + secrets['security_token']
+    #     }
+    #     oauth_url = f'{DOMAIN}/services/oauth2/token'
 
-        auth_response = requests.post(oauth_url, data=payload)
-        return auth_response.json().get('access_token') ######## <<<<<<<<<<<<<<<< .       
+    #     auth_response = requests.post(oauth_url, data=payload)
+    #     return auth_response.json().get('access_token') ######## <<<<<<<<<<<<<<<< .       
 
 
     @property
@@ -81,7 +81,7 @@ class Salesforce:
 show_doc(Salesforce.sf_access_token)
    
 
-# %% ../crema_sf.ipynb 5
+# %% ../crema_sf.ipynb 7
 @patch
 def get_token_with_REST(self: Salesforce):
     """retieve the access token from Salesforce
@@ -107,7 +107,7 @@ def get_token_with_REST(self: Salesforce):
 
 
 
-# %% ../crema_sf.ipynb 6
+# %% ../crema_sf.ipynb 9
 @patch
 def test_token(self: Salesforce):
     """Verify that token is still valid. If it isn't, it attempts to get a new one.
@@ -125,7 +125,7 @@ def test_token(self: Salesforce):
     
 
 
-# %% ../crema_sf.ipynb 7
+# %% ../crema_sf.ipynb 11
 @patch
 def create_job(self: Salesforce, 
                 sf_object: str ='Contact', # the Salesforce object were going to operate on. 
@@ -183,7 +183,7 @@ def create_job(self: Salesforce,
     return response 
 
 
-# %% ../crema_sf.ipynb 8
+# %% ../crema_sf.ipynb 13
 @patch
 def upload_csv(self : Salesforce, 
                 obj_s: str = "", # Salesforce object to upload 
@@ -227,7 +227,7 @@ def upload_csv(self : Salesforce,
     return response
    
 
-# %% ../crema_sf.ipynb 9
+# %% ../crema_sf.ipynb 15
 @patch
 def close_job(self: Salesforce):
     # close the job (from Postman)
@@ -247,7 +247,7 @@ def close_job(self: Salesforce):
     return response.json()
      
 
-# %% ../crema_sf.ipynb 10
+# %% ../crema_sf.ipynb 17
 # get job status (from Postman)
 @patch
 def job_status(self: Salesforce):
@@ -262,7 +262,7 @@ def job_status(self: Salesforce):
 
 
 
-# %% ../crema_sf.ipynb 11
+# %% ../crema_sf.ipynb 19
 @patch
 def successful_results(self : Salesforce):
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/successfulResults"
@@ -277,7 +277,7 @@ def successful_results(self : Salesforce):
     return response
 
 
-# %% ../crema_sf.ipynb 12
+# %% ../crema_sf.ipynb 21
 @patch
 def failed_results(self: Salesforce):
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/failedResults"
@@ -293,7 +293,7 @@ def failed_results(self: Salesforce):
     return response
 
 
-# %% ../crema_sf.ipynb 13
+# %% ../crema_sf.ipynb 23
 @patch
 def get_sf_object_ids(self: Salesforce, 
                       object: str = 'Contact' # REST endpoint for data object
@@ -321,7 +321,7 @@ def get_sf_object_ids(self: Salesforce,
     return object_ids
 
 
-# %% ../crema_sf.ipynb 14
+# %% ../crema_sf.ipynb 25
 @patch
 def delete_sf_objects(self: Salesforce, 
                       obj_s: str = 'Contact'
@@ -341,7 +341,7 @@ def delete_sf_objects(self: Salesforce,
         
 
 
-# %% ../crema_sf.ipynb 15
+# %% ../crema_sf.ipynb 27
 @patch
 def test_sf_object_load_and_delete(self: Salesforce, 
         sf_object_s : str = None, # Salesforce API endpoint
@@ -351,6 +351,7 @@ def test_sf_object_load_and_delete(self: Salesforce,
     """Test loading a Salesforce object with data from a local file"""
     assert sf_object_s
     assert input_file_s
+    assert False, "This function hasn't been maintained"
 
     # sf.create_job('MembershipMembers__c', contentType='CSV')
     self.create_job(sf_object_s, contentType='CSV')
@@ -370,7 +371,7 @@ def test_sf_object_load_and_delete(self: Salesforce,
     if remove_sf_objs:
         self.delete_sf_objects('membershipTerm__c')
 
-# %% ../crema_sf.ipynb 16
+# %% ../crema_sf.ipynb 29
  #### modify so parent fields use correct shit 
 #### maybe use a spreadsheet to make life easier 
 # Name,Mother_Of_Child__r.External_ID__c
@@ -434,7 +435,7 @@ def process_memberships(self: Salesforce ):
                 f.write('\t'.join([str(v) if v else "" for v in d.values()]) + '\n')
     
 
-# %% ../crema_sf.ipynb 17
+# %% ../crema_sf.ipynb 31
 search_s = "[].{LastName: organizationName,\
     MailingPostalCode: addresses[0].postalZipCode,\
     MailingCity: addresses[0].city,\
@@ -481,14 +482,14 @@ def process_contacts(self: Salesforce ):
             l = [escape_quotes(str(v)) if v else " " for v in item.values()]
             f.write(columnDelimiter.join(l)+'\n')
 
-# %% ../crema_sf.ipynb 18
+# %% ../crema_sf.ipynb 33
 @patch
 def execute_job(self: Salesforce, 
         sf_object_s : str = None, # Salesforce API object name
         operation : str = None, # REST operation, e.g. insert, upsert, delete
         max_trys : int = 20, # max number of times to try to get job status
         external_id : str = 'External_Id__c', # name of the field that is the unique identifier to ATMS
-        use_ATMS_data : bool = True, # if True, use data from ATMS object, otherwise use data from local file
+        use_ATMS_data : bool = True, # if True, update SF data directly from ATMS data, otherwise use previous data
         # **kwargs : dict # additional parameters to pass to the REST API
         ):
     """Test loading a Salesforce object with data from a local file"""
