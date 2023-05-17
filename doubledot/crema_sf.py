@@ -199,7 +199,7 @@ def upload_csv(self : Salesforce,
     #     assert False, "File not found"
 
 
-    assert obj_s in ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c']
+    assert obj_s in ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c', 'Sale__c', 'Ticket__c', 'SaleDetail__c']
 
     print(f"Uploading job {self.bulk_job_id} of object {obj_s}")
 
@@ -371,7 +371,18 @@ def test_sf_object_load_and_delete(self: Salesforce,
     if remove_sf_objs:
         self.delete_sf_objects('membershipTerm__c')
 
-# %% ../crema_sf.ipynb 29
+# %% ../crema_sf.ipynb 28
+def escape_quotes(text):
+    # Escape single quotes
+    # text = re.sub(r"\'", r"\\'", text)
+    text = re.sub(r"\'", r"_", text)
+    # Escape double quotes
+    text = re.sub(r'\"', r'_', text)
+    # text = re.sub(r',', r'*', text) ## shouldn't be necessary with tab delimiter
+    # text = re.sub(r'\"', r'\\"', text)
+    return text.strip()
+
+# %% ../crema_sf.ipynb 30
  #### modify so parent fields use correct shit 
 #### maybe use a spreadsheet to make life easier 
 # Name,Mother_Of_Child__r.External_ID__c
@@ -435,7 +446,119 @@ def process_memberships(self: Salesforce ):
                 f.write('\t'.join([str(v) if v else "" for v in d.values()]) + '\n')
     
 
-# %% ../crema_sf.ipynb 31
+# %% ../crema_sf.ipynb 32
+@patch
+def process_sales(self: Salesforce ):
+    search_s = "[].{saleKey__c : saleKey,\
+            saleAmount__c : saleAmount,\
+            paymentAmount__c : paymentAmount,\
+            saleDate__c : saleDate,\
+            active__c : active,\
+            terminalKey__c : terminalKey,\
+            eventDate__c : eventDate,\
+            booking_bookingId__c : booking_bookingId,\
+            booking_bookingContactKey__c : booking_bookingContactKey,\
+            booking_bookingContactType__c : booking_bookingContactType,\
+            booking_contactKey__c : booking_contactKey,\
+            booking_contactIndividualKey__c : booking_contactIndividualKey,\
+            booking_contactOrganizationKey__c : booking_contactOrganizationKey,\
+            booking_displayName__c : booking_displayName,\
+            booking_firstName__c : booking_firstName,\
+            booking_lastName__c : booking_lastName,\
+            booking_email__c : booking_email,\
+            booking_phone__c : booking_phone}"
+    
+    assert 'sales' in self.atms.obj_d, f"sales not in atms.obj_d {self.atms.obj_d.keys()}"
+    dict_l = jp.search(search_s, self.atms.obj_d['sales'])
+
+    file_path_s = os.path.join(Salesforce.class_download_dir, 'Sale__c.csv')
+
+    print(f"Salesforce: Writing {len(dict_l)} 'Sales' objects to {file_path_s}")
+    columnDelimiter = '\t'
+    with open(file_path_s, 'w') as f:
+        header = columnDelimiter.join(dict_l[0].keys())
+        f.write(header+'\n')
+        for item in dict_l:
+            # changed this from single space to empty string if null
+            l = [escape_quotes(str(v)) if v else "" for v in item.values()]
+            f.write(columnDelimiter.join(l)+'\n')
+
+
+        
+
+# %% ../crema_sf.ipynb 34
+@patch
+def process_tickets(self: Salesforce ):
+    search_s = "[].tickets[].{ticketKey__c : ticketKey,\
+        saleKey__r_1_saleKey__c : saleKey,\
+        saleDetailKey__r_1_saleDetailId__c : saleDetailKey,\
+        itemDescription__c : itemDescription,\
+        ticketDisplay__c : ticketDisplay}"
+        # scheduleDate__c : scheduleDate,\
+        # scheduleEndDate__c : scheduleEndDate,\
+
+    assert 'sales' in self.atms.obj_d, f"sales not in atms.obj_d {self.atms.obj_d.keys()}"
+    dict_l = jp.search(search_s, self.atms.obj_d['sales'])
+
+    file_path_s = os.path.join(Salesforce.class_download_dir, 'Ticket__c.csv')
+
+    print(f"Salesforce: Writing {len(dict_l)} 'Ticket' objects to {file_path_s}")
+    columnDelimiter = '\t'
+    with open(file_path_s, 'w') as f:
+        # hack to create header with a dot in it, jmespath won't do it
+        header = '\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()])
+        f.write(header + '\n') # header
+        for item in dict_l:
+            # changed this from single space to empty string if null
+            l = [escape_quotes(str(v)) if v else "" for v in item.values()]
+            f.write(columnDelimiter.join(l)+'\n')
+
+
+        
+
+# %% ../crema_sf.ipynb 36
+@patch
+def process_saleDetails(self: Salesforce ):
+    search_s = "[].saleDetails[].{\
+        saleDetailId__c : saleDetailId,\
+        itemKey__c : itemKey,\
+        scheduleKey__c : scheduleKey,\
+        rateKey__c : rateKey,\
+        categoryKey__c : categoryKey,\
+        itemCategory__c : itemCategory,\
+        pricingPriceKey__c : pricingPriceKey,\
+        itemPrice__c : itemPrice,\
+        itemTotal__c : itemTotal,\
+        couponTotal__c : couponTotal,\
+        discountTotal__c : discountTotal,\
+        total__c : total,\
+        revenueDate__c : revenueDate,\
+        refundReason__c : refundReason,\
+        refundReasonKey__c : refundReasonKey,\
+        systemPriceOverride__c : systemPriceOverride,\
+        MembershipTermKey__r_1_MembershipTermId__c : MembershipTermKey,\
+        saleId__r_1_saleKey__c : saleId}" 
+    
+    assert 'sales' in self.atms.obj_d, f"sales not in atms.obj_d {self.atms.obj_d.keys()}"
+    dict_l = jp.search(search_s, self.atms.obj_d['sales'])
+
+    file_path_s = os.path.join(Salesforce.class_download_dir, 'SaleDetail__c.csv')
+
+    print(f"Salesforce: Writing {len(dict_l)} 'SaleDetail' objects to {file_path_s}")
+    columnDelimiter = '\t'
+    with open(file_path_s, 'w') as f:
+        # hack to create header with a dot in it, jmespath won't do it
+        header = '\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()])
+        f.write(header + '\n') # header
+        for item in dict_l:
+            # changed this from single space to empty string if null
+            l = [escape_quotes(str(v)) if v else "" for v in item.values()]
+            f.write(columnDelimiter.join(l)+'\n')
+
+
+        
+
+# %% ../crema_sf.ipynb 38
 search_s = "[].{LastName: organizationName,\
     MailingPostalCode: addresses[0].postalZipCode,\
     MailingCity: addresses[0].city,\
@@ -447,15 +570,7 @@ search_s = "[].{LastName: organizationName,\
 
 import re
 
-def escape_quotes(text):
-    # Escape single quotes
-    # text = re.sub(r"\'", r"\\'", text)
-    text = re.sub(r"\'", r"_", text)
-    # Escape double quotes
-    text = re.sub(r'\"', r'_', text)
-    # text = re.sub(r',', r'*', text) ## shouldn't be necessary with tab delimiter
-    # text = re.sub(r'\"', r'\\"', text)
-    return text.strip()
+
 
 @patch
 def process_contacts(self: Salesforce ):
@@ -482,7 +597,7 @@ def process_contacts(self: Salesforce ):
             l = [escape_quotes(str(v)) if v else " " for v in item.values()]
             f.write(columnDelimiter.join(l)+'\n')
 
-# %% ../crema_sf.ipynb 33
+# %% ../crema_sf.ipynb 40
 @patch
 def execute_job(self: Salesforce, 
         sf_object_s : str = None, # Salesforce API object name
@@ -494,13 +609,26 @@ def execute_job(self: Salesforce,
         ):
     """Test loading a Salesforce object with data from a local file"""
     print("execute_job")
-    if sf_object_s not in ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c']:
-        print("sf_object_s must be one of Contact, Membership__c, MembershipTerm__c, MembershipMember__c")
+    valid_obj_l = ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c', 'Sale__c', 'Ticket__c','SaleDetail__c']
+    if sf_object_s not in valid_obj_l:
+        print(f"sf_object_s must be one of {', '.join(valid_obj_l)}")
         return
     
     if operation not in ['insert', 'upsert', 'delete']:
         print("operation must be one of insert, update, delete")
         return
+    
+    if sf_object_s == 'SaleDetail__c' and use_ATMS_data:
+        # this creates a file Sales__c.csv in the class_download_dir
+        self.process_saleDetails()
+
+    if sf_object_s == 'Ticket__c' and use_ATMS_data:
+        # this creates a file Sales__c.csv in the class_download_dir
+        self.process_tickets()
+
+    if sf_object_s == 'Sale__c' and use_ATMS_data:
+        # this creates a file Sales__c.csv in the class_download_dir
+        self.process_sales()
     
     if sf_object_s == 'Contact' and use_ATMS_data:
         # this creates a file Contact.csv in the class_download_dir

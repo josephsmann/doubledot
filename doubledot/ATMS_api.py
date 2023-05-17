@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['ATMS_api']
 
-# %% ../ATMS_api.ipynb 2
+# %% ../ATMS_api.ipynb 3
 from nbdev.showdoc import *
 import requests
 import json
@@ -20,7 +20,7 @@ import time
 import random
 from pyisemail import is_email
 
-# %% ../ATMS_api.ipynb 3
+# %% ../ATMS_api.ipynb 4
 class ATMS_api:
     class_download_dir = os.path.join(os.getcwd(),'atms_download')
     
@@ -90,7 +90,7 @@ class ATMS_api:
 
 
 
-# %% ../ATMS_api.ipynb 4
+# %% ../ATMS_api.ipynb 6
 @patch
 def __init__(self:ATMS_api):
     self.telus_access_token = ATMS_api.get_atms_authentication()
@@ -118,7 +118,7 @@ def __init__(self:ATMS_api):
     print("my id is", self.id)
 
 
-# %% ../ATMS_api.ipynb 5
+# %% ../ATMS_api.ipynb 8
 @patch    
 def list_files(self:ATMS_api):
     """ returns list of files in download folder """
@@ -129,7 +129,7 @@ def list_files(self:ATMS_api):
         return []
 
 
-# %% ../ATMS_api.ipynb 6
+# %% ../ATMS_api.ipynb 10
 @patch
 def clean_data_dir(self:ATMS_api,
                     obj_s: str = None):
@@ -142,13 +142,14 @@ def clean_data_dir(self:ATMS_api,
             print(f"File '{file_path}' deleted successfully.")
 
 
-# %% ../ATMS_api.ipynb 7
+# %% ../ATMS_api.ipynb 12
 @patch
 def get_telus_data(self:ATMS_api, 
                     obj: str, # telus endpoint 
                     offset :int = 0, # the row to begin retrieval
                     since_date: str = "", # optionally, the date from which to retrieve
-                    count :int =1000 # the number of rows to retrieve
+                    count :int =1, # the number of rows to retrieve
+                    contact_id: int = None # the contact id to retrieve
                     ):
     """retrieve data from ATMS API, should be private method
 
@@ -165,6 +166,17 @@ def get_telus_data(self:ATMS_api,
     if len(since_date)> 0:
         print("ATMS_api.get_telus_data: since_date is", since_date)
         vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/lastupdate?count={count}&offset={offset}&updateDate={since_date}"
+    
+    if contact_id:
+        ## if contact id and obj == 'contacts' everything else is ignored
+        if obj=='contacts':
+            vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/{contact_id}"
+
+        ## if contact id everything else is ignored
+        elif obj=='sales' or obj=='memberships':
+            vantix_data_url = f"http://crm-api-telus.atmsplus.com/api/{obj}/contact/{contact_id}"
+        else:
+            raise ValueError("contact_id is only valid for 'contacts' and 'sales'")
 
     v_headers = {'Authorization': f"Bearer {self.telus_access_token}"}
 
@@ -178,7 +190,7 @@ def get_telus_data(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 8
+# %% ../ATMS_api.ipynb 14
 @patch
 def retrieve_and_clean(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -194,7 +206,7 @@ def retrieve_and_clean(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 9
+# %% ../ATMS_api.ipynb 16
 @patch
 def write_obj_to_file(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -273,7 +285,7 @@ def write_obj_to_file(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 11
+# %% ../ATMS_api.ipynb 18
 @patch
 def clean_data_file(self:ATMS_api, 
                     obj_s : str
@@ -308,7 +320,7 @@ def clean_data_file(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 13
+# %% ../ATMS_api.ipynb 20
 @patch
 def load_data_file_to_dict(
         self:ATMS_api,
@@ -350,5 +362,5 @@ def load_data_file_to_dict(
 
         
 
-# %% ../ATMS_api.ipynb 19
+# %% ../ATMS_api.ipynb 26
 "playtime"
