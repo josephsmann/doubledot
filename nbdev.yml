@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "doubledot"
+  site-url: "https://josephsmann.github.io/doubledot"
+  description: "running out of steam"
+  repo-branch: master
+  repo-url: "https://github.com/josephsmann/doubledot"

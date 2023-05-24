@@ -665,7 +665,7 @@ def get_fields(self:Salesforce,
                obj:str # the name of the Salesforce object
                ) -> requests.Response:
     """Get the fields for a given Salesforce object"""
-    sf_headers = { 'Authorization': f"Bearer {sf._sf_access_token}", 'Content-Type': 'application/json' }
+    sf_headers = { 'Authorization': f"Bearer {self._sf_access_token}", 'Content-Type': 'application/json' }
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/sobjects/{obj}/describe"
     # print(url)
     response = requests.request("GET", url, headers=sf_headers)
@@ -781,7 +781,7 @@ def reduce_to_referenced_rows(
 
 # i want to write these to file and send them to salesforce
 
-# %% ../crema_sf.ipynb 57
+# %% ../crema_sf.ipynb 56
 # starting from atms object dictionary, create a dictionary of dataframes for all SF objects
 # using this dictionary df_d, we can then remove duplicates of rows with same external_id
 # and remove any row which has a lookup to a non-existent foreign key
@@ -837,7 +837,7 @@ def perfect_data(self: Salesforce) -> dict:
     df2_d = reduce_to_referenced_rows(df_d)
     return df2_d
 
-# %% ../crema_sf.ipynb 59
+# %% ../crema_sf.ipynb 58
 @patch
 def write_dict_to_csv(
     self: Salesforce,
@@ -850,7 +850,7 @@ def write_dict_to_csv(
             f.write(df2_d[k].to_csv(sep='\t', index=False))
 
 
-# %% ../crema_sf.ipynb 61
+# %% ../crema_sf.ipynb 60
 @patch
 def upload_csv_to_sf(
     self : Salesforce,

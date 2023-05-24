@@ -22,7 +22,7 @@ from pyisemail import is_email
 from dataclasses import dataclass, field
 from collections import namedtuple, UserDict
 
-# %% ../ATMS_api.ipynb 5
+# %% ../ATMS_api.ipynb 4
 class ATMS_d(dict):
     """A dictionary that allows dot notation access to its keys and values.
     """
@@ -71,24 +71,7 @@ class ATMS_d(dict):
         return '<ATMS ' + dict.__repr__(self) + '>'
 
 
-# %% ../ATMS_api.ipynb 7
-## to be used with the ATMS API to hold data dictionaries
-
-# @dataclass
-# class ATMS_data:
-#     table_l = ['contacts','sales','memberships','items']
-#     contacts: dict = field(default_factory=dict)
-#     sales: dict = field(default_factory=dict)
-#     memberships: dict = field(default_factory=dict)
-#     items: dict = field(default_factory=dict)
-#     def from_str(self, s:str):
-#         if s in ATMS_data.table_l # ['contacts','sales','memberships','items']:
-#             return self.__getattribute__(s)
-#         else:
-#             raise ValueError(f'{s} must be one of contacts, sales, memberships, items')
-    
-
-# %% ../ATMS_api.ipynb 10
+# %% ../ATMS_api.ipynb 5
 class ATMS_api:
     class_download_dir = os.path.join(os.getcwd(),'atms_download')
     
@@ -162,7 +145,7 @@ class ATMS_api:
 
 
 
-# %% ../ATMS_api.ipynb 12
+# %% ../ATMS_api.ipynb 7
 @patch
 def __init__(self:ATMS_api, data_dir: str = None ):
     # if telus_access_token is None:
@@ -205,7 +188,7 @@ def __init__(self:ATMS_api, data_dir: str = None ):
     print("my id is", self.id)
 
 
-# %% ../ATMS_api.ipynb 14
+# %% ../ATMS_api.ipynb 9
 @patch
 def set_atms_id(self:ATMS_api, atms_id:str):
     """ set the atms_id and download_dir for the instance """
@@ -213,7 +196,7 @@ def set_atms_id(self:ATMS_api, atms_id:str):
     self.download_dir  = os.path.join(ATMS_api.class_download_dir, atms_id)
 
 
-# %% ../ATMS_api.ipynb 16
+# %% ../ATMS_api.ipynb 11
 @patch    
 def list_files(self:ATMS_api):
     """ returns list of files in download folder """
@@ -224,7 +207,7 @@ def list_files(self:ATMS_api):
         return []
 
 
-# %% ../ATMS_api.ipynb 18
+# %% ../ATMS_api.ipynb 13
 @patch
 def clean_data_dir(self:ATMS_api,
                     obj_s: str = None):
@@ -237,7 +220,7 @@ def clean_data_dir(self:ATMS_api,
             print(f"File '{file_path}' deleted successfully.")
 
 
-# %% ../ATMS_api.ipynb 20
+# %% ../ATMS_api.ipynb 15
 @patch
 def get_telus_data(self:ATMS_api, 
                     obj: str, # telus endpoint 
@@ -288,7 +271,7 @@ def get_telus_data(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 22
+# %% ../ATMS_api.ipynb 17
 @patch
 def retrieve_and_clean(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -304,7 +287,7 @@ def retrieve_and_clean(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 24
+# %% ../ATMS_api.ipynb 19
 @patch
 def fetch_data_by_contactIds(
         self: ATMS_api,
@@ -329,7 +312,7 @@ def fetch_data_by_contactIds(
         self.obj_d[obj_s] = l
     return l ### write to obj_d ??
 
-# %% ../ATMS_api.ipynb 26
+# %% ../ATMS_api.ipynb 21
 @patch
 def write_data_to_json_files(self:ATMS_api):
     """ write self.obj_d to json files in self.download_dir"""
@@ -350,7 +333,7 @@ def write_data_to_json_files(self:ATMS_api):
 
 
 
-# %% ../ATMS_api.ipynb 30
+# %% ../ATMS_api.ipynb 25
 @patch
 def write_obj_to_file(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -429,7 +412,7 @@ def write_obj_to_file(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 32
+# %% ../ATMS_api.ipynb 27
 @patch
 def clean_data_file(self:ATMS_api, 
                     obj_s : str
@@ -464,7 +447,7 @@ def clean_data_file(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 34
+# %% ../ATMS_api.ipynb 29
 @patch
 def load_data_file_to_dict(
         self:ATMS_api,
@@ -506,5 +489,5 @@ def load_data_file_to_dict(
 
         
 
-# %% ../ATMS_api.ipynb 41
+# %% ../ATMS_api.ipynb 36
 "playtime"
