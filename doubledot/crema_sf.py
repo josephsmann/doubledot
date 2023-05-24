@@ -191,6 +191,7 @@ def create_job(self: Salesforce,
 @patch
 def upload_csv(self : Salesforce, 
                 obj_s: str = "", # Salesforce object to upload 
+                use_download_dir_b : bool = False, # 
                 # num_rows: int = 100, # the number of rows to upload 
                 ) -> requests.Response:
     """Using the job_id from the previous step, upload the csv file to the job
@@ -207,8 +208,10 @@ def upload_csv(self : Salesforce,
 
     print(f"Uploading job {self.bulk_job_id} of object {obj_s}")
 
-    # file_path_s = os.path.join(Salesforce.class_download_dir , f"{obj_s}.csv")
-    file_path_s = os.path.join(Salesforce.class_upload_dir , f"{obj_s}.csv")
+    if use_download_dir_b:
+        file_path_s = os.path.join(Salesforce.class_download_dir , f"{obj_s}.csv")
+    else:
+        file_path_s = os.path.join(Salesforce.class_upload_dir , f"{obj_s}.csv")
 
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/batches"
 
@@ -329,21 +332,26 @@ def get_sf_object_ids(self: Salesforce,
 # %% ../crema_sf.ipynb 26
 @patch
 def delete_sf_objects(self: Salesforce, 
-                      obj_s: str = 'Contact'
+                      obj_l: str | list = []
                       ):
     """Delete Salesforce objects"""
     # assert False, "want to catch test calls to this function"
-    print(f"Deleting {obj_s} objects from Salesforce")
-    object_ids = self.get_sf_object_ids(obj_s)
-    file_path_s = os.path.join(Salesforce.class_download_dir , f"{obj_s}.csv")
-    print(f"In Salesforce.delete_sf_objects: Deleting {len(object_ids)} {obj_s} objects using {file_path_s}")
-    with open(file_path_s, 'w') as f:
-        f.write('Id\n')
-        for id in object_ids:
-            f.write(id+'\n')
-            
-    # force execute_job to use the csv file we just created        
-    self.execute_job(obj_s, 'delete', use_ATMS_data=False)
+    if isinstance(obj_l, str):
+        obj_l = [obj_l]
+    if len(obj_l) == 0:
+        obj_l = Salesforce.model_d.keys()
+    for obj_s in obj_l:
+        print(f"Deleting {obj_s} objects from Salesforce")
+        object_ids = self.get_sf_object_ids(obj_s)
+        file_path_s = os.path.join(Salesforce.class_download_dir , f"{obj_s}.csv")
+        print(f"In Salesforce.delete_sf_objects: Deleting {len(object_ids)} {obj_s} objects using {file_path_s}")
+        with open(file_path_s, 'w') as f:
+            f.write('Id\n')
+            for id in object_ids:
+                f.write(id+'\n')
+                
+        # force execute_job to use the csv file we just created        
+        self.execute_job(obj_s, 'delete', use_ATMS_data=False)
         
 
 
@@ -423,7 +431,7 @@ def process_memberships(self: Salesforce ):
     
     We could modify this function to only process one of Memmbership, MembershipTerm, or MembershipMember.
     """
-    print("Processing memberships data")
+    # print("Processing memberships data")
     # custom objects need '__c' suffix
     mem_d = { 'memberships': {'fname':'Membership__c.csv', 'jmespath': mem_s},
                'membership_terms': {'fname':'MembershipTerm__c.csv','jmespath': memTerm_s},
@@ -440,10 +448,10 @@ def process_memberships(self: Salesforce ):
     for key, v_pair in mem_d.items():
         file_path_s = os.path.join(Salesforce.class_download_dir, v_pair['fname'])
         dict_l = jp.search(v_pair['jmespath'], atms_d)
-        print(f"Salesforce: Writing {len(dict_l)} {key} objects to {file_path_s}")
+        # print(f"Salesforce: Writing {len(dict_l)} {key} objects to {file_path_s}")
         with open(file_path_s, 'w') as f:
             if len(dict_l) == 0:
-                print(f"Warning: no {key} objects found")
+                # print(f"Warning: no {key} objects found")
                 continue
             # hack to create header with a dot in it, jmespath won't do it
             f.write('\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()]) + '\n') # header
@@ -479,7 +487,7 @@ def process_sales(self: Salesforce ):
 
     file_path_s = os.path.join(Salesforce.class_download_dir, 'Sale__c.csv')
 
-    print(f"Salesforce: Writing {len(dict_l)} 'Sales' objects to {file_path_s}")
+    # print(f"Salesforce: Writing {len(dict_l)} 'Sales' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
         # hack to create header with a dot in it, jmespath won't do it
@@ -509,7 +517,7 @@ def process_tickets(self: Salesforce ):
 
     file_path_s = os.path.join(Salesforce.class_download_dir, 'Ticket__c.csv')
 
-    print(f"Salesforce: Writing {len(dict_l)} 'Ticket' objects to {file_path_s}")
+    # print(f"Salesforce: Writing {len(dict_l)} 'Ticket' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
         # hack to create header with a dot in it, jmespath won't do it
@@ -551,7 +559,7 @@ def process_saleDetails(self: Salesforce ):
 
     file_path_s = os.path.join(Salesforce.class_download_dir, 'SaleDetail__c.csv')
 
-    print(f"Salesforce: Writing {len(dict_l)} 'SaleDetail' objects to {file_path_s}")
+    # print(f"Salesforce: Writing {len(dict_l)} 'SaleDetail' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
         # hack to create header with a dot in it, jmespath won't do it
@@ -583,7 +591,7 @@ import re
 @patch
 def process_contacts(self: Salesforce ):
     """ unpack contacts data from atms object and write to contacts csv file."""
-    print("process_contacts")
+    # print("process_contacts")
     if not ('contacts' in self.atms.obj_d):
         self.atms.load_data_file_to_dict('contacts')
         assert 'contacts' in self.atms.obj_d, f"contacts not in atms.obj_d {self.atms.obj_d.keys()}"
@@ -596,7 +604,7 @@ def process_contacts(self: Salesforce ):
         if r['LastName'] == None:
             r['LastName'] = 'Not Provided'
 
-    print(f"Salesforce: Writing {len(dict_l)} 'Contact' objects to {file_path_s}")
+    # print(f"Salesforce: Writing {len(dict_l)} 'Contact' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
         header = columnDelimiter.join(dict_l[0].keys())
@@ -658,7 +666,7 @@ def execute_job(self: Salesforce,
 
     ## start data transfer to Salesforce server
     self.create_job(sf_object=sf_object_s, operation=operation, external_id=external_id)
-    self.upload_csv(sf_object_s)
+    self.upload_csv(sf_object_s, use_download_dir_b = operation == 'delete')
     self.close_job()
 
     counter = 0
@@ -676,7 +684,26 @@ def execute_job(self: Salesforce,
     print("Failed results:")
     print(self.failed_results().text)
 
-# %% ../crema_sf.ipynb 50
+# %% ../crema_sf.ipynb 46
+@patch
+def get_fields(self:Salesforce, 
+               obj:str # the name of the Salesforce object
+               ) -> requests.Response:
+    """Get the fields for a given Salesforce object"""
+    sf_headers = { 'Authorization': f"Bearer {sf._sf_access_token}", 'Content-Type': 'application/json' }
+    url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/sobjects/{obj}/describe"
+    # print(url)
+    response = requests.request("GET", url, headers=sf_headers)
+    print(response)
+    r = response.json()
+    if response.status_code == 200:
+        r = response.json()
+        names = jp.search("fields[].name",r)
+        return names
+    else:
+        raise Exception(f"Error: {response.status_code} {response.reason}")
+
+# %% ../crema_sf.ipynb 48
 @patch
 def retreive_atms_records_by_contactId(
     self: Salesforce, # the Salesforce object
@@ -690,7 +717,7 @@ def retreive_atms_records_by_contactId(
     # write data to json files
     sf.atms.write_data_to_json_files()
 
-# %% ../crema_sf.ipynb 103
+# %% ../crema_sf.ipynb 52
 ## this will have only contacts that are members, and only members that are contacts. 
 ## is possible to have duplicates if a contact is a member of more than one membership?
 ## yes but the duplicated fields will only be in one group or the other
@@ -703,9 +730,59 @@ def match_df(df1, df2, field1, field2):
     df2 = df2[df2[field2].isin(df1[field1])]
     return df1, df2
 
-# nContact_df, nMembershipMember_df = match_df(Contact_df, MembershipMember_df, 'External_Id__c', 'contactKey__r.External_Id__c')
-# nnMembershipMember_df, nMembershipTerm_df = match_df(nMembershipMember_df, MembershipTerm_df, 'membershipTermKey__r.membershipTermId__c', 'membershipTermId__c')
-# nnMembershipTerm, nMembership_df = match_df(nMembershipTerm_df, Membership_df, 'membershipKey__r.membershipId__c', 'membershipId__c')
 
-# nnContact_df, nnnMembershipMember_df = match_df(nContact_df, nnMembershipMember_df, 'External_Id__c', 'contactKey__r.External_Id__c')
-# fContact_df, fMembershipMember_df, fMembershipTerm_df, fMembership_df = nnContact_df, nnnMembershipMember_df, nnMembershipTerm, nMembership_df
+# %% ../crema_sf.ipynb 57
+# starting from atms object dictionary, create a dictionary of dataframes for all SF objects
+# using this dictionary df_d, we can then remove duplicates of rows with same external_id
+# and remove any row which has a lookup to a non-existent foreign key
+
+@patch
+def perfect_data(self: Salesforce) -> dict:
+    assert len(self.atms.obj_d) == 4, 'atms dictionaries not available'
+    obj_l = Salesforce.model_d.keys()
+    for obj in obj_l:
+        # write atms dictionaries to csv file, if dictionary there - otherwise exception
+        self.process_objects(obj)
+
+    # create a dictionary of dataframes for all SF objects  
+    df_d = {}
+    for i in Salesforce.model_d.keys(): 
+        df_d[i] = pd.read_csv('sf_download/'+i+'.csv', sep='\t')
+    try:
+        print("this should fail")
+        test_lookup_fields(df_d)    
+    except:
+        print("and it did. good.")
+        
+    for i in Salesforce.model_d.keys(): 
+        # remove duplicates of rows with same external_id
+        print("dropping duplicates for ", i, " on ", self.model_d[i]['external_id'],"...")
+        df_d[i].drop_duplicates(subset= Salesforce.model_d[i]['external_id'], inplace=True)
+
+    # remove any row which has a lookup to a non-existent foreign key
+    for obj,relations in self.model_d.items():
+        print(obj)
+        for fromField, parent in relations['lookups_d'].items():
+            parentExternalId = Salesforce.model_d[parent]['external_id']
+            toColumn = df_d[parent][parentExternalId]
+
+            # combine from field and parent external id to get Salesforce lookup field
+            newFromField = fromField[:-1]+'r.'+parentExternalId
+            fromColumn = df_d[obj][newFromField]
+            indGood_b = fromColumn.isin(toColumn)
+            good_b = indGood_b.sum() == len(indGood_b)
+            if not good_b:
+                # print('bad lookup: ', obj, newFromField, parentExternalId,len(indGood_b), len(indGood_b) - indGood_b.sum())
+                df_d[obj]= match_df(df_d[obj], df_d[parent], newFromField, parentExternalId)[0]
+
+    try:
+        print("this should NOT fail")
+        test_lookup_fields(df_d)
+    except:
+        print("but it did. Bad.")
+        raise Exception("bad lookup")
+    finally:
+        print("finally, it did not fail. Good.")
+
+    df2_d = reduce_to_referenced_rows(df_d)
+    return df2_d
