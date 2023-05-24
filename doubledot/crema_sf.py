@@ -24,6 +24,7 @@ import time
 class Salesforce:
     """Class for Salesforce API"""
     class_download_dir = os.path.join(os.getcwd(),'sf_download')
+    class_upload_dir = os.path.join(os.getcwd(),'sf_upload')
     transfer_lock = False # lock to prevent multiple transfers at once - not implemented yet. but probably necessary to work with withh nbdev_test 
 
     ## Salesforce table relationships 
@@ -38,7 +39,7 @@ class Salesforce:
                     'SaleDetail__c'         :{ 'lookups_d': {'membershipTermKey__c':'MembershipTerm__c', 'saleId__c': 'Sale__c'}, 'external_id':'saleDetailId__c'},
                     # in SF change tickeKey__c to ticketId__c
                     # change saleId__c to saleKey__c in Ticket__c
-                    'Ticket__c'             :{ 'lookups_d': {'saleKey__c': 'Sale__c', 'saleDetailKey__c': 'SaleDetail__c'}, 'external_id':'ticketKey__c'} 
+                    'Ticket__c'             :{ 'lookups_d': {'saleKey__c': 'Sale__c', 'saleDetailKey__c': 'SaleDetail__c'}, 'external_id':'ticketId__c'} 
             }
 
     def __init__(self):
@@ -206,7 +207,8 @@ def upload_csv(self : Salesforce,
 
     print(f"Uploading job {self.bulk_job_id} of object {obj_s}")
 
-    file_path_s = os.path.join(Salesforce.class_download_dir , f"{obj_s}.csv")
+    # file_path_s = os.path.join(Salesforce.class_download_dir , f"{obj_s}.csv")
+    file_path_s = os.path.join(Salesforce.class_upload_dir , f"{obj_s}.csv")
 
     url = f"https://cremaconsulting-dev-ed.develop.my.salesforce.com/services/data/v57.0/jobs/ingest/{self.bulk_job_id}/batches"
 
@@ -494,7 +496,7 @@ def process_sales(self: Salesforce ):
 # %% ../crema_sf.ipynb 35
 @patch
 def process_tickets(self: Salesforce ):
-    search_s = "[].tickets[].{ticketKey__c : ticketKey,\
+    search_s = "[].tickets[].{ticketId__c : ticketKey,\
         saleKey__r_1_saleId__c : saleKey,\
         saleDetailKey__r_1_saleDetailId__c : saleDetailKey,\
         itemDescription__c : itemDescription,\
@@ -674,7 +676,21 @@ def execute_job(self: Salesforce,
     print("Failed results:")
     print(self.failed_results().text)
 
-# %% ../crema_sf.ipynb 80
+# %% ../crema_sf.ipynb 50
+@patch
+def retreive_atms_records_by_contactId(
+    self: Salesforce, # the Salesforce object
+    contactId_l : list # list of contactIds to retrieve
+    ):
+    """Retreive ATMS records for a list of contactIds and write them to json files"""
+    for obj in ['sales', 'contacts', 'memberships']:
+        # does this not get written to file?, no. it does not. and we don't want it to because we're working on proccessing rn.
+        sf.atms.fetch_data_by_contactIds(obj, contactId_l) 
+
+    # write data to json files
+    sf.atms.write_data_to_json_files()
+
+# %% ../crema_sf.ipynb 103
 ## this will have only contacts that are members, and only members that are contacts. 
 ## is possible to have duplicates if a contact is a member of more than one membership?
 ## yes but the duplicated fields will only be in one group or the other

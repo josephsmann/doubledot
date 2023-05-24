@@ -207,34 +207,13 @@ def __init__(self:ATMS_api, data_dir: str = None ):
 
 # %% ../ATMS_api.ipynb 14
 @patch
-def write_data_to_json_files(self:ATMS_api):
-    """ set the atms_id and download_dir for the instance """
-    # self.download_dir  = os.path.join(ATMS_api.class_download_dir, atms_id)
-    for obj_key, obj_v in self.obj_d.items():
-        first = True
-        with open(os.path.join(self.download_dir, f"{obj_key}.json"), 'w') as f:
-            for l in obj_v:
-                if first: 
-                     f.write('[\n')
-                     f.write(json.dumps(l))
-                     
-                     first = False
-                else:
-                      f.write(', \n' + json.dumps(l) )
-            f.write(']\n')
-            print(f"File '{obj_key}.json' written successfully.")
-
-
-
-# %% ../ATMS_api.ipynb 17
-@patch
 def set_atms_id(self:ATMS_api, atms_id:str):
     """ set the atms_id and download_dir for the instance """
     self.atms_id = atms_id
     self.download_dir  = os.path.join(ATMS_api.class_download_dir, atms_id)
 
 
-# %% ../ATMS_api.ipynb 19
+# %% ../ATMS_api.ipynb 16
 @patch    
 def list_files(self:ATMS_api):
     """ returns list of files in download folder """
@@ -245,7 +224,7 @@ def list_files(self:ATMS_api):
         return []
 
 
-# %% ../ATMS_api.ipynb 21
+# %% ../ATMS_api.ipynb 18
 @patch
 def clean_data_dir(self:ATMS_api,
                     obj_s: str = None):
@@ -258,7 +237,7 @@ def clean_data_dir(self:ATMS_api,
             print(f"File '{file_path}' deleted successfully.")
 
 
-# %% ../ATMS_api.ipynb 23
+# %% ../ATMS_api.ipynb 20
 @patch
 def get_telus_data(self:ATMS_api, 
                     obj: str, # telus endpoint 
@@ -309,7 +288,7 @@ def get_telus_data(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 25
+# %% ../ATMS_api.ipynb 22
 @patch
 def retrieve_and_clean(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -325,7 +304,7 @@ def retrieve_and_clean(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 27
+# %% ../ATMS_api.ipynb 24
 @patch
 def fetch_data_by_contactIds(
         self: ATMS_api,
@@ -350,7 +329,28 @@ def fetch_data_by_contactIds(
         self.obj_d[obj_s] = l
     return l ### write to obj_d ??
 
-# %% ../ATMS_api.ipynb 31
+# %% ../ATMS_api.ipynb 26
+@patch
+def write_data_to_json_files(self:ATMS_api):
+    """ write self.obj_d to json files in self.download_dir"""
+    # self.download_dir  = os.path.join(ATMS_api.class_download_dir, atms_id)
+    for obj_key, obj_v in self.obj_d.items():
+        first = True
+        with open(os.path.join(self.download_dir, f"{obj_key}.json"), 'w') as f:
+            for l in obj_v:
+                if first: 
+                     f.write('[\n')
+                     f.write(json.dumps(l))
+                     
+                     first = False
+                else:
+                      f.write(', \n' + json.dumps(l) )
+            f.write(']\n')
+            print(f"File '{obj_key}.json' written successfully. to {self.download_dir}")
+
+
+
+# %% ../ATMS_api.ipynb 30
 @patch
 def write_obj_to_file(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -429,7 +429,7 @@ def write_obj_to_file(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 33
+# %% ../ATMS_api.ipynb 32
 @patch
 def clean_data_file(self:ATMS_api, 
                     obj_s : str
@@ -464,7 +464,7 @@ def clean_data_file(self:ATMS_api,
 
 
 
-# %% ../ATMS_api.ipynb 35
+# %% ../ATMS_api.ipynb 34
 @patch
 def load_data_file_to_dict(
         self:ATMS_api,
@@ -506,5 +506,5 @@ def load_data_file_to_dict(
 
         
 
-# %% ../ATMS_api.ipynb 42
+# %% ../ATMS_api.ipynb 41
 "playtime"
