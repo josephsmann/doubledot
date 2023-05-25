@@ -3,6 +3,5 @@ website:
     contents:
       - index.ipynb
       - ATMS_api.ipynb
-      - SFMD.ipynb
       - crema_sf.ipynb
       - urgent_data_2.ipynb

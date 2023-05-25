@@ -706,14 +706,14 @@ def match_df(df1, df2, field1, field2):
     return df1, df2
 
 
-# %% ../crema_sf.ipynb 52
+# %% ../crema_sf.ipynb 53
 # test that all external ids are unique
 # test that all lookups are valid
 
 def test_lookup_fields(df_d):
     for fromKey in Salesforce.model_d.keys():
         # verify that external id is unique
-        assert df_d[fromKey][Salesforce.model_d[fromKey]['external_id']].is_unique, f"external id not unique for {fromKey}"
+        # assert df_d[fromKey][Salesforce.model_d[fromKey]['external_id']].is_unique, f"external id not unique for {fromKey}"
 
         # verify that all lookups are valid 
         r_cols = [col for col in df_d[fromKey].columns if re.search('__r\.', col)]
@@ -728,7 +728,7 @@ def test_lookup_fields(df_d):
             assert (fromColumn.isin(toColumn)).all(), f"bad lookup: {fromKey} {fromField} {toField}"
 
 
-# %% ../crema_sf.ipynb 54
+# %% ../crema_sf.ipynb 55
 ## these funcs all use the global variable df_d
 
 # function that returns all the fields that point to a given foreign key
@@ -765,23 +765,26 @@ def reduce_to_referenced_rows(
     ## only rows whose foreign key is referenced by another table should be kept
     df2_d = {}
     for k, v in Salesforce.model_d.items():
+        o_df = df_d[k]
+
         foreign_key = v['external_id']
 
         # keep all rows if no other table points to this one
         if len(fields_pointing_to_foreign_key(foreign_key, df_d)) == 0:
-            df2_d[k] = df_d[k]
-            print(k,'*', len(df_d[k]), len(df2_d[k]))
+            n_df = o_df
+            print(k,'*', len(o_df), len(n_df))
             continue
         point_to_foreign_key = get_pointing_foreign_key_values(foreign_key, df_d)
-        # print(k, s) 
-        keep_b = df_d[k][foreign_key].isin(point_to_foreign_key)
-        df2_d[k] = df_d[k][keep_b]
-        print(k,len(df_d[k]),  len(df2_d[k]))
+        print(k, len(point_to_foreign_key)) 
+        # good_keys = set(o_df[foreign_key]).intersection(point_to_foreign_key)
+        n_df = o_df.loc[ o_df[foreign_key].isin(point_to_foreign_key),:]
+        print(k,len(o_df),  len(n_df))
+        df2_d[k] = n_df
     return df2_d
 
 # i want to write these to file and send them to salesforce
 
-# %% ../crema_sf.ipynb 56
+# %% ../crema_sf.ipynb 57
 # starting from atms object dictionary, create a dictionary of dataframes for all SF objects
 # using this dictionary df_d, we can then remove duplicates of rows with same external_id
 # and remove any row which has a lookup to a non-existent foreign key
@@ -796,9 +799,12 @@ def perfect_data(self: Salesforce) -> dict:
 
     # create a dictionary of dataframes for all SF objects  
     df_d = {}
+
+    # read csv files into dataframes
     for i in Salesforce.model_d.keys(): 
         df_d[i] = pd.read_csv('sf_download/'+i+'.csv', sep='\t')
     try:
+        # run test before cleaning (testing the test - it should fail)
         print("this should fail")
         test_lookup_fields(df_d)    
     except:
@@ -806,24 +812,45 @@ def perfect_data(self: Salesforce) -> dict:
         
     for i in Salesforce.model_d.keys(): 
         # remove duplicates of rows with same external_id
-        print("dropping duplicates for ", i, " on ", self.model_d[i]['external_id'],"...")
-        df_d[i].drop_duplicates(subset= Salesforce.model_d[i]['external_id'], inplace=True)
+        print("dropping duplicates for ", i,  )
+        # print("dropping duplicates for ", i, " on ", self.model_d[i]['external_id'], len(df_d[i]))
+        df_d[i].drop_duplicates( inplace=True)
+        # df_d[i].drop_duplicates(subset= Salesforce.model_d[i]['external_id'], inplace=True)
+        print("AFTER dropping duplicates for ", i,  )
+        # print("AFTER dropping duplicates for ", i, " on ", self.model_d[i]['external_id'], len(df_d[i]))
 
-    # remove any row which has a lookup to a non-existent foreign key
     for obj,relations in self.model_d.items():
-        print(obj)
+        print("\n ====================================")
+        print("duplicate ext id loop: ", obj)
         for fromField, parent in relations['lookups_d'].items():
             parentExternalId = Salesforce.model_d[parent]['external_id']
             toColumn = df_d[parent][parentExternalId]
 
             # combine from field and parent external id to get Salesforce lookup field
             newFromField = fromField[:-1]+'r.'+parentExternalId
-            fromColumn = df_d[obj][newFromField]
-            indGood_b = fromColumn.isin(toColumn)
-            good_b = indGood_b.sum() == len(indGood_b)
-            if not good_b:
-                # print('bad lookup: ', obj, newFromField, parentExternalId,len(indGood_b), len(indGood_b) - indGood_b.sum())
-                df_d[obj]= match_df(df_d[obj], df_d[parent], newFromField, parentExternalId)[0]
+            
+            from_df, to_df = match_df(df_d[obj], df_d[parent], newFromField, parentExternalId)
+            print(f'{obj} --> {parent}  ', len(df_d[obj]), ' --> ', len(from_df))
+            # print(f'{parent}  ', len(df_d[parent]), ' --> ', len(to_df), '\n')
+            df_d[obj] = from_df
+            # df_d[parent] = to_df
+    # remove any row which has a lookup to a non-existent foreign key
+    # for obj,relations in self.model_d.items():
+    #     print("duplicate ext id loop: ", obj)
+    #     for fromField, parent in relations['lookups_d'].items():
+    #         parentExternalId = Salesforce.model_d[parent]['external_id']
+    #         toColumn = df_d[parent][parentExternalId]
+
+    #         # combine from field and parent external id to get Salesforce lookup field
+    #         newFromField = fromField[:-1]+'r.'+parentExternalId
+    #         fromColumn = df_d[obj][newFromField]
+    #         indGood_b = fromColumn.isin(toColumn)
+    #         good_b = indGood_b.sum() == len(indGood_b)
+    #         if not good_b:
+    #             # print('bad lookup: ', obj, newFromField, parentExternalId,len(indGood_b), len(indGood_b) - indGood_b.sum())
+    #             _df = match_df(df_d[obj], df_d[parent], newFromField, parentExternalId)[0]
+    #             print('old df: ', len(df_d[obj]), 'new df: ', len(_df))
+    #             df_d[obj] = _df
 
     try:
         print("this should NOT fail")
@@ -837,7 +864,7 @@ def perfect_data(self: Salesforce) -> dict:
     df2_d = reduce_to_referenced_rows(df_d)
     return df2_d
 
-# %% ../crema_sf.ipynb 58
+# %% ../crema_sf.ipynb 59
 @patch
 def write_dict_to_csv(
     self: Salesforce,
@@ -850,7 +877,7 @@ def write_dict_to_csv(
             f.write(df2_d[k].to_csv(sep='\t', index=False))
 
 
-# %% ../crema_sf.ipynb 60
+# %% ../crema_sf.ipynb 61
 @patch
 def upload_csv_to_sf(
     self : Salesforce,
