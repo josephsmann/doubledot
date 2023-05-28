@@ -877,6 +877,10 @@ def perfect_data(self: Salesforce) -> dict:
     for obj,relations in self.model_d.items():
         print("\n ====================================")
         print("duplicate ext id loop: ", obj)
+        
+        if obj not in df_d.keys():
+            continue
+
         for fromField, parent in relations['lookups_d'].items():
             parentExternalId = Salesforce.model_d[parent]['external_id']
             if parent in df_d.keys():   
