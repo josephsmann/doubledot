@@ -304,9 +304,13 @@ def fetch_data_by_contactIds(
     for contact_id in id_s: #pelton_df.contactKey.unique():
         print(contact_id)
         r = self.get_telus_data(obj_s, contact_id=contact_id)
-        data_d = r['response'].json()
-        print(data_d)
-        l.append(data_d)
+        try:
+            data_d = r['response'].json()
+            print(data_d)
+            l.append(data_d)
+        except Exception as e:
+            print(f"choked on {r['response'].text}")
+            raise e
         sleep(1)
     if store_data_b:
         self.obj_d[obj_s] = l

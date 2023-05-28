@@ -438,6 +438,11 @@ def process_memberships(self: Salesforce ):
 # %% ../crema_sf.ipynb 32
 @patch
 def process_sales(self: Salesforce ):
+    keys = ['saleId__c', 'saleAmount__c', 'paymentAmount__c','saleDate__c', 'active__c', 'terminalKey__c',
+             'booking_bookingId__c', 'booking_bookingContactKey__c', 'booking_contactKey__r.contactId__c',
+               'booking_contactIndividualKey__c', 'booking_contactOrganizationKey__c', 'booking_displayName__c',
+                 'booking_firstName__c', 'booking_lastName__c', 'booking_email__c', 'booking_phone__c']
+    
     search_s = "[].{saleId__c : saleKey,\
             saleAmount__c : saleAmount,\
             paymentAmount__c : paymentAmount,\
@@ -465,8 +470,12 @@ def process_sales(self: Salesforce ):
     # print(f"Salesforce: Writing {len(dict_l)} 'Sales' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
+        if len(dict_l) == 0:
+            # print(f"Warning: no {key} objects found")
+            return
         # hack to create header with a dot in it, jmespath won't do it
         header = '\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()])
+        # header = columnDelimiter.join(keys)
         f.write(header + '\n') # header
         for item in dict_l:
             # changed this from single space to empty string if null
@@ -479,6 +488,7 @@ def process_sales(self: Salesforce ):
 # %% ../crema_sf.ipynb 34
 @patch
 def process_tickets(self: Salesforce ):
+    keys = ['ticketId__c', 'saleKey__r.saleId__c', 'saleDetailKey__r.saleDetailId__c', 'itemDescription__c', 'ticketDisplay__c']
     search_s = "[].tickets[].{ticketId__c : ticketKey,\
         saleKey__r_1_saleId__c : saleKey,\
         saleDetailKey__r_1_saleDetailId__c : saleDetailKey,\
@@ -495,8 +505,12 @@ def process_tickets(self: Salesforce ):
     # print(f"Salesforce: Writing {len(dict_l)} 'Ticket' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
+        if len(dict_l) == 0:
+            # print(f"Warning: no {key} objects found")
+            return
         # hack to create header with a dot in it, jmespath won't do it
         header = '\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()])
+        # header = '\t'.join(keys)
         f.write(header + '\n') # header
         for item in dict_l:
             # changed this from single space to empty string if null
@@ -537,6 +551,9 @@ def process_saleDetails(self: Salesforce ):
     # print(f"Salesforce: Writing {len(dict_l)} 'SaleDetail' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
+        if len(dict_l) == 0:
+            # print(f"Warning: no {key} objects found")
+            return
         # hack to create header with a dot in it, jmespath won't do it
         header = '\t'.join([s.replace('_1_','.') for s in dict_l[0].keys()])
         f.write(header + '\n') # header
@@ -582,6 +599,9 @@ def process_contacts(self: Salesforce ):
     # print(f"Salesforce: Writing {len(dict_l)} 'Contact' objects to {file_path_s}")
     columnDelimiter = '\t'
     with open(file_path_s, 'w') as f:
+        if len(dict_l) == 0:
+            # print(f"Warning: no {key} objects found")
+            return
         header = columnDelimiter.join(dict_l[0].keys())
         f.write(header+'\n')
         for item in dict_l:
@@ -687,7 +707,11 @@ def retrieve_atms_records_by_contactId(
     """Retrieve ATMS records for a list of contactIds and write them to json files"""
     for obj in ['sales', 'contacts', 'memberships']:
         # does this not get written to file?, no. it does not. and we don't want it to because we're working on proccessing rn.
-        self.atms.fetch_data_by_contactIds(obj, contactId_l) 
+        try:
+            self.atms.fetch_data_by_contactIds(obj, contactId_l) 
+        except Exception as e :
+            print(f"Error: with {obj} and {contactId_l}")
+            raise e
 
     # write data to json files
     self.atms.write_data_to_json_files()
