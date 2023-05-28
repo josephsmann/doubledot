@@ -765,6 +765,8 @@ def match_df(df1, df2, field1, field2):
 
 def test_lookup_fields(df_d):
     for fromKey in Salesforce.model_d.keys():
+        if fromKey not in df_d.keys():
+            continue
         # verify that external id is unique
         # assert df_d[fromKey][Salesforce.model_d[fromKey]['external_id']].is_unique, f"external id not unique for {fromKey}"
 
