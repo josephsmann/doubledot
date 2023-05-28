@@ -105,5 +105,6 @@ d = { 'settings': { 'branch': 'master',
                                     'doubledot.crema_sf.match_df': ('crema_sf.html#match_df', 'doubledot/crema_sf.py'),
                                     'doubledot.crema_sf.reduce_to_referenced_rows': ( 'crema_sf.html#reduce_to_referenced_rows',
                                                                                       'doubledot/crema_sf.py'),
-                                    'doubledot.crema_sf.test_lookup_fields': ( 'crema_sf.html#test_lookup_fields',
-                                                                               'doubledot/crema_sf.py')}}}
+                                    'doubledot.crema_sf.test_lookup_fields': ('crema_sf.html#test_lookup_fields', 'doubledot/crema_sf.py'),
+                                    'doubledot.crema_sf.write_jmespath_to_csv': ( 'crema_sf.html#write_jmespath_to_csv',
+                                                                                  'doubledot/crema_sf.py')}}}
