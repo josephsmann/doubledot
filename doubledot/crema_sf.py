@@ -855,7 +855,8 @@ def perfect_data(self: Salesforce) -> dict:
 
     # read csv files into dataframes
     for i in Salesforce.model_d.keys(): 
-        df_d[i] = pd.read_csv('sf_download/'+i+'.csv', sep='\t')
+        if os.path.isfile('sf_download/'+i+'.csv'):
+            df_d[i] = pd.read_csv('sf_download/'+i+'.csv', sep='\t')
     try:
         # run test before cleaning (testing the test - it should fail)
         print("this should fail")
@@ -863,7 +864,8 @@ def perfect_data(self: Salesforce) -> dict:
     except:
         print("and it did. good.")
         
-    for i in Salesforce.model_d.keys(): 
+    # for i in Salesforce.model_d.keys(): 
+    for i in df_d.keys():
         # remove duplicates of rows with same external_id
         print("dropping duplicates for ", i,  )
         # print("dropping duplicates for ", i, " on ", self.model_d[i]['external_id'], len(df_d[i]))
@@ -877,7 +879,10 @@ def perfect_data(self: Salesforce) -> dict:
         print("duplicate ext id loop: ", obj)
         for fromField, parent in relations['lookups_d'].items():
             parentExternalId = Salesforce.model_d[parent]['external_id']
-            toColumn = df_d[parent][parentExternalId]
+            if parent in df_d.keys():   
+                toColumn = df_d[parent][parentExternalId]
+            else:
+                continue
 
             # combine from field and parent external id to get Salesforce lookup field
             newFromField = fromField[:-1]+'r.'+parentExternalId
@@ -886,24 +891,6 @@ def perfect_data(self: Salesforce) -> dict:
             print(f'{obj} --> {parent}  ', len(df_d[obj]), ' --> ', len(from_df))
             # print(f'{parent}  ', len(df_d[parent]), ' --> ', len(to_df), '\n')
             df_d[obj] = from_df
-            # df_d[parent] = to_df
-    # remove any row which has a lookup to a non-existent foreign key
-    # for obj,relations in self.model_d.items():
-    #     print("duplicate ext id loop: ", obj)
-    #     for fromField, parent in relations['lookups_d'].items():
-    #         parentExternalId = Salesforce.model_d[parent]['external_id']
-    #         toColumn = df_d[parent][parentExternalId]
-
-    #         # combine from field and parent external id to get Salesforce lookup field
-    #         newFromField = fromField[:-1]+'r.'+parentExternalId
-    #         fromColumn = df_d[obj][newFromField]
-    #         indGood_b = fromColumn.isin(toColumn)
-    #         good_b = indGood_b.sum() == len(indGood_b)
-    #         if not good_b:
-    #             # print('bad lookup: ', obj, newFromField, parentExternalId,len(indGood_b), len(indGood_b) - indGood_b.sum())
-    #             _df = match_df(df_d[obj], df_d[parent], newFromField, parentExternalId)[0]
-    #             print('old df: ', len(df_d[obj]), 'new df: ', len(_df))
-    #             df_d[obj] = _df
 
     try:
         print("this should NOT fail")
@@ -914,6 +901,7 @@ def perfect_data(self: Salesforce) -> dict:
     finally:
         print("finally, it did not fail. Good.")
 
+    ######### do we still need this ??? ############
     df2_d = reduce_to_referenced_rows(df_d)
     return df2_d
 
