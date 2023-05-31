@@ -58,7 +58,8 @@ class Salesforce:
                     # 'SaleDetail__c'         :{ 'lookups_d': {'membershipTermKey__c':'MembershipTerm__c', 'saleId__c': 'Sale__c'}, 'external_id':'saleDetailId__c'},
                     # in SF change tickeKey__c to ticketId__c
                     # change saleId__c to saleKey__c in Ticket__c
-                    'Ticket__c'             :{ 'lookups_d': {'saleKey__c': 'Sale__c', 'saleDetailKey__c': 'SaleDetail__c'}, 'external_id':'ticketId__c'} 
+                    'Ticket__c'             :{ 'lookups_d': {'saleKey__c': 'Sale__c', 'saleDetailKey__c': 'SaleDetail__c'}, 'external_id':'ticketId__c'},
+                    'MembershipTermMemberRel__c' :{ 'lookups_d': {'membershipMemberKey__c': 'MembershipMember__c', 'membershipTermKey__c': 'MembershipTerm__c'}, 'external_id':'membershipTermMemberRelId__c'} 
             }
 
     def __init__(self):
@@ -217,7 +218,8 @@ def upload_csv(self : Salesforce,
     #     assert False, "File not found"
 
 
-    assert obj_s in ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c', 'Sale__c', 'Ticket__c', 'SaleDetail__c']
+    # assert obj_s in ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c', 'Sale__c', 'Ticket__c', 'SaleDetail__c']
+    assert obj_s in Salesforce.model_d.keys(), f"Object {obj_s} not found in Salesforce.model_d.keys()" 
 
     print(f"Uploading job {self.bulk_job_id} of object {obj_s}")
 
@@ -382,6 +384,7 @@ def escape_quotes(text):
     text = re.sub(r'\"', r'_', text)
     text = re.sub(r'\r', r' ', text)
     text = re.sub(r'\n', r' ', text)
+    text = re.sub('nan', '', text)
     # text = re.sub(r',', r'*', text) ## shouldn't be necessary with tab delimiter
     # text = re.sub(r'\"', r'\\"', text)
     return text.strip()
@@ -400,23 +403,14 @@ def clean_upload_dir(self: Salesforce):
             print(e)
 
 # %% ../crema_sf.ipynb 32
-def write_jmespath_to_csv(dict_l, file_path_s, keys):
+def write_jmespath_to_csv(obj_s, dict_l, file_path_s, keys):
     """Write a list of dictionaries to a csv file using the specified keys as column headers
     utility function for 'process' functions """
-    columnDelimiter = '\t'
-    with open(file_path_s, 'w') as f:
-        print(f"Writing {len(dict_l)} records to {file_path_s}")
-        header = '\t'.join(keys)
-        f.write(header + '\n') # header
-        if len(dict_l) == 0:
-            # print(f"Warning: no {key} objects found")
-            return
-        for item in dict_l:
-            # changed this from single space to empty string if null
-            l = [escape_quotes(str(v)) if v else "" for v in item.values()]
-            s = columnDelimiter.join(l)+'\n'
-            print(s)
-            f.write(s)
+    _df = pd.DataFrame(dict_l)
+    _df.columns = keys
+    _df2 = _df.applymap(lambda x: escape_quotes(str(x)) if x else "") 
+    _df2.to_csv(file_path_s, sep='\t', index=False)
+
 
 # %% ../crema_sf.ipynb 34
 ## make unique indentifier for MembershipTerm
@@ -427,7 +421,8 @@ def make_unique_membershipTermId(
         ) -> list:
     """ modify old membershipTermId__c to be a concatenation of membershipKey__r.membershipId__c and membershipId__c and thereby make it unique """
     for item in dict_l:
-        item['membershipTermId__c'] = f"{item['membershipKey__r_1_membershipId__c']}_{item['membershipTermId__c']}"
+        item['membershipTermId__c'] = f"{item['membershipTermId__c']}"
+        # item['membershipTermId__c'] = f"{item['membershipKey__r_1_membershipId__c']}_{item['membershipTermIdI __c']}"
     return dict_l
 
 # %% ../crema_sf.ipynb 35
@@ -437,9 +432,11 @@ def make_unique_membershipMemberId(
     new_l = []
     for m_d in dict_l:
         for t_d in m_d['MTs']:
-            new_mt_id = ('_'.join([str(i) for i in [m_d['id'],t_d['id']]]))
+            new_mt_id = t_d['id']
+            # new_mt_id = ('_'.join([str(i) for i in [m_d['id'],t_d['id']]]))
             for mm_d in t_d['MMs']:
-                new_mm_id = ('_'.join([str(i) for i in [m_d['id'],t_d['id'],mm_d['membershipMemberId__c']]]))
+                new_mm_id = ('_'.join([str(i) for i in [m_d['id'],mm_d['membershipMemberId__c']]]))
+                # new_mm_id = ('_'.join([str(i) for i in [m_d['id'],t_d['id'],mm_d['membershipMemberId__c']]]))
                 print(new_mm_id)
                 new_d = mm_d.copy()
                 new_d['membershipMemberId__c'] = new_mm_id
@@ -520,9 +517,9 @@ def process_memberships(self: Salesforce ):
     """
     # print("Processing memberships data")
     # custom objects need '__c' suffix
-    mem_d = { 'memberships': {'fname':'Membership__c.csv', 'jmespath': mem_s, 'keys': mem_keys},
-               'membership_terms': {'fname':'MembershipTerm__c.csv','jmespath': memTerm_s, 'keys': memTerm_keys},
-               'membership_members': {'fname': 'MembershipMember__c.csv', 'jmespath': memMembers_s, 'keys': memMembers_keys}
+    mem_d = { 'memberships': {'fname':'Membership__c', 'jmespath': mem_s, 'keys': mem_keys},
+               'membership_terms': {'fname':'MembershipTerm__c','jmespath': memTerm_s, 'keys': memTerm_keys},
+               'membership_members': {'fname': 'MembershipMember__c', 'jmespath': memMembers_s, 'keys': memMembers_keys}
                 }
             
 
@@ -533,14 +530,14 @@ def process_memberships(self: Salesforce ):
     atms_d = self.atms.obj_d['memberships']
 
     for key, v_pair in mem_d.items():
-        file_path_s = os.path.join(Salesforce.class_upload_dir, v_pair['fname'])
+        file_path_s = os.path.join(Salesforce.class_upload_dir, v_pair['fname']+'.csv')
         dict_l = jp.search(v_pair['jmespath'], atms_d)
         # print(f"Salesforce: Writing {len(dict_l)} {key} objects to {file_path_s}")
         if key == 'membership_terms':
             dict_l = make_unique_membershipTermId(dict_l)
         if key == 'membership_members':
             dict_l = make_unique_membershipMemberId(dict_l)
-        write_jmespath_to_csv(dict_l, file_path_s, v_pair['keys'])
+        write_jmespath_to_csv(v_pair['fname'], dict_l, file_path_s, v_pair['keys'])
 
 # %% ../crema_sf.ipynb 38
 @patch
@@ -575,7 +572,7 @@ def process_sales(self: Salesforce ):
     file_path_s = os.path.join(Salesforce.class_upload_dir, 'Sale__c.csv')
 
     # print(f"Salesforce: Writing {len(dict_l)} 'Sales' objects to {file_path_s}")
-    write_jmespath_to_csv(dict_l, file_path_s, keys)
+    write_jmespath_to_csv('Sale__c', dict_l, file_path_s, keys)
 
 # %% ../crema_sf.ipynb 40
 @patch
@@ -595,7 +592,7 @@ def process_tickets(self: Salesforce ):
     file_path_s = os.path.join(Salesforce.class_upload_dir, 'Ticket__c.csv')
 
     # print(f"Salesforce: Writing {len(dict_l)} 'Ticket' objects to {file_path_s}")
-    write_jmespath_to_csv(dict_l, file_path_s, keys)
+    write_jmespath_to_csv('Ticket__c', dict_l, file_path_s, keys)
 
 # %% ../crema_sf.ipynb 42
 @patch
@@ -617,13 +614,15 @@ def process_saleDetails(self: Salesforce ):
         refundReason__c : refundReason,\
         refundReasonKey__c : refundReasonKey,\
         systemPriceOverride__c : systemPriceOverride,\
-        membershipTermKey__r_1_membershipTermId__c : membershipTermKey,\
+        membershipTermKey__c : membershipTermKey,\
         saleKey__r_1_saleId__c : saleId}" 
+        # membershipTermKey__r_1_membershipTermId__c : membershipTermKey,\
     
     keys = ['saleDetailId__c', 'itemKey__c', 'scheduleKey__c', 'rateKey__c', 'categoryKey__c', 'itemCategory__c', 
             'pricingPriceKey__c', 'itemPrice__c', 'itemTotal__c', 'couponTotal__c', 'discountTotal__c', 'total__c', 
             'revenueDate__c', 'refundReason__c', 'refundReasonKey__c', 'systemPriceOverride__c', 
-            'membershipTermKey__r.membershipTermId__c', 'saleKey__r.saleId__c']
+            # 'membershipTermKey__r.membershipTermId__c', 'saleKey__r.saleId__c']
+            'membershipTermKey__c', 'saleKey__r.saleId__c']
 
     assert 'sales' in self.atms.obj_d, f"sales not in atms.obj_d {self.atms.obj_d.keys()}"
     dict_l = jp.search(search_s, self.atms.obj_d['sales'])
@@ -631,7 +630,7 @@ def process_saleDetails(self: Salesforce ):
     file_path_s = os.path.join(Salesforce.class_upload_dir, 'SaleDetail__c.csv')
 
     # print(f"Salesforce: Writing {len(dict_l)} 'SaleDetail' objects to {file_path_s}")
-    write_jmespath_to_csv(dict_l, file_path_s, keys)
+    write_jmespath_to_csv('SaleDetail__c', dict_l, file_path_s, keys)
 
         
 
@@ -639,7 +638,7 @@ def process_saleDetails(self: Salesforce ):
 @patch
 def process_contacts(self: Salesforce ):
     """ unpack contacts data from atms object and write to contacts csv file."""
-    # print("process_contacts")
+    print("process_contacts")
     keys = ['LastName', 'FirstName', 'MailingPostalCode', 'MailingCity', 'MailingStreet', 'MailingCountry', 'Phone', 'Email', 'contactId__c']
 
     search_s = "[].{LastName: lastName,\
@@ -668,9 +667,35 @@ def process_contacts(self: Salesforce ):
             r['LastName'] = 'Not Provided'
 
     # print(f"Salesforce: Writing {len(dict_l)} 'Contact' objects to {file_path_s}")
-    write_jmespath_to_csv(dict_l, file_path_s, keys)
+    write_jmespath_to_csv('Contact', dict_l, file_path_s, keys)
+    assert os.path.exists(file_path_s), f"file_path_s {file_path_s} does not exist in process_contacts"
 
 # %% ../crema_sf.ipynb 46
+@patch
+def process_term_member_rel(self: Salesforce):
+
+    memberPath = os.path.join(Salesforce.class_upload_dir, 'MembershipMember__c.csv')
+    members_df = pd.read_csv(memberPath, sep='\t')
+
+    termsPath = os.path.join(Salesforce.class_upload_dir, 'MembershipTerm__c.csv')
+    terms_df = pd.read_csv(termsPath, sep='\t')
+
+    join_df = members_df.merge(terms_df, left_on='membershipTermKey__r.membershipTermId__c', right_on='membershipTermId__c', how='inner')  
+    print(f"join_df {join_df.columns}")  
+    
+    join_df = join_df[['membershipTermKey__r.membershipTermId__c', 'membershipMemberId__c']]
+    join_df.columns = ['membershipTermKey__r.membershipTermId__c', 'membershipMemberKey__r.membershipMemberId__c']
+
+    full_path = os.path.join(Salesforce.class_upload_dir, 'MembershipTermMemberRel__c.csv')
+    try:
+        # fields must have "lookup" styled names
+        join_df.to_csv(full_path, sep='\t', index=False)
+    except Exception as e:
+        print(f"Error writing to {full_path}")
+        raise e
+    assert os.path.exists(full_path), f"file not found {full_path}"
+
+# %% ../crema_sf.ipynb 48
 @patch
 def process_objects(self: Salesforce,
                     sf_object_s: str = "",
@@ -678,9 +703,8 @@ def process_objects(self: Salesforce,
                     ):
 
     valid_obj_l = self.model_d.keys()
-    # valid_obj_l = ['Contact', 'Membership__c', 'MembershipTerm__c', 'MembershipMember__c', 'Sale__c', 'Ticket__c','SaleDetail__c']
     if sf_object_s not in valid_obj_l:
-        print(f"sf_object_s must be one of {', '.join(valid_obj_l)}")
+        print(f"{sf_object_s} must be one of {', '.join(valid_obj_l)}")
         return
         
     print("Salesforce.process_objects: sf_object_s :",sf_object_s)
@@ -705,8 +729,14 @@ def process_objects(self: Salesforce,
         if sf_object_s in ['Membership__c', 'MembershipMember__c', 'MembershipTerm__c'] :
             # this creates files Membership__c.csv, MembershipMember__c.csv, MembershipTerm__c.csv in the class_upload_dir
             self.process_memberships()
+        
+        term_path = os.path.join(Salesforce.class_upload_dir, 'MembershipTerm__c.csv')
+        member_path = os.path.join(Salesforce.class_upload_dir, 'MembershipMember__c.csv')
+        if os.path.exists(term_path) and os.path.exists(member_path):
+            print("processing term member function")
+            self.process_term_member_rel()
 
-# %% ../crema_sf.ipynb 48
+# %% ../crema_sf.ipynb 50
 @patch
 def execute_job(self: Salesforce, 
         sf_object_s : str = None, # Salesforce API object name
@@ -722,8 +752,9 @@ def execute_job(self: Salesforce,
 
 
     ## translate dictionaries to csv files
-    self.process_objects(sf_object_s=sf_object_s, use_ATMS_data=use_ATMS_data)
-
+    # self.process_objects(sf_object_s=sf_object_s, use_ATMS_data=use_ATMS_data) # this has to be done for every object before any uploading can be done
+    full_path = os.path.join(Salesforce.class_upload_dir, sf_object_s)+'.csv'
+    # assert os.path.exists(full_path), f"file not found {full_path}"
     ## start data transfer to Salesforce server
     self.create_job(sf_object=sf_object_s, operation=operation, external_id=external_id)
     upload_res = self.upload_csv(sf_object_s, use_download_dir_b = operation == 'delete')
@@ -750,7 +781,7 @@ def execute_job(self: Salesforce,
     print("Failed results (if any):")
     print(self.failed_results().text)
 
-# %% ../crema_sf.ipynb 50
+# %% ../crema_sf.ipynb 52
 @patch
 def get_fields(self:Salesforce, 
                obj:str # the name of the Salesforce object
@@ -769,7 +800,7 @@ def get_fields(self:Salesforce,
     else:
         raise Exception(f"Error: {response.status_code} {response.reason}")
 
-# %% ../crema_sf.ipynb 52
+# %% ../crema_sf.ipynb 54
 @patch
 def retrieve_atms_records_by_contactId(
     self: Salesforce, # the Salesforce object
@@ -787,7 +818,7 @@ def retrieve_atms_records_by_contactId(
     # write data to json files
     self.atms.write_data_to_json_files()
 
-# %% ../crema_sf.ipynb 57
+# %% ../crema_sf.ipynb 60
 ## this will have only contacts that are members, and only members that are contacts. 
 ## is possible to have duplicates if a contact is a member of more than one membership?
 ## yes but the duplicated fields will only be in one group or the other
@@ -801,7 +832,7 @@ def match_df(df1, df2, field1, field2):
     return df1, df2
 
 
-# %% ../crema_sf.ipynb 59
+# %% ../crema_sf.ipynb 62
 # test that all external ids are unique
 # test that all lookups are valid
 
@@ -830,7 +861,7 @@ def test_lookup_fields(df_d):
             assert (fromColumn.isin(toColumn)).all(), f"bad lookup: {fromKey} {fromField} {toField}"
 
 
-# %% ../crema_sf.ipynb 61
+# %% ../crema_sf.ipynb 64
 ## these funcs all use the global variable df_d
 
 # function that returns all the fields that point to a given foreign key
@@ -888,7 +919,7 @@ def reduce_to_referenced_rows(
 
 # i want to write these to file and send them to salesforce
 
-# %% ../crema_sf.ipynb 63
+# %% ../crema_sf.ipynb 66
 # starting from atms object dictionary, create a dictionary of dataframes for all SF objects
 # using this dictionary df_d, we can then remove duplicates of rows with same external_id
 # and remove any row which has a lookup to a non-existent foreign key
@@ -928,30 +959,6 @@ def perfect_data(self: Salesforce, df_d : dict) -> dict:
         print("AFTER dropping duplicates for ", i,  )
         # print("AFTER dropping duplicates for ", i, " on ", self.model_d[i]['external_id'], len(df_d[i]))
 
-    # try:
-    #     for obj,relations in self.model_d.items():
-    #         print("\n ====================================")
-    #         print("duplicate ext id loop: ", obj)
-            
-    #         if obj not in df_d.keys():
-    #             continue
-
-    #         for fromField, parent in relations['lookups_d'].items():
-    #             parentExternalId = Salesforce.model_d[parent]['external_id']
-    #             if parent in df_d.keys():   
-    #                 toColumn = df_d[parent][parentExternalId]
-    #             else:
-    #                 continue
-
-    #             # combine from field and parent external id to get Salesforce lookup field
-    #             newFromField = fromField[:-1]+'r.'+parentExternalId
-                
-    #             from_df, to_df = match_df(df_d[obj], df_d[parent], newFromField, parentExternalId)
-    #             print(f'{obj} --> {parent}  ', len(df_d[obj]), ' --> ', len(from_df))
-    #             # print(f'{parent}  ', len(df_d[parent]), ' --> ', len(to_df), '\n')
-    #             df_d[obj] = from_df
-    # except KeyError:
-    
 
     try:
         print("this should NOT fail")
@@ -967,7 +974,7 @@ def perfect_data(self: Salesforce, df_d : dict) -> dict:
     # return df2_d
     return df_d
 
-# %% ../crema_sf.ipynb 65
+# %% ../crema_sf.ipynb 68
 # only seems to be used by external calls
 @patch
 def write_dict_to_csv(
@@ -984,28 +991,54 @@ def write_dict_to_csv(
                 f.write(df2_d[k].to_csv(sep='\t', index=False))
 
 
-# %% ../crema_sf.ipynb 67
+# %% ../crema_sf.ipynb 70
 ## this DOES NOT regenerate the upload files!
 
 @patch
 def upload_csv_to_sf(
     self : Salesforce,
+    obj_l : list = [],
     clean_sf : list | bool = [],
     clean_all : bool = False,
     operation : str = 'upsert',
     generate_upload_files : bool = False
     ):
 
+    if obj_l == []:
+        obj_d = {(k,v) for k,v in Salesforce.model_d.items() if k in obj_l}
+    else:
+        obj_d = Salesforce.model_d.items()    
+
+    
     # clean SF if desired
     if clean_all:
         self.delete_sf_objects()
     else:
         for obj in clean_sf:
             self.delete_sf_objects(obj)
+    
+    # write dictionary of dataframes to upload directory for all SF objects
+    for obj,relations in obj_d:
+         self.process_objects(sf_object_s=obj, use_ATMS_data=generate_upload_files)
+
+    # remove duplicates in each file using pandas dataframe
+    for obj,relations in obj_d: 
+        if obj == 'MembershipTermMemberRel__c':
+            continue
+        print(obj, relations['external_id'] )
+        
+        full_path = os.path.join(Salesforce.class_upload_dir, obj+'.csv')
+        if os.path.exists(full_path):
+            _df = pd.read_csv(full_path, sep='\t')
+            _df.drop_duplicates(subset=relations['external_id'], inplace=True)
+            _df.to_csv(full_path, sep='\t', index=False)
 
     # upload all data to SF
-    for obj,relations in Salesforce.model_d.items():
+    for obj,relations in obj_d: 
         print(obj, relations['external_id'] )
-        self.execute_job(obj, operation, external_id=relations['external_id'], use_ATMS_data=generate_upload_files) 
+        if obj == 'MembershipTermMemberRel__c':
+            self.delete_sf_objects(obj) 
+            self.execute_job(obj, 'insert', use_ATMS_data=generate_upload_files) 
+        else: 
+            self.execute_job(obj, operation, external_id=relations['external_id'], use_ATMS_data=generate_upload_files) 
         sleep(2)
-
