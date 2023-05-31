@@ -313,10 +313,10 @@ def failed_results(self: Salesforce):
 
     response = requests.request("GET", url, headers=headers, data=payload)
 
-    try:
-        print(pd.DataFrame(response.json()))
-    except:
-        print(response.text)
+    # try:
+    #     print(pd.DataFrame(response.json()))
+    # except:
+    #     print(response.text)
     # 
     return response
 
@@ -406,9 +406,16 @@ def clean_upload_dir(self: Salesforce):
 def write_jmespath_to_csv(obj_s, dict_l, file_path_s, keys):
     """Write a list of dictionaries to a csv file using the specified keys as column headers
     utility function for 'process' functions """
-    _df = pd.DataFrame(dict_l)
+    print("write_jmespath_to_csv", obj_s)
+    d_l = []
+    print("write_jmespath_to_csv", dict_l[:5])
+    for d in dict_l:
+        d_l.append({k:(str(v) if v else "")  for k,v in d.items()})
+    _df = pd.DataFrame(d_l)
+    print(f"write_jmespath_to_csv for {obj_s} dtypes {_df.dtypes}")
     _df.columns = keys
     _df2 = _df.applymap(lambda x: escape_quotes(str(x)) if x else "") 
+    print("df2 in write_j : \n", _df2.head(10))
     _df2.to_csv(file_path_s, sep='\t', index=False)
 
 
@@ -437,7 +444,7 @@ def make_unique_membershipMemberId(
             for mm_d in t_d['MMs']:
                 new_mm_id = ('_'.join([str(i) for i in [m_d['id'],mm_d['membershipMemberId__c']]]))
                 # new_mm_id = ('_'.join([str(i) for i in [m_d['id'],t_d['id'],mm_d['membershipMemberId__c']]]))
-                print(new_mm_id)
+                # print(new_mm_id)
                 new_d = mm_d.copy()
                 new_d['membershipMemberId__c'] = new_mm_id
                 new_d['membershipTermKey__r_1_membershipTermId__c'] = new_mt_id
@@ -614,15 +621,16 @@ def process_saleDetails(self: Salesforce ):
         refundReason__c : refundReason,\
         refundReasonKey__c : refundReasonKey,\
         systemPriceOverride__c : systemPriceOverride,\
-        membershipTermKey__c : membershipTermKey,\
+        membershipTermKey__r_1_membershipTermId__c : membershipTermKey,\
         saleKey__r_1_saleId__c : saleId}" 
         # membershipTermKey__r_1_membershipTermId__c : membershipTermKey,\
+        # membershipTermKey__c : membershipTermKey,\
     
     keys = ['saleDetailId__c', 'itemKey__c', 'scheduleKey__c', 'rateKey__c', 'categoryKey__c', 'itemCategory__c', 
             'pricingPriceKey__c', 'itemPrice__c', 'itemTotal__c', 'couponTotal__c', 'discountTotal__c', 'total__c', 
             'revenueDate__c', 'refundReason__c', 'refundReasonKey__c', 'systemPriceOverride__c', 
-            # 'membershipTermKey__r.membershipTermId__c', 'saleKey__r.saleId__c']
-            'membershipTermKey__c', 'saleKey__r.saleId__c']
+            'membershipTermKey__r.membershipTermId__c', 'saleKey__r.saleId__c']
+            # 'membershipTermKey__c', 'saleKey__r.saleId__c']
 
     assert 'sales' in self.atms.obj_d, f"sales not in atms.obj_d {self.atms.obj_d.keys()}"
     dict_l = jp.search(search_s, self.atms.obj_d['sales'])
@@ -632,7 +640,7 @@ def process_saleDetails(self: Salesforce ):
     # print(f"Salesforce: Writing {len(dict_l)} 'SaleDetail' objects to {file_path_s}")
     write_jmespath_to_csv('SaleDetail__c', dict_l, file_path_s, keys)
 
-        
+    return dict_l        
 
 # %% ../crema_sf.ipynb 44
 @patch
@@ -780,6 +788,9 @@ def execute_job(self: Salesforce,
     print(f"post loop job status: {self.job_status()}")
     print("Failed results (if any):")
     print(self.failed_results().text)
+
+    print("\n\n Succuseful results (if any):")
+    print(self.successful_results().text)
 
 # %% ../crema_sf.ipynb 52
 @patch
@@ -993,7 +1004,7 @@ def write_dict_to_csv(
 
 # %% ../crema_sf.ipynb 70
 ## this DOES NOT regenerate the upload files!
-
+from collections import defaultdict
 @patch
 def upload_csv_to_sf(
     self : Salesforce,
@@ -1004,7 +1015,8 @@ def upload_csv_to_sf(
     generate_upload_files : bool = False
     ):
 
-    if obj_l == []:
+    dtype_d = defaultdict(lambda: str)
+    if obj_l != []:
         obj_d = {(k,v) for k,v in Salesforce.model_d.items() if k in obj_l}
     else:
         obj_d = Salesforce.model_d.items()    
@@ -1029,8 +1041,10 @@ def upload_csv_to_sf(
         
         full_path = os.path.join(Salesforce.class_upload_dir, obj+'.csv')
         if os.path.exists(full_path):
-            _df = pd.read_csv(full_path, sep='\t')
+            _df = pd.read_csv(full_path, sep='\t', dtype=dtype_d)
             _df.drop_duplicates(subset=relations['external_id'], inplace=True)
+            print("upload_csv_to_sf: dropping duplicates for ", obj, " on ", relations['external_id'])
+            print(_df.head(10))
             _df.to_csv(full_path, sep='\t', index=False)
 
     # upload all data to SF
