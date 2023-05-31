@@ -411,6 +411,9 @@ def write_jmespath_to_csv(obj_s, dict_l, file_path_s, keys):
     print("write_jmespath_to_csv", dict_l[:5])
     for d in dict_l:
         d_l.append({k:(str(v) if v else "")  for k,v in d.items()})
+    if len(d_l) == 0:
+        print("write_jmespath_to_csv: no data to write")
+        return
     _df = pd.DataFrame(d_l)
     print(f"write_jmespath_to_csv for {obj_s} dtypes {_df.dtypes}")
     _df.columns = keys
@@ -1041,6 +1044,7 @@ def upload_csv_to_sf(
         
         full_path = os.path.join(Salesforce.class_upload_dir, obj+'.csv')
         if os.path.exists(full_path):
+            ## dtype in necessary to avoid pandas converting strings to floats
             _df = pd.read_csv(full_path, sep='\t', dtype=dtype_d)
             _df.drop_duplicates(subset=relations['external_id'], inplace=True)
             print("upload_csv_to_sf: dropping duplicates for ", obj, " on ", relations['external_id'])

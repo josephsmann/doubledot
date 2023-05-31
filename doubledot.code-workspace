@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "doubledot",
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.analysis.typeCheckingMode": "off"
+	}
+}
