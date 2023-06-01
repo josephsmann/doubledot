@@ -232,6 +232,9 @@ def upload_csv(self : Salesforce,
 
     # replace all occurrences of '\2019' with \'
     # we may have done this in ATMS already, but just in case
+    if not os.path.exists(file_path_s):
+        print(f"File not found in Salesforce.upload_csv: {file_path_s}")
+        return False
     try:
         for line in fileinput.input(files=file_path_s, inplace=True):
             line = line.replace('\u2019', "'")
@@ -520,7 +523,7 @@ memMembers_s = "[].\
 }}}"
 
 @patch
-def process_memberships(self: Salesforce ):
+def process_memberships(self: Salesforce, obj_s: str  ):
     """Unpack memberships data from atms object and write to membership, membership_terms, and membership_members csv files.
     
     We could modify this function to only process one of Memmbership, MembershipTerm, or MembershipMember.
@@ -539,7 +542,10 @@ def process_memberships(self: Salesforce ):
     
     atms_d = self.atms.obj_d['memberships']
 
-    for key, v_pair in mem_d.items():
+
+        # for key, v_pair in mem_d.items():
+    if obj_s in mem_d:
+        key, v_pair = (obj_s, mem_d[obj_s])
         file_path_s = os.path.join(Salesforce.class_upload_dir, v_pair['fname']+'.csv')
         dict_l = jp.search(v_pair['jmespath'], atms_d)
         # print(f"Salesforce: Writing {len(dict_l)} {key} objects to {file_path_s}")
@@ -659,7 +665,7 @@ def process_contacts(self: Salesforce ):
         MailingStreet: addresses[0].line1, \
         MailingCountry: addresses[0].country, \
         Phone: phones[?phoneType == 'Business'].phoneNumber | [0],\
-        Email: emails[0].address[0],\
+        Email: emails[0].address,\
         contactId__c: contactId}"
 
     if not ('contacts' in self.atms.obj_d):
@@ -739,7 +745,7 @@ def process_objects(self: Salesforce,
         
         if sf_object_s in ['Membership__c', 'MembershipMember__c', 'MembershipTerm__c'] :
             # this creates files Membership__c.csv, MembershipMember__c.csv, MembershipTerm__c.csv in the class_upload_dir
-            self.process_memberships()
+            self.process_memberships(sf_object_s)
         
         term_path = os.path.join(Salesforce.class_upload_dir, 'MembershipTerm__c.csv')
         member_path = os.path.join(Salesforce.class_upload_dir, 'MembershipMember__c.csv')
@@ -764,8 +770,7 @@ def execute_job(self: Salesforce,
 
     ## translate dictionaries to csv files
     # self.process_objects(sf_object_s=sf_object_s, use_ATMS_data=use_ATMS_data) # this has to be done for every object before any uploading can be done
-    full_path = os.path.join(Salesforce.class_upload_dir, sf_object_s)+'.csv'
-    # assert os.path.exists(full_path), f"file not found {full_path}"
+    
     ## start data transfer to Salesforce server
     self.create_job(sf_object=sf_object_s, operation=operation, external_id=external_id)
     upload_res = self.upload_csv(sf_object_s, use_download_dir_b = operation == 'delete')
