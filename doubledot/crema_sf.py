@@ -797,7 +797,7 @@ def execute_job(self: Salesforce,
     print("Failed results (if any):")
     print(self.failed_results().text)
 
-    print("\n\n Succuseful results (if any):")
+    print("\n\n Successful results (if any):")
     print(self.successful_results().text)
 
 # %% ../crema_sf.ipynb 52

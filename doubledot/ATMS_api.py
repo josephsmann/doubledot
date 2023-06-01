@@ -482,7 +482,9 @@ def load_data_file_to_dict(
                 with open(file_path_s,'r') as f:
                     data = f.read()
             else:
-                raise FileNotFoundError # we give up
+                data = "[]"
+                print("in ATMS:load_data_file_to_dict. no dirty or clean file found. using empty dict")
+                # raise FileNotFoundError # we give up
         finally: # this will be executed regardless of first 'try' failing or not
             if len(data) > 0:
                 try: # data might be buggy
