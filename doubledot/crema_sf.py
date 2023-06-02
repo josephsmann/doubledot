@@ -530,9 +530,9 @@ def process_memberships(self: Salesforce, obj_s: str  ):
     """
     # print("Processing memberships data")
     # custom objects need '__c' suffix
-    mem_d = { 'memberships': {'fname':'Membership__c', 'jmespath': mem_s, 'keys': mem_keys},
-               'membership_terms': {'fname':'MembershipTerm__c','jmespath': memTerm_s, 'keys': memTerm_keys},
-               'membership_members': {'fname': 'MembershipMember__c', 'jmespath': memMembers_s, 'keys': memMembers_keys}
+    mem_d = { 'Membership__c': {'fname':'Membership__c', 'jmespath': mem_s, 'keys': mem_keys},
+              'MembershipTerm__c': {'fname':'MembershipTerm__c','jmespath': memTerm_s, 'keys': memTerm_keys},
+              'MembershipMember__c': {'fname': 'MembershipMember__c', 'jmespath': memMembers_s, 'keys': memMembers_keys}
                 }
             
 
@@ -549,9 +549,9 @@ def process_memberships(self: Salesforce, obj_s: str  ):
         file_path_s = os.path.join(Salesforce.class_upload_dir, v_pair['fname']+'.csv')
         dict_l = jp.search(v_pair['jmespath'], atms_d)
         # print(f"Salesforce: Writing {len(dict_l)} {key} objects to {file_path_s}")
-        if key == 'membership_terms':
+        if key == 'MembershipTerm__c':
             dict_l = make_unique_membershipTermId(dict_l)
-        if key == 'membership_members':
+        if key == 'MembershipMember__c':
             dict_l = make_unique_membershipMemberId(dict_l)
         write_jmespath_to_csv(v_pair['fname'], dict_l, file_path_s, v_pair['keys'])
 
@@ -668,7 +668,8 @@ def process_contacts(self: Salesforce ):
         Email: emails[0].address,\
         contactId__c: contactId}"
 
-    if not ('contacts' in self.atms.obj_d):
+    # if not ('contacts' in self.atms.obj_d):
+    if os.path.exists(os.path.join(ATMS.class_download_dir, 'contacts.csv')):
         self.atms.load_data_file_to_dict('contacts')
         assert 'contacts' in self.atms.obj_d, f"contacts not in atms.obj_d {self.atms.obj_d.keys()}"
 
@@ -829,7 +830,9 @@ def retrieve_atms_records_by_contactId(
     for obj in ['sales', 'contacts', 'memberships']:
         # does this not get written to file?, no. it does not. and we don't want it to because we're working on proccessing rn.
         try:
+            # populates self.atms.data_d with data from ATMS
             self.atms.fetch_data_by_contactIds(obj, contactId_l) 
+
         except Exception as e :
             print(f"Error: with {obj} and {contactId_l}")
             raise e

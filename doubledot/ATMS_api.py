@@ -43,7 +43,7 @@ class ATMS_d(dict):
         return super().__getitem__(item )
     
     def __setitem__(self, item, value):
-        print('set with []')
+        print(f'set atms.obj_d[{item}] = {value}')
         if item not in self.key_l:
             raise KeyError(f'\"{item}\" must be one of: {", ".join(self.key_l)}')
         super().__setitem__(item, value)
@@ -274,6 +274,8 @@ def get_telus_data(self:ATMS_api,
 
 
 # %% ../ATMS_api.ipynb 17
+# called by get_pick_list_for_MembeshipTerms_membershipType 
+
 @patch
 def retrieve_and_clean(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -299,24 +301,28 @@ def fetch_data_by_contactIds(
     ):
     """ retrieve data from ATMS by contactId for a list of contactIds for the given object.
         returns a list of dicts, one for each contactId
+
     """
-    l = []
-    # list unique
+    record_l = []
+
     id_s = set(id_l)
+
+    # collect all object data for each contactId and store in a list
     for contact_id in id_s: #pelton_df.contactKey.unique():
-        print("fetch_data_by_contactIds :", contact_id)
+        print("ATMS.fetch_data_by_contactIds:", contact_id)
+        # data comes from ATMS
         r = self.get_telus_data(obj_s, contact_id=contact_id)
         try:
             data_d = r['response'].json()
-            print(data_d)
-            l.append(data_d)
+            print("ATMS.fetch_data_by_contactIds: response data \n",data_d)
+            record_l.append(data_d)
         except Exception as e:
-            print(f"choked on {r['response'].text}")
+            print(f"ATMS.fetch_data_by_contactIds: choked on {r['response'].text}")
             raise e
-        sleep(1)
+        # sleep(1)
     if store_data_b:
-        self.obj_d[obj_s] = l
-    return l ### write to obj_d ??
+        self.obj_d[obj_s] = record_l
+    return record_l ### write to obj_d ??
 
 # %% ../ATMS_api.ipynb 21
 @patch
@@ -340,6 +346,13 @@ def write_data_to_json_files(self:ATMS_api):
 
 
 # %% ../ATMS_api.ipynb 25
+## RETRIEVE DATA FROM ATMS API AND WRITE TO FILE
+## uses get_telus_data iteratively to retrieve data from ATMS API and write to file
+
+
+## use this for bulk retrieval of data from ATMS API
+
+
 @patch
 def write_obj_to_file(self:ATMS_api, 
                         obj : str = 'contacts', # ATMS object to retrieve
@@ -497,5 +510,5 @@ def load_data_file_to_dict(
 
         
 
-# %% ../ATMS_api.ipynb 36
+# %% ../ATMS_api.ipynb 35
 "playtime"
